@@ -1,10 +1,16 @@
 # Endpoints
-Greeting: http://localhost:8080/greeting
+EndPoint Orc: http://localhost:8080/orc
+Body form-data:
+    fileName:   image.jpg   ->  File Type
+    lang:       EN          ->  Text Type
+    checksum:   584732-34   ->  Text Type
 
-Response:
-{"id":2,"detail":"Hello, World!"}
+SuccessFull Response:
+{
+    "name": "OK",
+    "status": 200,
+    "detail": "Successfully Extracted",
+    "content": "Content dfdafdasfdsafdsafd"
+}
 
-Sample:
-http://localhost:8080/greeting?name=marylin
-{"id":4,"detail":"Hello, marylin!"}
 

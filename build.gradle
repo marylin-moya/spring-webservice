@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.1.8.RELEASE'
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.1.8.RELEASE')
     }
 }
 
@@ -14,7 +14,7 @@ apply plugin: 'io.spring.dependency-management'
 
 bootJar {
     group = 'spring-webservice'
-    version =  '0.1.0'
+    version = '0.1.0'
 }
 
 repositories {
