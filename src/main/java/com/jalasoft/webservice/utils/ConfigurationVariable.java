@@ -10,6 +10,9 @@
 
 package com.jalasoft.webservice.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /***
  * ConfigurationVariable : Information related to project configuration
  */
@@ -18,4 +21,14 @@ public final class ConfigurationVariable {
     public static String TXT_FOLDER = "src/txt/";
     public static String TESSERAL_PATH = "src/thridParty/Tess4J/tessdata";
     public static String TYPE_CHECKSUM = "SHA-256";
+    public static String DEFAULT_LANGUAGE = "ENGLISH";
+    public static Map<String, String> LANGUAGE = new HashMap<String, String>()
+    {
+        {
+            put(DEFAULT_LANGUAGE, "eng");
+            put("FRENCH", "fra");
+            put("URDU", "urd");
+            put("SPANISH", "spa");
+        }
+    };
 }

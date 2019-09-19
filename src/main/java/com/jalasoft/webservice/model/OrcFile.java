@@ -22,61 +22,38 @@ import java.io.*;
 public class OrcFile extends ModelFile {
     private String lang;
 
-
-    public TextFile getTextFile(String imgFile, String lang)
+    /***
+     * get text from image file, according the language
+     * @param lang
+     * @return
+     */
+    public TextFile getTextFile(String lang)
     {
+        String imgFile = getFullFileName();
         Tesseract tesseract = new Tesseract();
-
+        if(!ConfigurationVariable.LANGUAGE.containsKey(lang)){
+            return null;
+        }
+        if (!lang.equals(ConfigurationVariable.DEFAULT_LANGUAGE)){
+            this.lang = ConfigurationVariable.LANGUAGE.get(lang);
+        }
         try {
-
             tesseract.setDatapath(ConfigurationVariable.TESSERAL_PATH);
-            String text = tesseract.doOCR(new File(ConfigurationVariable.IMG_FOLDER + imgFile));
-            String fileName = imgFile.split("\\.")[0];
+            if(this.lang != null)
+                tesseract.setLanguage(this.lang);
+            String text = tesseract.doOCR(new File(getPath() + imgFile));
             TextFile textFile = new TextFile();
-            saveTextIntoFile(text, fileName);
-            textFile.setFileName(fileName);
-            textFile.setFileTtype("csv");
-            textFile.setText(text);
-
+            textFile.setPath(ConfigurationVariable.TXT_FOLDER);
+            textFile.setFileName(this.getFileName());
+            textFile.setFileType("csv");
+            textFile.saveTextIntoFile(text);
             return textFile;
         }
         catch (TesseractException e) {
+            System.err.println(e.getMessage());
             e.printStackTrace();
         }
 
         return null;
-    }
-
-    /***
-     * Method to get the text which is in image file
-     * @param text
-     * @param fileName
-     */
-    private void saveTextIntoFile(String text, String fileName)
-    {
-        String csvFile = ConfigurationVariable.TXT_FOLDER + fileName+".csv";
-        BufferedWriter bufferWriter = null;
-        FileWriter fileWriter = null;
-        try {
-
-            fileWriter = new FileWriter(csvFile);
-            bufferWriter = new BufferedWriter(fileWriter);
-
-            bufferWriter.write(text);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (bufferWriter != null)
-                    bufferWriter.close();
-
-                if (fileWriter != null)
-                    fileWriter.close();
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
     }
 }

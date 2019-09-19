@@ -12,6 +12,8 @@
 package com.jalasoft.webservice.model;
 
 
+import com.jalasoft.webservice.utils.ConfigurationVariable;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,8 +27,9 @@ import java.security.NoSuchAlgorithmException;
  */
 public class ModelFile {
     private String fileName;
-    private String fileTtype;
+    private String fileType;
     private String path;
+    private String fullFileName;
     private long size;
     private String checkSum;
 
@@ -38,12 +41,12 @@ public class ModelFile {
         this.fileName = fileName;
     }
 
-    public String getFileTtype() {
-        return fileTtype;
+    public String getFileType() {
+        return fileType;
     }
 
-    public void setFileTtype(String fileTtype) {
-        this.fileTtype = fileTtype;
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
     public String getPath() {
@@ -62,24 +65,42 @@ public class ModelFile {
         this.size = size;
     }
 
-    public boolean IsFileExist()
+    public String getFullFileName()
+    {
+        if(fileName != null && fileType != null){
+            fullFileName = fileName + "." + fileType;
+        }
+
+        return fullFileName;
+    }
+
+    public boolean isFileExist()
     {
         File tmpFile;
-        tmpFile = new File(this.path + this.fileName);
+        tmpFile = new File(this.path + getFullFileName());
         return tmpFile.exists();
     }
 
+    public void removeFile()
+    {
+        if(isFileExist()){
+            File tmpFile;
+            tmpFile = new File(this.path + getFullFileName());
+            tmpFile.delete();
+        }
+    }
+
     /***
-     * Get information about CheckSum 
+     * Get information about CheckSum
      * @return
      */
     public String getCheckSum()
     {
-        if(IsFileExist())
+        if(isFileExist())
         {
             try {
-                MessageDigest md = MessageDigest.getInstance("SHA-256"); //SHA, MD2, MD5, SHA-256, SHA-384...
-                DigestInputStream dis = new DigestInputStream(new FileInputStream(this.path + this.fileName), md);
+                MessageDigest md = MessageDigest.getInstance(ConfigurationVariable.TYPE_CHECKSUM); //SHA, MD2, MD5, SHA-256, SHA-384...
+                DigestInputStream dis = new DigestInputStream(new FileInputStream(this.path  + getFullFileName()), md);
                 while (dis.read() != -1) ; //empty loop to clear the data
                 md = dis.getMessageDigest();
 
