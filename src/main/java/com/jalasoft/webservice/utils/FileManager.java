@@ -1,5 +1,3 @@
-package com.jalasoft.webservice.utils;
-
 /*
  *
  *  Copyright (c) 2019 Jalasoft.
@@ -11,6 +9,7 @@ package com.jalasoft.webservice.utils;
  *  with Jalasoft.
  *
  */
+package com.jalasoft.webservice.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,6 +28,7 @@ public class FileManager {
 
     /**
      * Method to store the file in the fileSystem
+     *
      * @param filePath
      * @param file
      * @throws IOException

@@ -1,4 +1,3 @@
-package com.jalasoft.webservice.controller;
 /*
  *
  *  Copyright (c) 2019 Jalasoft.
@@ -10,6 +9,7 @@ package com.jalasoft.webservice.controller;
  *  with Jalasoft.
  *
  */
+package com.jalasoft.webservice.controller;
 
 import com.jalasoft.webservice.entitities.OcrResponse;
 import com.jalasoft.webservice.utils.FileManager;
@@ -28,7 +28,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
-import static com.jalasoft.webservice.Constants.APPLICATION_PROPERTIES;
+import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 
 /**
  * Orc Controller class to implement Rest EndPoint to extract text from a file.
@@ -41,8 +41,9 @@ public class OcrController {
 
     /**
      * /orc endpoint to extract text from a file.
-     * @param file MultipartFile file to upload.
-     * @param lang language String to extract the text.
+     *
+     * @param file     MultipartFile file to upload.
+     * @param lang     language String to extract the text.
      * @param checksum checksum String to verify if the file was already uploaded.
      * @return ResponseEntity with the Error or Success result.
      */

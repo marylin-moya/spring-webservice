@@ -1,5 +1,3 @@
-package com.jalasoft.webservice.entitities;
-
 /*
  *
  *  Copyright (c) 2019 Jalasoft.
@@ -11,6 +9,7 @@ package com.jalasoft.webservice.entitities;
  *  with Jalasoft.
  *
  */
+package com.jalasoft.webservice.entitities;
 
 /**
  * OcrResponse class to store the result of extractor Model
@@ -24,9 +23,9 @@ public class OcrResponse {
     /**
      * OrcResponse Constructor
      *
-     * @param name Status in String Format.
-     * @param status Status in Numeric Format.
-     * @param detail Message String.
+     * @param name    Status in String Format.
+     * @param status  Status in Numeric Format.
+     * @param detail  Message String.
      * @param content Text extracted from file.
      */
     public OcrResponse(String name, Integer status, String detail, String content) {

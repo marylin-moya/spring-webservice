@@ -1,5 +1,3 @@
-package com.jalasoft.webservice;
-
 /*
  *
  *  Copyright (c) 2019 Jalasoft.
@@ -11,6 +9,8 @@ package com.jalasoft.webservice;
  *  with Jalasoft.
  *
  */
+package com.jalasoft.webservice.utils;
+
 public class Constants {
     public final static String APPLICATION_PROPERTIES = "application.properties";
 }
