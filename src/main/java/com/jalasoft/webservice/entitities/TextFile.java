@@ -8,7 +8,9 @@
  * with Jalasoft.
  */
 
-package com.jalasoft.webservice.model;
+package com.jalasoft.webservice.entitities;
+
+import com.jalasoft.webservice.entitities.ModelFile;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
