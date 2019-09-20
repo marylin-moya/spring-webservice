@@ -9,16 +9,8 @@
  *  with Jalasoft.
  *
  */
+package com.jalasoft.webservice.utils;
 
-package com.jalasoft.webservice;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class Application {
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+public class Constants {
+    public final static String APPLICATION_PROPERTIES = "application.properties";
 }
