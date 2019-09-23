@@ -7,7 +7,7 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="Tess4J" default="default" basedir=".">
+<project name="Tess4J" default="default" basedir="">
     <description>Builds, tests, and runs the project Tess4J.</description>
     <import file="nbproject/build-impl.xml"/>
     <property name="version" value="3.4.8"/>
@@ -18,22 +18,22 @@
         </copy>
     </target>
     <target name="-post-jar">
-        <move todir="./">
-            <fileset dir="${dist.dir}" includes="${ant.project.name}.jar" />
+        <move todir="/">
+            <fileset dir="dist" includes="${ant.project.name}.jar" />
         </move>
         <delete dir="${dist.dir}/lib"/>
     </target>
     <target name="-post-clean">
         <delete file="${ant.project.name}.jar"/>
         <delete>
-            <fileset dir="${test.src.dir}/test-results" includes="**"/>
+            <fileset dir="test/test-results" includes="**"/>
         </delete>
     </target>
     <target name="dist" depends="clean,jar"
             description="create binary and source distribution archives">
-        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="dist"/>
         <zip zipfile="${dist.dir}/${ant.project.name}-${version}-src.zip">
-            <zipfileset dir="." prefix="${ant.project.name}">
+            <zipfileset dir="" prefix="${ant.project.name}">
                 <exclude name="**/.*"/>
                 <!--<exclude name="${dist.dir}/**"/>-->
                 <exclude name="${build.dir}/**"/>

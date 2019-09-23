@@ -19,7 +19,7 @@ is divided into following sections:
   - cleanup
 
         -->
-<project xmlns:if="ant:if" xmlns:j2seproject1="http://www.netbeans.org/ns/j2se-project/1" xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3" xmlns:jaxrpc="http://www.netbeans.org/ns/j2se-project/jax-rpc" xmlns:unless="ant:unless" basedir=".." default="default" name="Tess4J-impl">
+<project xmlns:if="ant:if" xmlns:j2seproject1="http://www.netbeans.org/ns/j2se-project/1" xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3" xmlns:jaxrpc="http://www.netbeans.org/ns/j2se-project/jax-rpc" xmlns:unless="ant:unless" basedir="../.." default="default" name="Tess4J-impl">
     <fail message="Please build using Ant 1.8.0 or higher.">
         <condition>
             <not>
@@ -38,17 +38,17 @@ is divided into following sections:
         <!-- You can override this target in the ../build.xml file. -->
     </target>
     <target depends="-pre-init" name="-init-private">
-        <property file="nbproject/private/config.properties"/>
+        <property file="private/config.properties"/>
         <property file="nbproject/private/configs/${config}.properties"/>
-        <property file="nbproject/private/private.properties"/>
+        <property file="private/private.properties"/>
     </target>
     <target name="-pre-init-libraries">
-        <property location=".\lib\nblibraries.properties" name="libraries.path"/>
-        <dirname file="${libraries.path}" property="libraries.dir.nativedirsep"/>
+        <property location="../lib/nblibraries.properties" name="libraries.path"/>
+        <dirname file="/thridParty/Tess4J/lib/nblibraries.properties" property="libraries.dir.nativedirsep"/>
         <pathconvert dirsep="/" property="libraries.dir">
-            <path path="${libraries.dir.nativedirsep}"/>
+            <path path="/thridParty/Tess4J/lib"/>
         </pathconvert>
-        <basename file="${libraries.path}" property="libraries.basename" suffix=".properties"/>
+        <basename file="/thridParty/Tess4J/lib/nblibraries.properties" property="libraries.basename" suffix=".properties"/>
         <available file="${libraries.dir}/${libraries.basename}-private.properties" property="private.properties.available"/>
     </target>
     <target depends="-pre-init-libraries" if="private.properties.available" name="-init-private-libraries">
@@ -60,7 +60,7 @@ is divided into following sections:
         </loadproperties>
     </target>
     <target depends="-pre-init,-init-private,-init-private-libraries" name="-init-libraries">
-        <loadproperties encoding="ISO-8859-1" srcfile="${libraries.path}">
+        <loadproperties encoding="ISO-8859-1" srcfile="/thridParty/Tess4J/lib/nblibraries.properties">
             <filterchain>
                 <replacestring from="$${base}" to="${libraries.dir}"/>
                 <escapeunicode/>
@@ -76,7 +76,7 @@ is divided into following sections:
     </target>
     <target depends="-pre-init,-init-private,-init-libraries,-init-user" name="-init-project">
         <property file="nbproject/configs/${config}.properties"/>
-        <property file="nbproject/project.properties"/>
+        <property file="project.properties"/>
     </target>
     <target name="-init-modules-supported">
         <condition property="modules.supported.internal" value="true">
@@ -128,11 +128,11 @@ is divided into following sections:
             </not>
         </condition>
         <property name="javac.modulepath" value=""/>
-        <property name="run.modulepath" value="${javac.modulepath}"/>
+        <property name="run.modulepath" value="build-impl.xml"/>
         <property name="module.build.classes.dir" value="${build.classes.dir}"/>
-        <property name="debug.modulepath" value="${run.modulepath}"/>
+        <property name="debug.modulepath" value="build-impl.xml"/>
         <property name="javac.upgrademodulepath" value=""/>
-        <property name="run.upgrademodulepath" value="${javac.upgrademodulepath}"/>
+        <property name="run.upgrademodulepath" value="build-impl.xml"/>
         <condition else="" property="javac.systemmodulepath.cmd.line.arg" value="--system '${javac.systemmodulepath}'">
             <and>
                 <isset property="javac.systemmodulepath"/>
@@ -217,12 +217,12 @@ is divided into following sections:
         </condition>
         <condition property="have.tests">
             <or>
-                <available file="${test.src.dir}"/>
+                <available file="../test"/>
             </or>
         </condition>
         <condition property="have.sources">
             <or>
-                <available file="${src.dir}"/>
+                <available file="../src"/>
             </or>
         </condition>
         <condition property="netbeans.home+have.tests">
@@ -240,7 +240,7 @@ is divided into following sections:
         <property name="run.jvmargs" value=""/>
         <property name="run.jvmargs.ide" value=""/>
         <property name="javac.compilerargs" value=""/>
-        <property name="work.dir" value="${basedir}"/>
+        <property name="work.dir" value="/thridParty/Tess4J"/>
         <condition property="no.deps">
             <and>
                 <istrue value="${no.dependencies}"/>
@@ -267,7 +267,7 @@ is divided into following sections:
         <condition property="do.depend.true">
             <istrue value="${do.depend}"/>
         </condition>
-        <path id="endorsed.classpath.path" path="${endorsed.classpath}"/>
+        <path id="endorsed.classpath.path" path="build-impl.xml"/>
         <condition else="" property="endorsed.classpath.cmd.line.arg" value="-Xbootclasspath/p:'${toString:endorsed.classpath.path}'">
             <and>
                 <isset property="endorsed.classpath"/>
@@ -514,12 +514,12 @@ is divided into following sections:
                     <globmapper from="*.java" to="*.class"/>
                 </pathconvert>
                 <tempfile deleteonexit="true" property="javac.includesfile.binary"/>
-                <echo file="${javac.includesfile.binary}" message="${javac.includes.binary}"/>
+                <echo file="build-impl.xml" message="${javac.includes.binary}"/>
                 <delete>
-                    <files includesfile="${javac.includesfile.binary}"/>
+                    <files includesfile="build-impl.xml"/>
                 </delete>
                 <delete>
-                    <fileset file="${javac.includesfile.binary}"/>
+                    <fileset file="build-impl.xml"/>
                 </delete>
             </sequential>
         </macrodef>
@@ -552,7 +552,7 @@ is divided into following sections:
             <element name="customizePrototype" optional="true"/>
             <sequential>
                 <property name="junit.forkmode" value="perTest"/>
-                <junit dir="${work.dir}" errorproperty="tests.failed" failureproperty="tests.failed" fork="true" forkmode="${junit.forkmode}" showoutput="true" tempdir="${build.dir}">
+                <junit dir=".." errorproperty="tests.failed" failureproperty="tests.failed" fork="true" forkmode="${junit.forkmode}" showoutput="true" tempdir="${build.dir}">
                     <syspropertyset>
                         <propertyref prefix="test-sys-prop."/>
                         <mapper from="test-sys-prop.*" to="*" type="glob"/>
@@ -561,7 +561,7 @@ is divided into following sections:
                         <path path="${run.test.classpath}"/>
                     </classpath>
                     <modulepath>
-                        <path path="${run.test.modulepath}"/>
+                        <path path="build-impl.xml"/>
                     </modulepath>
                     <formatter type="brief" usefile="false"/>
                     <formatter type="xml"/>
@@ -580,7 +580,7 @@ is divided into following sections:
             <element name="customizePrototype" optional="true"/>
             <sequential>
                 <property name="junit.forkmode" value="perTest"/>
-                <junit dir="${work.dir}" errorproperty="tests.failed" failureproperty="tests.failed" fork="true" forkmode="${junit.forkmode}" showoutput="true" tempdir="${build.dir}">
+                <junit dir=".." errorproperty="tests.failed" failureproperty="tests.failed" fork="true" forkmode="${junit.forkmode}" showoutput="true" tempdir="${build.dir}">
                     <syspropertyset>
                         <propertyref prefix="test-sys-prop."/>
                         <mapper from="test-sys-prop.*" to="*" type="glob"/>
@@ -651,7 +651,7 @@ is divided into following sections:
                     <isset property="test.method"/>
                 </condition>
                 <union id="test.set">
-                    <fileset dir="${test.src.dir}" excludes="@{excludes},**/*.xml,${excludes}" includes="@{includes}">
+                    <fileset dir="../test" excludes="@{excludes},**/*.xml,${excludes}" includes="@{includes}">
                         <filename name="@{testincludes}"/>
                     </fileset>
                 </union>
@@ -936,7 +936,7 @@ is divided into following sections:
             <attribute default="jvm" name="jvm"/>
             <element name="customize" optional="true"/>
             <sequential>
-                <java classname="@{classname}" dir="${work.dir}" failonerror="${java.failonerror}" fork="true" module="@{modulename}">
+                <java classname="@{classname}" dir=".." failonerror="${java.failonerror}" fork="true" module="@{modulename}">
                     <classpath>
                         <path path="@{classpath}"/>
                     </classpath>
@@ -970,7 +970,7 @@ is divided into following sections:
             <attribute default="jvm" name="jvm"/>
             <element name="customize" optional="true"/>
             <sequential>
-                <java classname="@{classname}" dir="${work.dir}" failonerror="${java.failonerror}" fork="true">
+                <java classname="@{classname}" dir=".." failonerror="${java.failonerror}" fork="true">
                     <classpath>
                         <path path="@{classpath}"/>
                     </classpath>
@@ -1002,7 +1002,7 @@ is divided into following sections:
             <attribute default="jvm" name="jvm"/>
             <element name="customize" optional="true"/>
             <sequential>
-                <java classname="@{classname}" dir="${work.dir}" failonerror="${java.failonerror}" fork="true">
+                <java classname="@{classname}" dir=".." failonerror="${java.failonerror}" fork="true">
                     <jvmarg line="${endorsed.classpath.cmd.line.arg}"/>
                     <jvmarg value="-Dfile.encoding=${runtime.encoding}"/>
                     <redirector errorencoding="${runtime.encoding}" inputencoding="${runtime.encoding}" outputencoding="${runtime.encoding}"/>
@@ -1032,7 +1032,7 @@ is divided into following sections:
                     <map from="${build.classes.dir.resolved}" to=""/>
                 </pathconvert>
                 <pathconvert pathsep=" " property="jar.classpath">
-                    <path path="${run.classpath.without.build.classes.dir}"/>
+                    <path path="build-impl.xml"/>
                     <chainedmapper>
                         <flattenmapper/>
                         <filtermapper>
@@ -1132,7 +1132,7 @@ is divided into following sections:
     <target depends="init,deps-jar,-pre-pre-compile,-pre-compile, -copy-persistence-xml,-compile-depend" if="have.sources" name="-do-compile">
         <j2seproject3:javac gensrcdir="${build.generated.sources.dir}"/>
         <copy todir="${build.classes.dir}">
-            <fileset dir="${src.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="../src" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
         </copy>
     </target>
     <target if="has.persistence.xml" name="-copy-persistence-xml">
@@ -1167,7 +1167,7 @@ is divided into following sections:
             -->
     <target depends="init" name="-pre-pre-jar">
         <dirname file="${dist.jar}" property="dist.jar.dir"/>
-        <mkdir dir="${dist.jar.dir}"/>
+        <mkdir dir="/thridParty/Tess4J"/>
     </target>
     <target name="-pre-jar">
         <!-- Empty placeholder for easier customization. -->
@@ -1194,19 +1194,19 @@ is divided into following sections:
     </target>
     <target depends="init" if="do.archive" name="-do-jar-create-manifest" unless="manifest.available">
         <tempfile deleteonexit="true" destdir="${build.dir}" property="tmp.manifest.file"/>
-        <touch file="${tmp.manifest.file}" verbose="false"/>
+        <touch file="build-impl.xml" verbose="false"/>
     </target>
     <target depends="init" if="do.archive+manifest.available" name="-do-jar-copy-manifest">
         <tempfile deleteonexit="true" destdir="${build.dir}" property="tmp.manifest.file"/>
-        <copy encoding="${manifest.encoding}" file="${manifest.file}" outputencoding="UTF-8" tofile="${tmp.manifest.file}"/>
+        <copy encoding="${manifest.encoding}" file="${manifest.file}" outputencoding="UTF-8" tofile="build-impl.xml"/>
     </target>
     <target depends="init,-do-jar-create-manifest,-do-jar-copy-manifest" if="do.archive+main.class.available" name="-do-jar-set-mainclass">
-        <manifest encoding="UTF-8" file="${tmp.manifest.file}" mode="update">
+        <manifest encoding="UTF-8" file="build-impl.xml" mode="update">
             <attribute name="Main-Class" value="${main.class}"/>
         </manifest>
     </target>
     <target depends="init,-do-jar-create-manifest,-do-jar-copy-manifest" if="do.archive+profile.available" name="-do-jar-set-profile">
-        <manifest encoding="UTF-8" file="${tmp.manifest.file}" mode="update">
+        <manifest encoding="UTF-8" file="build-impl.xml" mode="update">
             <attribute name="Profile" value="${javac.profile}"/>
         </manifest>
     </target>
@@ -1214,7 +1214,7 @@ is divided into following sections:
         <basename file="${application.splash}" property="splashscreen.basename"/>
         <mkdir dir="${build.classes.dir}/META-INF"/>
         <copy failonerror="false" file="${application.splash}" todir="${build.classes.dir}/META-INF"/>
-        <manifest encoding="UTF-8" file="${tmp.manifest.file}" mode="update">
+        <manifest encoding="UTF-8" file="build-impl.xml" mode="update">
             <attribute name="SplashScreen-Image" value="META-INF/${splashscreen.basename}"/>
         </manifest>
     </target>
@@ -1225,7 +1225,7 @@ is divided into following sections:
         <echo level="info">java -jar "${dist.jar.resolved}"</echo>
     </target>
     <target depends="init,compile,-pre-pre-jar,-pre-jar,-do-jar-create-manifest,-do-jar-copy-manifest,-do-jar-set-mainclass,-do-jar-set-profile,-do-jar-set-splashscreen" if="do.archive" name="-do-jar-jar" unless="do.mkdist">
-        <j2seproject1:jar manifest="${tmp.manifest.file}"/>
+        <j2seproject1:jar manifest="build-impl.xml"/>
         <property location="${build.classes.dir}" name="build.classes.dir.resolved"/>
         <property location="${dist.jar}" name="dist.jar.resolved"/>
         <condition else="${dist.jar.resolved}" property="jar.usage.message.class.path.replacement" value="">
@@ -1237,7 +1237,7 @@ is divided into following sections:
         </pathconvert>
         <pathconvert property="run.modulepath.with.dist.jar">
             <path location="${dist.jar.resolved}"/>
-            <path path="${run.modulepath}"/>
+            <path path="build-impl.xml"/>
             <map from="${build.classes.dir.resolved}" to="${dist.jar.resolved}"/>
         </pathconvert>
         <condition else="${run.modulepath}" property="jar.usage.message.run.modulepath.with.dist.jar" value="${run.modulepath.with.dist.jar}">
@@ -1268,7 +1268,7 @@ is divided into following sections:
     </target>
     <target depends="-do-jar-copylibs" if="do.archive" name="-do-jar-delete-manifest">
         <delete>
-            <fileset file="${tmp.manifest.file}"/>
+            <fileset file="build-impl.xml"/>
         </delete>
     </target>
     <target depends="init,compile,-pre-pre-jar,-pre-jar,-do-jar-create-manifest,-do-jar-copy-manifest,-do-jar-set-mainclass,-do-jar-set-profile,-do-jar-set-splashscreen,-do-jar-jar,-do-jar-delete-manifest" name="-do-jar-without-libraries"/>
@@ -1531,7 +1531,7 @@ is divided into following sections:
             <classpath>
                 <path path="${javac.classpath}"/>
             </classpath>
-            <fileset dir="${src.dir}" excludes="${bug5101868workaround},${excludes}" includes="${includes}">
+            <fileset dir="../src" excludes="${bug5101868workaround},${excludes}" includes="${includes}">
                 <filename name="**/*.java"/>
             </fileset>
             <fileset dir="${build.generated.sources.dir}" erroronmissingdir="false">
@@ -1542,7 +1542,7 @@ is divided into following sections:
             <arg line="${javadoc.html5.cmd.line.arg}"/>
         </javadoc>
         <copy todir="${dist.javadoc.dir}">
-            <fileset dir="${src.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="../src" excludes="${excludes}" includes="${includes}">
                 <filename name="**/doc-files/**"/>
             </fileset>
             <fileset dir="${build.generated.sources.dir}" erroronmissingdir="false">
@@ -1624,7 +1624,7 @@ is divided into following sections:
             </customize>
         </j2seproject3:javac>
         <copy todir="${build.test.classes.dir}">
-            <fileset dir="${test.src.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="../test" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
         </copy>
     </target>
     <target name="-post-compile-test">
@@ -1645,7 +1645,7 @@ is divided into following sections:
             </customize>
         </j2seproject3:javac>
         <copy todir="${build.test.classes.dir}">
-            <fileset dir="${test.src.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="../test" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
         </copy>
     </target>
     <target name="-post-compile-test-single">
@@ -1764,7 +1764,7 @@ is divided into following sections:
     <target depends="init" name="-do-clean">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.jlink.output}"/>
-        <delete dir="${dist.dir}" followsymlinks="false" includeemptydirs="true"/>
+        <delete dir="../dist" followsymlinks="false" includeemptydirs="true"/>
     </target>
     <target name="-post-clean">
         <!-- Empty placeholder for easier customization. -->

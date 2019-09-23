@@ -34,18 +34,19 @@ public class OrcConvert implements IConvert{
     private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
     private String targetDirectory = "file.target-dir";
     private static final Logger LOGGER = LogManager.getLogger();
+    private String defaultLanguageCode= "file.default-languageCode";
+    private String defaultLanguage = "file.default-language";
 
     @Override
     public BaseFile Convert(BaseFile model) {
         String tesseractPath = "file.tesseract-path";
-        String defaultLanguageCode = "file.default-languageCode";
-        String defaultLanguage = "file.default-language";
+        String languageCode = propertiesFile.getValue(defaultLanguageCode);
+        String language = propertiesFile.getValue(defaultLanguage);
         OrcFile orcFile = (OrcFile) model;
-        String imgFile = orcFile.getFullFileName();
         Tesseract tesseract = new Tesseract();
 
         if(!Constants.LANGUAGE.containsKey(orcFile.getLang())){
-            orcFile.setLang(Constants.LANGUAGE.get(propertiesFile.getValue(defaultLanguage)));
+            orcFile.setLang(Constants.LANGUAGE.get(propertiesFile.getValue(languageCode)));
         }
         else{
             orcFile.setLang(Constants.LANGUAGE.get(orcFile.getLang()));
@@ -53,9 +54,9 @@ public class OrcConvert implements IConvert{
         try {
             tesseract.setDatapath(propertiesFile.getValue(tesseractPath));
 
-            if(orcFile.getLang().equals(propertiesFile.getValue(defaultLanguageCode) ))
+            if(orcFile.getLang().equals(propertiesFile.getValue(languageCode) ))
                 tesseract.setLanguage(orcFile.getLang());
-            String text = tesseract.doOCR(new File(String.format("%s%s", orcFile.getPath(), imgFile)));
+            String text = tesseract.doOCR(new File(String.format("%s%s", orcFile.getPath(), orcFile.getFullFileName())));
             TextFile textFile = new TextFile();
             textFile.setPath(propertiesFile.getValue(targetDirectory));
             textFile.setFileName(orcFile.getFileName());
