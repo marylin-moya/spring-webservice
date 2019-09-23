@@ -11,6 +11,7 @@
  */
 package com.jalasoft.webservice.controller;
 
+import com.jalasoft.webservice.database.ConnectionDB;
 import com.jalasoft.webservice.entitities.OcrResponse;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
@@ -27,6 +28,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 
@@ -50,10 +52,11 @@ public class OcrController {
     @PostMapping(value = "/orc", consumes = {"multipart/form-data"})
     public ResponseEntity<?> getOrcFromUploadFile(@Valid @NotNull @NotBlank @RequestParam("fileName") MultipartFile file,
                                                   @Valid @NotNull @NotBlank @RequestParam("lang") String lang,
-                                                  @Valid @NotNull @NotBlank @RequestParam("checksum") String checksum) {
+                                                  @Valid @NotNull @NotBlank @RequestParam("checksum") String checksum) throws SQLException, ClassNotFoundException {
         LOGGER.info("/orc endpoint to extract text from {}", file.getName());
         try {
             //Is file Uploaded in Database?, if so return the path and not upload the file
+            ConnectionDB.getInstance();
             //If file is not uploaded, upload the file
             FileManager.saveUploadFile(propertiesFile.getValue(uploadFileKey), file);
             //Instance Orc Model with fileName and lang
