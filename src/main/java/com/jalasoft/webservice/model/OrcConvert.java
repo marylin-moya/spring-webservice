@@ -14,6 +14,7 @@ import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.OrcFile;
 import com.jalasoft.webservice.entitities.TextFile;
 import com.jalasoft.webservice.utils.Constants;
+import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
@@ -24,6 +25,11 @@ import java.io.File;
 
 import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 
+/**
+ * Orc convert class
+ *  Version : 1.0
+ *  Date: 9/19/2019
+ */
 public class OrcConvert implements IConvert{
     private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
     private String targetDirectory = "file.target-dir";
@@ -37,15 +43,16 @@ public class OrcConvert implements IConvert{
         OrcFile orcFile = (OrcFile) model;
         String imgFile = orcFile.getFullFileName();
         Tesseract tesseract = new Tesseract();
+
         if(!Constants.LANGUAGE.containsKey(orcFile.getLang())){
             orcFile.setLang(Constants.LANGUAGE.get(propertiesFile.getValue(defaultLanguage)));
         }
-        else
-        {
+        else{
             orcFile.setLang(Constants.LANGUAGE.get(orcFile.getLang()));
         }
         try {
             tesseract.setDatapath(propertiesFile.getValue(tesseractPath));
+
             if(orcFile.getLang().equals(propertiesFile.getValue(defaultLanguageCode) ))
                 tesseract.setLanguage(orcFile.getLang());
             String text = tesseract.doOCR(new File(String.format("%s%s", orcFile.getPath(), imgFile)));
@@ -53,15 +60,14 @@ public class OrcConvert implements IConvert{
             textFile.setPath(propertiesFile.getValue(targetDirectory));
             textFile.setFileName(orcFile.getFileName());
             textFile.setFileType("csv");
-            textFile.saveTextIntoFile(text);
+            FileManager.saveTextIntoFile(String.format("%s%s", textFile.getPath(), textFile.getFullFileName()), text);
+            textFile.setText(text);
             return textFile;
         }
         catch (TesseractException e) {
             System.err.println(e.getMessage());
-            LOGGER.info("OrcConvert Exception.", e.getMessage());
+            LOGGER.info("OrcConvert Exception. {}", e.getMessage());
         }
-
         return null;
-
     }
 }

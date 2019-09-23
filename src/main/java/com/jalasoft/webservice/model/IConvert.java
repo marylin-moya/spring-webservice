@@ -12,8 +12,15 @@ package com.jalasoft.webservice.model;
 
 import com.jalasoft.webservice.entitities.BaseFile;
 
+/** Convert operations
+ *  Version : 1.0
+ *  Date: 9/19/2019
+ */
 interface IConvert {
-    BaseFile Convert(BaseFile model); //url
-    //String Convert(Criteria cri)
-
+    /**
+     * Perform a convertion
+     * @param model
+     * @return
+     */
+    BaseFile Convert(BaseFile model);
 }

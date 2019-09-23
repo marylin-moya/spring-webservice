@@ -22,6 +22,11 @@ import java.security.NoSuchAlgorithmException;
 
 import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 
+/***
+ * Class to calculate the checksum related to specific file
+ *  Version : 1.0
+ *  Date: 9/20/2019
+ */
 public class CheckSum {
     private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
     private static final Logger LOGGER = LogManager.getLogger();
@@ -32,9 +37,8 @@ public class CheckSum {
             DigestInputStream dis = new DigestInputStream(new FileInputStream(filePath), md);
             while (dis.read() != -1) ; //empty loop to clear the data
             md = dis.getMessageDigest();
-
-            // bytes to hex
             StringBuilder result = new StringBuilder();
+
             for (byte b : md.digest()) {
                 result.append(String.format("%02x", b));
             }
@@ -42,11 +46,11 @@ public class CheckSum {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            LOGGER.info("CheckSum File Not Found Exception.", e.getMessage());
+            LOGGER.info("CheckSum File Not Found Exception. {}", e.getMessage());
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.info("CheckSum Algorithm Exception.", e.getMessage());
+            LOGGER.info("CheckSum Algorithm Exception. {}", e.getMessage());
         } catch (IOException e) {
-            LOGGER.info("CheckSum IOException.", e.getMessage());
+            LOGGER.info("CheckSum IOException. {}", e.getMessage());
         }
         return null;
     }
