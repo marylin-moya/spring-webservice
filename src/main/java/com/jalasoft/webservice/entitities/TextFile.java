@@ -10,8 +10,6 @@
 
 package com.jalasoft.webservice.entitities;
 
-import com.jalasoft.webservice.entitities.ModelFile;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,7 +19,7 @@ import java.io.IOException;
  * Date: 9/19/2019
  */
 
-public class TextFile extends ModelFile {
+public class TextFile extends BaseFile {
     private String text;
 
     public String getText() {

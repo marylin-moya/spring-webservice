@@ -10,16 +10,10 @@
 
 package com.jalasoft.webservice.entitities;
 
-import com.jalasoft.webservice.utils.ConfigurationVariable;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
-
-import java.io.*;
-
 /****
  * OrcFile : Class to convert image to text
  */
-public class OrcFile extends ModelFile {
+public class OrcFile extends BaseFile {
     public String getLang() {
         return lang;
     }

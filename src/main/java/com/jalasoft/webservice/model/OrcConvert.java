@@ -10,14 +10,15 @@
 
 package com.jalasoft.webservice.model;
 
-import com.jalasoft.webservice.entitities.ModelFile;
+import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.OrcFile;
 import com.jalasoft.webservice.entitities.TextFile;
-import com.jalasoft.webservice.utils.ConfigurationVariable;
 import com.jalasoft.webservice.utils.Constants;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
@@ -25,8 +26,11 @@ import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 
 public class OrcConvert implements IConvert{
     private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
+    private String targetDirectory = "file.target-dir";
+    private static final Logger LOGGER = LogManager.getLogger();
+
     @Override
-    public ModelFile Convert(ModelFile model) {
+    public BaseFile Convert(BaseFile model) {
         String tesseractPath = "file.tesseract-path";
         String defaultLanguageCode = "file.default-languageCode";
         String defaultLanguage = "file.default-language";
@@ -44,9 +48,9 @@ public class OrcConvert implements IConvert{
             tesseract.setDatapath(propertiesFile.getValue(tesseractPath));
             if(orcFile.getLang().equals(propertiesFile.getValue(defaultLanguageCode) ))
                 tesseract.setLanguage(orcFile.getLang());
-            String text = tesseract.doOCR(new File(orcFile.getPath() + imgFile));
+            String text = tesseract.doOCR(new File(String.format("%s%s", orcFile.getPath(), imgFile)));
             TextFile textFile = new TextFile();
-            textFile.setPath(propertiesFile.getValue("file.target-dir"));
+            textFile.setPath(propertiesFile.getValue(targetDirectory));
             textFile.setFileName(orcFile.getFileName());
             textFile.setFileType("csv");
             textFile.saveTextIntoFile(text);
@@ -54,7 +58,7 @@ public class OrcConvert implements IConvert{
         }
         catch (TesseractException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            LOGGER.info("OrcConvert Exception.", e.getMessage());
         }
 
         return null;

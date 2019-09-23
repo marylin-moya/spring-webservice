@@ -10,14 +10,12 @@
 
 package com.jalasoft.webservice.model;
 
-import com.jalasoft.webservice.entitities.ModelFile;
-import com.jalasoft.webservice.entitities.OrcFile;
-import com.jalasoft.webservice.entitities.TextFile;
+import com.jalasoft.webservice.entitities.BaseFile;
 
 public class ImageConvert implements IConvert{
 
     @Override
-    public ModelFile Convert(ModelFile model) {
+    public BaseFile Convert(BaseFile model) {
         return null;
 
     }

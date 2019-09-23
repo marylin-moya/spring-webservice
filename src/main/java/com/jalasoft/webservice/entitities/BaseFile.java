@@ -11,36 +11,22 @@
 
 package com.jalasoft.webservice.entitities;
 
-
-import com.jalasoft.webservice.utils.ConfigurationVariable;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /***
- * ModelFile : Class generic to manipulate information related to files
+ * BaseFile : Class generic to manipulate information related to files
  */
-public class ModelFile {//Criteria
+public class BaseFile {
     private String fileName;
     private String fileType;
     private String path;
-
-    public String getFullFileName() {
-        return fileName + "." + fileType;
-    }
-
-    public void setFullFileName(String fullFileName) {
-        this.fullFileName = fullFileName;
-    }
-
     private String fullFileName;
     private long size;
     private String checkSum;
+
+    public String getFullFileName() {
+        return String.format("%s.%s", fileName, fileType);
+    }
 
     public String getFileName() {
         return fileName;

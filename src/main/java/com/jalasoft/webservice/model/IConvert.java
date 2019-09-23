@@ -10,10 +10,10 @@
 
 package com.jalasoft.webservice.model;
 
-import com.jalasoft.webservice.entitities.ModelFile;
+import com.jalasoft.webservice.entitities.BaseFile;
 
 interface IConvert {
-    ModelFile Convert(ModelFile model); //url
+    BaseFile Convert(BaseFile model); //url
     //String Convert(Criteria cri)
 
 }

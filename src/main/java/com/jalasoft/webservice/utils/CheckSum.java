@@ -10,6 +10,9 @@
 
 package com.jalasoft.webservice.utils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,6 +24,7 @@ import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 
 public class CheckSum {
     private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public String getCheckSum(String filePath) {
         try {
@@ -38,10 +42,11 @@ public class CheckSum {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            LOGGER.info("CheckSum File Not Found Exception.", e.getMessage());
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LOGGER.info("CheckSum Algorithm Exception.", e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info("CheckSum IOException.", e.getMessage());
         }
         return null;
     }
