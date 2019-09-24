@@ -45,7 +45,6 @@ public class CheckSum {
             return result.toString();
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
             LOGGER.info("CheckSum File Not Found Exception. {}", e.getMessage());
         } catch (NoSuchAlgorithmException e) {
             LOGGER.info("CheckSum Algorithm Exception. {}", e.getMessage());

@@ -41,12 +41,11 @@ public class OrcConvert implements IConvert{
     public BaseFile Convert(BaseFile model) {
         String tesseractPath = "file.tesseract-path";
         String languageCode = propertiesFile.getValue(defaultLanguageCode);
-        String language = propertiesFile.getValue(defaultLanguage);
         OrcFile orcFile = (OrcFile) model;
         Tesseract tesseract = new Tesseract();
 
         if(!Constants.LANGUAGE.containsKey(orcFile.getLang())){
-            orcFile.setLang(Constants.LANGUAGE.get(propertiesFile.getValue(languageCode)));
+            orcFile.setLang(Constants.LANGUAGE.get(languageCode));
         }
         else{
             orcFile.setLang(Constants.LANGUAGE.get(orcFile.getLang()));
@@ -54,9 +53,9 @@ public class OrcConvert implements IConvert{
         try {
             tesseract.setDatapath(propertiesFile.getValue(tesseractPath));
 
-            if(orcFile.getLang().equals(propertiesFile.getValue(languageCode) ))
+            if(!orcFile.getLang().equals(languageCode ))
                 tesseract.setLanguage(orcFile.getLang());
-            String text = tesseract.doOCR(new File(String.format("%s%s", orcFile.getPath(), orcFile.getFullFileName())));
+            String text = tesseract.doOCR(new File(String.format("%s%s", orcFile.getPath(), orcFile.getFullFileName()))).trim();
             TextFile textFile = new TextFile();
             textFile.setPath(propertiesFile.getValue(targetDirectory));
             textFile.setFileName(orcFile.getFileName());
@@ -66,7 +65,6 @@ public class OrcConvert implements IConvert{
             return textFile;
         }
         catch (TesseractException e) {
-            System.err.println(e.getMessage());
             LOGGER.info("OrcConvert Exception. {}", e.getMessage());
         }
         return null;
