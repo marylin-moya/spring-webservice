@@ -50,8 +50,7 @@ public class FileManager {
      * @param fullPathFile
      * @return
      */
-    static public boolean isFileExist(String fullPathFile)
-    {
+    static public boolean isFileExist(String fullPathFile) {
         File tmpFile = new File(fullPathFile);
         return tmpFile.exists();
     }
@@ -60,9 +59,8 @@ public class FileManager {
      * Method to remove file
      * @param fullPathFile
      */
-    static public void removeFile(String fullPathFile)
-    {
-        if(isFileExist(fullPathFile)){
+    static public void removeFile(String fullPathFile) {
+        if (isFileExist(fullPathFile)) {
             File tmpFile;
             tmpFile = new File(fullPathFile);
             tmpFile.delete();
@@ -96,5 +94,27 @@ public class FileManager {
                 LOGGER.info("FileManager Exception {}.", ex.getMessage());
             }
         }
+    }
+
+    /**
+     * Gets the file name without extension.
+     *
+     * @param fullFileName String full file name.
+     * @return String file name without extension.
+     */
+    static public String getFileNameNoExtension(String fullFileName) {
+        int lastIndex = fullFileName.lastIndexOf(".");
+        return fullFileName.substring(0, lastIndex);
+    }
+
+    /**
+     * Gets the file name extension given a full file name e.g.: file.ext
+     *
+     * @param fullFileName String full file name.
+     * @return String the name without extension.
+     */
+    static public String getFileNameExtension(String fullFileName) {
+        int lastIndex = fullFileName.lastIndexOf(".");
+        return fullFileName.substring(lastIndex + 1);
     }
 }

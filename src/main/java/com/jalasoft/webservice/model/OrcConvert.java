@@ -27,34 +27,34 @@ import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 
 /**
  * Orc convert class
- *  Version : 1.0
- *  Date: 9/19/2019
+ * Version : 1.0
+ * Date: 9/19/2019
  */
-public class OrcConvert implements IConvert{
+public class OrcConvert implements IConvert {
     private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
     private String targetDirectory = "file.target-dir";
     private static final Logger LOGGER = LogManager.getLogger();
-    private String defaultLanguageCode= "file.default-languageCode";
+    private String defaultLanguageCode = "file.default-languageCode";
     private String defaultLanguage = "file.default-language";
 
     @Override
-    public BaseFile Convert(BaseFile model) {
+    public BaseFile Convert(BaseFile baseFile) {
         String tesseractPath = "file.tesseract-path";
         String languageCode = propertiesFile.getValue(defaultLanguageCode);
-        OrcFile orcFile = (OrcFile) model;
+        String language = null;
+        OrcFile orcFile = (OrcFile) baseFile;
         Tesseract tesseract = new Tesseract();
 
-        if(!Constants.LANGUAGE.containsKey(orcFile.getLang())){
-            orcFile.setLang(Constants.LANGUAGE.get(languageCode));
-        }
-        else{
-            orcFile.setLang(Constants.LANGUAGE.get(orcFile.getLang()));
+        if (!Constants.LANGUAGE.containsKey(orcFile.getLang())) {
+            language = Constants.LANGUAGE.get(languageCode);
+        } else {
+            language = Constants.LANGUAGE.get(orcFile.getLang());
         }
         try {
             tesseract.setDatapath(propertiesFile.getValue(tesseractPath));
-
-            if(!orcFile.getLang().equals(languageCode ))
+            if (!languageCode.equals(language)) {
                 tesseract.setLanguage(orcFile.getLang());
+            }
             String text = tesseract.doOCR(new File(String.format("%s%s", orcFile.getPath(), orcFile.getFullFileName()))).trim();
             TextFile textFile = new TextFile();
             textFile.setPath(propertiesFile.getValue(targetDirectory));
@@ -63,8 +63,7 @@ public class OrcConvert implements IConvert{
             FileManager.saveTextIntoFile(String.format("%s%s", textFile.getPath(), textFile.getFullFileName()), text);
             textFile.setText(text);
             return textFile;
-        }
-        catch (TesseractException e) {
+        } catch (TesseractException e) {
             LOGGER.info("OrcConvert Exception. {}", e.getMessage());
         }
         return null;

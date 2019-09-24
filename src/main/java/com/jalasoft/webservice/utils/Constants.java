@@ -16,13 +16,12 @@ import java.util.Map;
 
 public class Constants {
     public final static String APPLICATION_PROPERTIES = "application.properties";
-    public static Map<String, String> LANGUAGE = new HashMap<String, String>()
-    {
+    public static Map<String, String> LANGUAGE = new HashMap<String, String>() {
         {
-            put("English", "eng");
-            put("French", "fra");
-            put("Urdu", "urd");
-            put("Spanish", "spa");
+            put("eng", "English");
+            put("fra", "French");
+            put("urd", "Urdu");
+            put("spa", "Spanish");
         }
     };
 }
