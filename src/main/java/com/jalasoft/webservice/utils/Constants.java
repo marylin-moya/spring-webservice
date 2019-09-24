@@ -11,6 +11,18 @@
  */
 package com.jalasoft.webservice.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constants {
     public final static String APPLICATION_PROPERTIES = "application.properties";
+    public static Map<String, String> LANGUAGE = new HashMap<String, String>()
+    {
+        {
+            put("English", "eng");
+            put("French", "fra");
+            put("Urdu", "urd");
+            put("Spanish", "spa");
+        }
+    };
 }
