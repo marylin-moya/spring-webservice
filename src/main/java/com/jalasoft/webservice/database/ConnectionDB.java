@@ -1,32 +1,70 @@
+/*
+ *
+ *  Copyright (c) 2019 Jalasoft.
+ *
+ *  This software is the confidential and proprietary information of Jalasoft.
+ *  ("Confidential Information"). You shall not
+ *  disclose such Confidential Information and shall use it only in
+ *  accordance with the terms of the license agreement you entered into
+ *  with Jalasoft.
+ *
+ */
+
 package com.jalasoft.webservice.database;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Class to handle database connections.
+ */
 public class ConnectionDB {
-
+    private static final Logger LOGGER = LogManager.getLogger();
     private static ConnectionDB instance;
+    private static Connection conn;
 
+    /**
+     * Gets the database connection.
+     *
+     * @return Connection with the database.
+     */
     public static Connection getConn() {
         return conn;
     }
 
-    private static Connection conn;
-
-    private ConnectionDB() throws SQLException, ClassNotFoundException {
+    /**
+     * ConnectionDB Constructor.
+     */
+    private ConnectionDB() {
         this.init();
     }
 
-    private void init() throws SQLException, ClassNotFoundException {
-        Class.forName("org.sqlite.JDBC");
-        conn = DriverManager.getConnection("jdbc:sqlite:webservice.db");
-        Statement state = conn.createStatement();
-        state.execute("create table if not exists filST (id integer primary key, checksum varchar(32), path varchar(250));");
+    /**
+     * Method to create the webservice database if does not exist with a fileST table
+     * fileST table has an id, checksum and path.
+     */
+    private void init() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection("jdbc:sqlite:webservice.db");
+            Statement state = conn.createStatement();
+            state.execute("create table if not exists fileST (id integer primary key, checksum varchar(32), path varchar(250));");
+        } catch (SQLException | ClassNotFoundException e) {
+            LOGGER.error("Exception while initializing the database: {}", e.getMessage());
+        }
     }
 
-    public static ConnectionDB getInstance() throws SQLException, ClassNotFoundException {
+    /**
+     * Gets the ConnectionDB instance if this exist or creates a new one if doesn't.
+     *
+     * @return ConnectionDB instance
+     */
+    public static ConnectionDB getInstance() {
         if (instance == null) {
             instance = new ConnectionDB();
         }
