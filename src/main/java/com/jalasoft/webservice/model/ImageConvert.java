@@ -14,10 +14,10 @@ import com.jalasoft.webservice.entitities.BaseFile;
 
 /**
  * Image convert class
- *  Version : 1.0
- *  Date: 9/20/2019
+ * Version : 1.0
+ * Date: 9/20/2019
  */
-public class ImageConvert implements IConvert{
+public class ImageConvert implements IConvert {
 
     @Override
     public BaseFile Convert(BaseFile model) {
