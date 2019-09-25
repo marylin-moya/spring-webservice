@@ -11,8 +11,6 @@
  */
 package com.jalasoft.webservice.controller;
 
-import com.jalasoft.webservice.database.ConnectionDB;
-import com.jalasoft.webservice.database.DBQuery;
 import com.jalasoft.webservice.entitities.OcrResponse;
 import com.jalasoft.webservice.entitities.OrcFile;
 import com.jalasoft.webservice.entitities.TextFile;
@@ -33,7 +31,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 
