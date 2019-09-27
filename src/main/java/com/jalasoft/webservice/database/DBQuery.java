@@ -80,4 +80,23 @@ public class DBQuery {
         }
         return path;
     }
+
+    /**
+     * Update checksum in database
+     * @param path
+     * @param checksum
+     */
+    public void updateChecksum(String path, String checksum)
+    {
+        LOGGER.info("Update checksum of file path: {path}", path);
+        String sql = "Update fileST set checksum = ? where path = ?";
+        try{
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, checksum);
+            statement.setString(2, path);
+            statement.executeUpdate(sql);
+        }catch (SQLException e) {
+            LOGGER.error("Exception updating checksum file path: {}", e.getMessage());
+        }
+    }
 }
