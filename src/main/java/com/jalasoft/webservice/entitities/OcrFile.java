@@ -11,11 +11,11 @@
 package com.jalasoft.webservice.entitities;
 
 /****
- * OrcFile : Class to convert image to text
+ * OcrFile : Class to convert image to text
  *  Version : 1.0
  *  Date: 9/19/2019
  */
-public class OrcFile extends BaseFile {
+public class OcrFile extends BaseFile {
     private String lang;
 
     public String getLang() {

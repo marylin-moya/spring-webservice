@@ -11,17 +11,44 @@
  */
 package com.jalasoft.webservice.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Constants {
     public final static String APPLICATION_PROPERTIES = "application.properties";
-    public static Map<String, String> LANGUAGE = new HashMap<String, String>() {
-        {
-            put("eng", "English");
-            put("fra", "French");
-            put("urd", "Urdu");
-            put("spa", "Spanish");
+
+    public static enum LANGUAGES {
+        ENGLISH("english", "eng"),
+        FRENCH("french", "fra"),
+        URDU("urdu", "urd"),
+        SPANISH("spanish", "spa");
+
+        private String name;
+        private String suffix;
+
+        LANGUAGES(String name, String suffix) {
+            this.name = name;
+            this.suffix = suffix;
         }
-    };
+
+        public String toName() {
+            return name;
+        }
+
+        public String toSuffix() {
+            return suffix;
+        }
+
+        /**
+         * Method to get the LANGUAGES object given the Language name
+         *
+         * @param name of Language
+         * @return LANGUAGE instance
+         */
+        public static LANGUAGES toLanguages(String name) {
+            for (LANGUAGES language : values()) {
+                if (language.name.equals(name.toLowerCase())) {
+                    return language;
+                }
+            }
+            return null;
+        }
+    }
 }

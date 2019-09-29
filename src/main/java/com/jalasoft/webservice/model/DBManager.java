@@ -16,20 +16,15 @@ import com.jalasoft.webservice.database.DBQuery;
  * Manage the queries to database
  */
 public class DBManager {
-    DBQuery dbQuery;
-    public DBManager()
-    {
-        dbQuery = new DBQuery();
-    }
 
     /**
      * Get path to specific checksum
+     *
      * @param checksum
      * @return
      */
-    public String getFilePath(String checksum)
-    {
-        return dbQuery.getPath(checksum);
+    public static String getPath(String checksum) {
+        return new DBQuery().getPath(checksum);
     }
 
     /***
@@ -37,8 +32,7 @@ public class DBManager {
      * @param checksum
      * @param path
      */
-    public void insertChecksumInformation(String checksum, String path)
-    {
-        dbQuery.insert(checksum, path);
+    public static boolean addFile(String checksum, String path) {
+        return new DBQuery().insert(checksum, path);
     }
 }

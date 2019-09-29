@@ -11,11 +11,12 @@
  */
 package com.jalasoft.webservice.controller;
 
+import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.entitities.OcrResponse;
-import com.jalasoft.webservice.entitities.OrcFile;
 import com.jalasoft.webservice.entitities.TextFile;
+import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
-import com.jalasoft.webservice.model.OrcConvert;
+import com.jalasoft.webservice.model.OcrConvert;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
@@ -56,22 +57,30 @@ public class OcrController {
     public ResponseEntity<?> getOrcFromUploadFile(@Valid @NotNull @NotBlank @RequestParam("fileName") MultipartFile file,
                                                   @Valid @NotNull @NotBlank @RequestParam(value = "lang", defaultValue = "eng") String lang,
                                                   @Valid @NotNull @NotBlank @RequestParam("checksum") String checksum) {
-        LOGGER.info("/orc endpoint to extract text from {}", file.getOriginalFilename());
+        LOGGER.info("/orc endpoint to extract '{}' text from '{}'", lang, file.getOriginalFilename());
 
         try {
-            //Is file Uploaded in Database?, if so return the path and not upload the file
+
+            //Get file path if the file path is saved in the database
+            String filePath = DBManager.getPath(checksum);
+
             //If file is not uploaded, upload the file
-            FileManager.saveUploadFile(propertiesFile.getValue(sourceFileKey), file);
-
+            if (filePath == null) {
+                LOGGER.info("File is not stored, Uploading...");
+                filePath = propertiesFile.getValue(sourceFileKey);
+                DBManager.addFile(checksum, filePath);
+                FileManager.saveUploadFile(filePath, file);
+            }
             //Instance Orc Model with fileName and lang
-            OrcFile orcFile = new OrcFile();
-            orcFile.setLang(lang);
-            orcFile.setPath(propertiesFile.getValue(sourceFileKey));
-            orcFile.setFileType(FileManager.getFileNameExtension(file.getOriginalFilename()));
-            orcFile.setFileName(FileManager.getFileNameNoExtension(file.getOriginalFilename()));
+            OcrFile ocrFile = new OcrFile();
+            ocrFile.setLang(lang);
+            ocrFile.setPath(propertiesFile.getValue(sourceFileKey));
+            ocrFile.setFileType(FileManager.getFileNameExtension(file.getOriginalFilename()));
+            ocrFile.setFileName(FileManager.getFileNameNoExtension(file.getOriginalFilename()));
 
-            IConvert iConvert = new OrcConvert();
-            TextFile textFile = (TextFile) iConvert.Convert(orcFile);
+            IConvert iConvert = new OcrConvert();
+            TextFile textFile = (TextFile) iConvert.Convert(ocrFile);
+
             //Call Extract text that will return a OrcResponse Object
             OcrResponse orcResponse = new OcrResponse(HttpStatus.OK.name(), HttpStatus.OK.value(),
                     "Successfully Extracted", textFile.getText());
