@@ -13,6 +13,7 @@ package com.jalasoft.webservice.controller;
 
 import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.entitities.OcrResponse;
+import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.entitities.TextFile;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
@@ -60,8 +61,13 @@ public class OcrController {
         LOGGER.info("/orc endpoint to extract '{}' text from '{}'", lang, file.getOriginalFilename());
 
         try {
-
             //Get file path if the file path is saved in the database
+            if (checksum == null || checksum.isEmpty()) {
+                Response response = new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value(),
+                        "Empty checksum is not allowed");
+                return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+            }
+
             String filePath = DBManager.getPath(checksum);
 
             //If file is not uploaded, upload the file
@@ -71,6 +77,7 @@ public class OcrController {
                 DBManager.addFile(checksum, filePath);
                 FileManager.saveUploadFile(filePath, file);
             }
+
             //Instance Orc Model with fileName and lang
             OcrFile ocrFile = new OcrFile();
             ocrFile.setLang(lang);
@@ -82,9 +89,9 @@ public class OcrController {
             TextFile textFile = (TextFile) iConvert.Convert(ocrFile);
 
             //Call Extract text that will return a OrcResponse Object
-            OcrResponse orcResponse = new OcrResponse(HttpStatus.OK.name(), HttpStatus.OK.value(),
+            Response response = new OcrResponse(HttpStatus.OK.name(), HttpStatus.OK.value(),
                     "Successfully Extracted", textFile.getText());
-            return new ResponseEntity(orcResponse, HttpStatus.OK);
+            return new ResponseEntity(response, HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

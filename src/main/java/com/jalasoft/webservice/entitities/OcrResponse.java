@@ -14,37 +14,17 @@ package com.jalasoft.webservice.entitities;
 /**
  * OcrResponse class to store the result of extractor Model
  */
-public class OcrResponse {
-    private final String name;
-    private final Integer status;
-    private final String detail;
+public class OcrResponse extends Response {
     private final String content;
 
     /**
-     * OrcResponse Constructor
+     * OcrResponse Constructor
      *
-     * @param name    Status in String Format.
-     * @param status  Status in Numeric Format.
-     * @param detail  Message String.
      * @param content Text extracted from file.
      */
     public OcrResponse(String name, Integer status, String detail, String content) {
-        this.name = name;
-        this.status = status;
-        this.detail = detail;
+        super(name, status, detail);
         this.content = content;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public String getDetail() {
-        return detail;
     }
 
     public String getContent() {
