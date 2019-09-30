@@ -56,12 +56,12 @@ public class CheckSum {
 
     /**
      * Compare 2 checksum
+     *
      * @param checkSum
      * @param checkSumToCompare
      * @return
      */
-    public boolean CompareChecksum(String checkSum, String checkSumToCompare)
-    {
+    public boolean CompareChecksum(String checkSum, String checkSumToCompare) {
         return checkSum.equals(checkSumToCompare);
     }
 }
