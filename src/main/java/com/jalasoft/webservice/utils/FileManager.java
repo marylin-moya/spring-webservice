@@ -40,8 +40,21 @@ public class FileManager {
         LOGGER.info("Storing {} file if is not empty.", file.getName());
         if (!file.isEmpty()) {
             byte[] bytes = file.getBytes();
+            createFolder(filePath);
             Path path = Paths.get(String.format("%s%s", filePath, file.getOriginalFilename()));
             Files.write(path, bytes);
+        }
+    }
+
+    /**
+     * Create the folder if it does not exist.
+     *
+     * @param folderPath
+     */
+    static public void createFolder(String folderPath) {
+        File folder = new File(folderPath);
+        if (!folder.exists()) {
+            folder.mkdirs();
         }
     }
 
@@ -72,11 +85,10 @@ public class FileManager {
      * @param text
      */
     static public void saveTextIntoFile(String fullPathFile, String text) {
-        String csvFile = fullPathFile;
+        createFolder(new File(fullPathFile).getParent());
         BufferedWriter bufferWriter = null;
         FileWriter fileWriter = null;
         try {
-
             fileWriter = new FileWriter(fullPathFile);
             bufferWriter = new BufferedWriter(fileWriter);
             bufferWriter.write(text);
