@@ -94,6 +94,9 @@ public class OcrController {
             return new ResponseEntity(response, HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (NullPointerException | IllegalStateException e) {
+            return new ResponseEntity<>(new Response(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(), "The file does not exist"), HttpStatus.BAD_REQUEST);
         }
     }
 }
