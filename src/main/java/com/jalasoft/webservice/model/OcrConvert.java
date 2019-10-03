@@ -35,6 +35,7 @@ public class OcrConvert implements IConvert {
     private String targetDirectory = "file.target-dir";
     private static final Logger LOGGER = LogManager.getLogger();
     private String defaultLanguageProperty = "file.default-language";
+    private static final String EXTENSION_FORMAT =".csv";
 
     @Override
     public BaseFile Convert(BaseFile baseFile) {
@@ -53,12 +54,11 @@ public class OcrConvert implements IConvert {
         try {
             tesseract.setDatapath(propertiesFile.getValue(tesseractPath));
             tesseract.setLanguage(language);
-            String text = tesseract.doOCR(new File(String.format("%s%s", ocrFile.getPath(), ocrFile.getFullFileName()))).trim();
+            String text = tesseract.doOCR(new File(String.format("%s%s", ocrFile.getPath(), ocrFile.getFileName()))).trim();
             TextFile textFile = new TextFile();
             textFile.setPath(propertiesFile.getValue(targetDirectory));
-            textFile.setFileName(ocrFile.getFileName());
-            textFile.setFileType("csv");
-            FileManager.saveTextIntoFile(String.format("%s%s", textFile.getPath(), textFile.getFullFileName()), text);
+            textFile.setFileName(String.format("%s%s", ocrFile.getFileName(), EXTENSION_FORMAT));
+            FileManager.saveTextIntoFile(String.format("%s%s", textFile.getPath(), textFile.getFileName()), text);
             textFile.setText(text);
             return textFile;
         } catch (TesseractException e) {
