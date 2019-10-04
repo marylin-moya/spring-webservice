@@ -11,9 +11,13 @@
  */
 package com.jalasoft.webservice.utils;
 
+import java.net.UnknownHostException;
+
 public class Constants {
     public final static String APPLICATION_PROPERTIES = "application.properties";
     public static final String BASE_URL = "/api/v1.0/url";
+    public static final String BASE_URL_DOWNLOAD = "/download";
+    public static final String HOST_URL = "http://localhost:8080";
 
     public static enum LANGUAGES {
         ENGLISH("english", "eng"),

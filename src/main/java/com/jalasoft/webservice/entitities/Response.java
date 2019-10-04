@@ -32,6 +32,7 @@ public class Response {
         this.detail = detail;
     }
 
+
     public String getName() {
         return name;
     }

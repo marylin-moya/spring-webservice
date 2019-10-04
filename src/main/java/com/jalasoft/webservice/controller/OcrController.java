@@ -15,6 +15,7 @@ import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.entitities.OcrResponse;
 import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.entitities.TextFile;
+import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
 import com.jalasoft.webservice.model.OcrConvert;
@@ -99,6 +100,15 @@ public class OcrController {
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (NullPointerException | IllegalStateException e) {
+            return new ResponseEntity<>(new Response(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(), "The file does not exist"), HttpStatus.BAD_REQUEST);
+        }
+        catch (ConvertException e1)
+        {
+            return new ResponseEntity<>(new Response(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(), "The file does not exist"), HttpStatus.BAD_REQUEST);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
             return new ResponseEntity<>(new Response(HttpStatus.BAD_REQUEST.name(),
                     HttpStatus.BAD_REQUEST.value(), "The file does not exist"), HttpStatus.BAD_REQUEST);
         }

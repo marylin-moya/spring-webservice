@@ -13,6 +13,7 @@ package com.jalasoft.webservice.model;
 import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.entitities.TextFile;
+import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import net.sourceforge.tess4j.Tesseract;
@@ -21,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
 
 import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 import static com.jalasoft.webservice.utils.Constants.LANGUAGES;
@@ -37,8 +39,9 @@ public class OcrConvert implements IConvert {
     private String defaultLanguageProperty = "file.default-language";
     private static final String EXTENSION_FORMAT =".csv";
 
+    //se maneja las exceptiones en el modlo
     @Override
-    public BaseFile Convert(BaseFile baseFile) {
+    public BaseFile Convert(BaseFile baseFile) throws Throwable{
         String tesseractPath = "file.tesseract-path";
         String defaultLanguage = propertiesFile.getValue(defaultLanguageProperty);
         String language = null;
@@ -63,7 +66,8 @@ public class OcrConvert implements IConvert {
             return textFile;
         } catch (TesseractException e) {
             LOGGER.info("OcrConvert Exception. {}", e.getMessage());
+            //aqui poner mi exception que dvelva mi exception y no de teseract
+            throw new ConvertException(e.getMessage(), e);
         }
-        return null;
     }
 }
