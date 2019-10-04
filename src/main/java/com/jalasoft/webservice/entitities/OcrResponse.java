@@ -15,7 +15,7 @@ package com.jalasoft.webservice.entitities;
  * OcrResponse class to store the result of extractor Model
  */
 public class OcrResponse extends Response {
-    private final String content;
+    private String content;
 
     /**
      * OcrResponse Constructor
@@ -29,5 +29,9 @@ public class OcrResponse extends Response {
 
     public String getContent() {
         return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

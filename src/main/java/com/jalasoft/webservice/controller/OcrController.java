@@ -11,10 +11,10 @@
  */
 package com.jalasoft.webservice.controller;
 
+import com.jalasoft.webservice.entitities.ErrorResponse;
 import com.jalasoft.webservice.entitities.OcrFile;
-import com.jalasoft.webservice.entitities.OcrResponse;
 import com.jalasoft.webservice.entitities.Response;
-import com.jalasoft.webservice.entitities.TextFile;
+import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
 import com.jalasoft.webservice.model.OcrConvert;
@@ -23,7 +23,6 @@ import com.jalasoft.webservice.utils.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +42,6 @@ import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 public class OcrController {
     private static final Logger LOGGER = LogManager.getLogger();
     private String sourceFileKey = "file.source-dir";
-    private String targetFileKey = "file.target-dir";
     private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
 
     /**
@@ -55,17 +53,16 @@ public class OcrController {
      * @return ResponseEntity with the Error or Success result.
      */
     @PostMapping(value = "/orc", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> getOrcFromUploadFile(@Valid @NotNull @NotBlank @RequestParam("fileName") MultipartFile file,
-                                                  @Valid @NotNull @NotBlank @RequestParam(value = "lang", defaultValue = "eng") String lang,
-                                                  @Valid @NotNull @NotBlank @RequestParam("checksum") String checksum) {
+    public Response getOrcFromUploadFile(@Valid @NotNull @NotBlank @RequestParam("fileName") MultipartFile file,
+                                         @Valid @NotNull @NotBlank @RequestParam(value = "lang", defaultValue = "eng") String lang,
+                                         @Valid @NotNull @NotBlank @RequestParam("checksum") String checksum) {
         LOGGER.info("/orc endpoint to extract '{}' text from '{}'", lang, file.getOriginalFilename());
 
         try {
             //Get file path if the file path is saved in the database
             if (checksum == null || checksum.isEmpty()) {
-                Response response = new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value(),
+                return new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value(),
                         "Empty checksum is not allowed");
-                return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
             }
 
             String filePath = DBManager.getPath(checksum);
@@ -86,17 +83,16 @@ public class OcrController {
             ocrFile.setFileName(FileManager.getFileNameNoExtension(file.getOriginalFilename()));
 
             IConvert iConvert = new OcrConvert();
-            TextFile textFile = (TextFile) iConvert.Convert(ocrFile);
-
-            //Call Extract text that will return a OrcResponse Object
-            Response response = new OcrResponse(HttpStatus.OK.name(), HttpStatus.OK.value(),
-                    "Successfully Extracted", textFile.getText());
-            return new ResponseEntity(response, HttpStatus.OK);
+            return iConvert.Convert(ocrFile);
         } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(), "IOException");
         } catch (NullPointerException | IllegalStateException e) {
-            return new ResponseEntity<>(new Response(HttpStatus.BAD_REQUEST.name(),
-                    HttpStatus.BAD_REQUEST.value(), "The file does not exist"), HttpStatus.BAD_REQUEST);
+            return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(), "The file does not exist");
+        } catch (ConvertException e) {
+            return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
     }
 }

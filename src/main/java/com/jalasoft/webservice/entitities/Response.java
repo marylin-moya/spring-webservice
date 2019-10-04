@@ -15,9 +15,9 @@ package com.jalasoft.webservice.entitities;
  * Response class to store the rest api result.
  */
 public class Response {
-    private final String name;
-    private final Integer status;
-    private final String detail;
+    private String name;
+    private Integer status;
+    private String detail;
 
     /**
      * Response Constructor
@@ -42,5 +42,17 @@ public class Response {
 
     public String getDetail() {
         return detail;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 }

@@ -7,21 +7,13 @@
  * accordance with the terms of the license agreement you entered into
  * with Jalasoft.
  */
-
-package com.jalasoft.webservice.model;
-
-import com.jalasoft.webservice.entitities.BaseFile;
-import com.jalasoft.webservice.entitities.Response;
+package com.jalasoft.webservice.error_handler;
 
 /**
- * Image convert class
- * Version : 1.0
- * Date: 9/20/2019
+ * Convert Exception Class
  */
-public class ImageConvert implements IConvert {
-
-    @Override
-    public Response Convert(BaseFile model) {
-        return null;
+public class ConvertException extends Exception {
+    public ConvertException(String message, Throwable e) {
+        super(message, e);
     }
 }
