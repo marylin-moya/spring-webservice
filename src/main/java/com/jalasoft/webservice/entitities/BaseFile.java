@@ -18,19 +18,9 @@ package com.jalasoft.webservice.entitities;
  */
 public class BaseFile {
     private String fileName;
-    private String fileType;
     private String path;
-    private String fullFileName;
     private long size;
     private String checkSum;
-
-    /***
-     * Get Full File Name
-     * @return
-     */
-    public String getFullFileName() {
-        return String.format("%s.%s", fileName, fileType);
-    }
 
     /***
      * Get File Name
@@ -48,22 +38,6 @@ public class BaseFile {
         this.fileName = fileName;
     }
 
-    /**
-     * Get File Type
-     * @return
-     */
-    public String getFileType() {
-        return fileType;
-    }
-
-    /**
-     * Set File Type
-     * @param fileType
-     */
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
-    }
-
     /***
      * Get Path
      * @return
@@ -74,6 +48,7 @@ public class BaseFile {
 
     /**
      * Set Path
+     *
      * @param path
      */
     public void setPath(String path) {
@@ -82,6 +57,7 @@ public class BaseFile {
 
     /**
      * Get Size
+     *
      * @return
      */
     public long getSize() {
@@ -90,6 +66,7 @@ public class BaseFile {
 
     /**
      * Set Size
+     *
      * @param size
      */
     public void setSize(long size) {
