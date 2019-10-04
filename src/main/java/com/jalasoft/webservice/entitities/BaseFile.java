@@ -19,7 +19,6 @@ package com.jalasoft.webservice.entitities;
 public class BaseFile {
     private String fileName;
     private String path;
-    private String fullFileName;
     private long size;
     private String checkSum;
 
