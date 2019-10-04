@@ -14,7 +14,9 @@ import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.entitities.OcrResponse;
 import com.jalasoft.webservice.entitities.Response;
+import com.jalasoft.webservice.entitities.TextFile;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
@@ -36,10 +38,12 @@ public class OcrConvert implements IConvert {
     private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
     private static final Logger LOGGER = LogManager.getLogger();
     private String defaultLanguageProperty = "file.default-language";
+    private static final String EXTENSION_FORMAT = ".csv";
 
     @Override
     public Response Convert(BaseFile baseFile) throws ConvertException {
         String tesseractPath = "file.tesseract-path";
+        String targetDirectory = "file.target-dir";
         String defaultLanguage = propertiesFile.getValue(defaultLanguageProperty);
         String language = null;
         OcrFile ocrFile = (OcrFile) baseFile;
@@ -55,7 +59,12 @@ public class OcrConvert implements IConvert {
         try {
             tesseract.setDatapath(propertiesFile.getValue(tesseractPath));
             tesseract.setLanguage(language);
-            String text = tesseract.doOCR(new File(String.format("%s%s", ocrFile.getPath(), ocrFile.getFullFileName()))).trim();
+            String text = tesseract.doOCR(new File(String.format("%s%s", ocrFile.getPath(), ocrFile.getFileName()))).trim();
+            TextFile textFile = new TextFile();
+            textFile.setPath(propertiesFile.getValue(targetDirectory));
+            textFile.setFileName(String.format("%s%s", ocrFile.getFileName(), EXTENSION_FORMAT));
+            textFile.setText(text);
+            FileManager.saveTextIntoFile(String.format("%s%s", textFile.getPath(), textFile.getFileName()), text);
             return new OcrResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Text Successfully Extracted.", text);
         } catch (TesseractException e) {
             LOGGER.info("OcrConvert Exception");

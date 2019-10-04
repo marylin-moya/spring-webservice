@@ -18,12 +18,14 @@ import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
 import com.jalasoft.webservice.model.OcrConvert;
+import com.jalasoft.webservice.utils.Constants;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,15 +36,18 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
+import static com.jalasoft.webservice.utils.Constants.BASE_URL;
 
 /**
  * Orc Controller class to implement Rest EndPoint to extract text from a file.
  */
 @RestController
+@RequestMapping(BASE_URL)
 public class OcrController {
     private static final Logger LOGGER = LogManager.getLogger();
     private String sourceFileKey = "file.source-dir";
     private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
+
 
     /**
      * /orc endpoint to extract text from a file.
@@ -79,8 +84,7 @@ public class OcrController {
             OcrFile ocrFile = new OcrFile();
             ocrFile.setLang(lang);
             ocrFile.setPath(propertiesFile.getValue(sourceFileKey));
-            ocrFile.setFileType(FileManager.getFileNameExtension(file.getOriginalFilename()));
-            ocrFile.setFileName(FileManager.getFileNameNoExtension(file.getOriginalFilename()));
+            ocrFile.setFileName(file.getOriginalFilename());
 
             IConvert iConvert = new OcrConvert();
             return iConvert.Convert(ocrFile);
