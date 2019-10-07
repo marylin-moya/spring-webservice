@@ -18,6 +18,7 @@ public class Response {
     private String name;
     private Integer status;
     private String detail;
+    private BaseFile metadata;
 
     /**
      * Response Constructor
@@ -54,5 +55,13 @@ public class Response {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public BaseFile getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(BaseFile metadata) {
+        this.metadata = metadata;
     }
 }
