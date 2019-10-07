@@ -13,7 +13,7 @@ package com.jalasoft.webservice.utils;
 
 public class Constants {
     public final static String APPLICATION_PROPERTIES = "application.properties";
-    public static final String BASE_URL = "/api/v1.0/url";
+    public static final String BASE_URL = "/api/v1.0";
 
     public static enum LANGUAGES {
         ENGLISH("english", "eng"),

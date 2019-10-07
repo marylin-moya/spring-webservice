@@ -10,24 +10,18 @@
 
 package com.jalasoft.webservice.entitities;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-
-/** TextFile : Class to manipulate information related to CSV files
- * Version : 1.0
- * Date: 9/19/2019
+/**
+ * Error Response Class
  */
-
-public class TextFile extends BaseFile {
-    private String text;
-
-    public String getText() {
-        return text;
+public class ErrorResponse extends Response {
+    /**
+     * Response Constructor
+     *
+     * @param name   Status in String Format.
+     * @param status Status in Numeric Format.
+     * @param detail Message String.
+     */
+    public ErrorResponse(String name, Integer status, String detail) {
+        super(name, status, detail);
     }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
 }
