@@ -7,22 +7,13 @@
  * accordance with the terms of the license agreement you entered into
  * with Jalasoft.
  */
-
 package com.jalasoft.webservice.error_handler;
 
-
-/***
- *
+/**
+ * Convert Exception Class
  */
 public class ConvertException extends Exception {
-    /***
-     *
-     * @param msg
-     * @param e //
-     */
-    public ConvertException(String msg, Throwable e){
-        super(msg, e);
+    public ConvertException(String message, Throwable e) {
+        super(message, e);
     }
-
-
 }

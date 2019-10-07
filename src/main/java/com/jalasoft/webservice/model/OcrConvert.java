@@ -12,7 +12,8 @@ package com.jalasoft.webservice.model;
 
 import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.OcrFile;
-import com.jalasoft.webservice.entitities.TextFile;
+import com.jalasoft.webservice.entitities.OcrResponse;
+import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
@@ -20,6 +21,7 @@ import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,15 +36,14 @@ import static com.jalasoft.webservice.utils.Constants.LANGUAGES;
  */
 public class OcrConvert implements IConvert {
     private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
-    private String targetDirectory = "file.target-dir";
     private static final Logger LOGGER = LogManager.getLogger();
     private String defaultLanguageProperty = "file.default-language";
-    private static final String EXTENSION_FORMAT =".csv";
-
-    //se maneja las exceptiones en el modlo
+    private static final String EXTENSION_FORMAT = ".csv";
+    
     @Override
-    public BaseFile Convert(BaseFile baseFile) throws Throwable{
+    public Response Convert(BaseFile baseFile) throws ConvertException {
         String tesseractPath = "file.tesseract-path";
+        String targetDirectory = "file.target-dir";
         String defaultLanguage = propertiesFile.getValue(defaultLanguageProperty);
         String language = null;
         OcrFile ocrFile = (OcrFile) baseFile;
@@ -54,19 +55,20 @@ public class OcrConvert implements IConvert {
         } else {
             language = enumLanguage.toSuffix();
         }
+
         try {
             tesseract.setDatapath(propertiesFile.getValue(tesseractPath));
             tesseract.setLanguage(language);
-            String text = tesseract.doOCR(new File(String.format("%s%s", ocrFile.getPath(), ocrFile.getFileName()))).trim();
-            TextFile textFile = new TextFile();
-            textFile.setPath(propertiesFile.getValue(targetDirectory));
-            textFile.setFileName(String.format("%s%s", ocrFile.getFileName(), EXTENSION_FORMAT));
-            FileManager.saveTextIntoFile(String.format("%s%s", textFile.getPath(), textFile.getFileName()), text);
-            textFile.setText(text);
-            return textFile;
+            String content = tesseract.doOCR(new File(String.format("%s%s", ocrFile.getPath(), ocrFile.getFileName()))).trim();
+            BaseFile metadata = new BaseFile();
+            metadata.setPath(propertiesFile.getValue(targetDirectory));
+            metadata.setFileName(String.format("%s%s", ocrFile.getFileName(), EXTENSION_FORMAT));
+            FileManager.saveTextIntoFile(String.format("%s%s", metadata.getPath(), metadata.getFileName()), content);
+            OcrResponse ocrResponse = new OcrResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Text Successfully Extracted.", content);
+            ocrResponse.setMetadata(metadata);
+            return ocrResponse;
         } catch (TesseractException e) {
-            LOGGER.info("OcrConvert Exception. {}", e.getMessage());
-            //aqui poner mi exception que dvelva mi exception y no de teseract
+            LOGGER.info("OcrConvert Exception");
             throw new ConvertException(e.getMessage(), e);
         }
     }

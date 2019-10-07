@@ -11,6 +11,7 @@
 package com.jalasoft.webservice.model;
 
 import com.jalasoft.webservice.entitities.BaseFile;
+<<<<<<< HEAD
 import com.jalasoft.webservice.entitities.ImageFile;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
+import com.jalasoft.webservice.entitities.Response;
 
 /**
  * Image convert class
@@ -56,5 +58,7 @@ public class ImageConvert implements IConvert {
         imageConverted.setPath(propertiesFile.getValue(targetDirectory));
         imageConverted.setFileName(newName);
         return imageConverted;
+    public Response Convert(BaseFile model) {
+        return null;
     }
 }

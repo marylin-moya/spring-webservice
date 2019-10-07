@@ -45,10 +45,10 @@ import static com.jalasoft.webservice.utils.Constants.*;
 @RequestMapping(ImgController.BASE_URL_IMG)
 public class ImgController {
     private static final Logger LOGGER = LogManager.getLogger();
-    private String sourceFileKey = "file.source-dir";
+    private String sourceFileKey = "file.source-dir";//class to read keys
     private String targetFileKey = "file.target-dir";
-    public static final String BASE_URL_IMG =BASE_URL + "/img";
-    private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
+    public static final String BASE_URL_IMG = BASE_URL + "/img";
+    private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);///x.getResources()
 
     /**
      *
@@ -128,7 +128,7 @@ public class ImgController {
         } catch (ConvertException convertion) {
             LOGGER.error("Image Controller: Error in conversion operation '{}' ", convertion.getMessage());
             return  new ImageResponse(HttpStatus.NOT_FOUND.name(), HttpStatus.NOT_FOUND.value(),
-        convertion.getMessage());
+        convertion.getMessage());///maejo constantes, common constants, error constants
         }
     }
 }

@@ -11,6 +11,7 @@
 package com.jalasoft.webservice.model;
 
 import com.jalasoft.webservice.entitities.BaseFile;
+import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.error_handler.ConvertException;
 
 /**
@@ -25,5 +26,5 @@ public interface IConvert {
      * @param model
      * @return
      */
-    BaseFile Convert(BaseFile model) throws ConvertException;
+    Response Convert(BaseFile model) throws ConvertException;
 }
