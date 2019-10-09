@@ -12,7 +12,9 @@ package com.jalasoft.webservice.model;
 
 import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.ImageFile;
+import com.jalasoft.webservice.entitities.ImageResponse;
 import com.jalasoft.webservice.entitities.Response;
+import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +23,7 @@ import org.im4java.core.ConvertCmd;
 import org.im4java.core.IM4JavaException;
 import org.im4java.core.IMOperation;
 import org.im4java.process.ProcessStarter;
+import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 
@@ -39,7 +42,7 @@ public class ImageConvert implements IConvert {
      * @return
      */
     @Override
-    public Response Convert(BaseFile baseFile) {
+    public Response Convert(BaseFile baseFile) throws ConvertException {
         String imageMagicPath = "file.imagemagic-path";
         String targetDirectory = "file.target-dir";
         String grayScale = "Grayscale";
@@ -74,14 +77,16 @@ public class ImageConvert implements IConvert {
         try {
             ConvertCmd cmd = new ConvertCmd();
             cmd.run(op);
-            //ImageRespo
+            ImageResponse imageResponse =
+                    new ImageResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Image Successfully Converted.");
+            return imageResponse;
         } catch (IOException | InterruptedException | IM4JavaException e) {
             LOGGER.error("ImageConvert Exception.{}", e.getMessage());
+            throw new ConvertException(e.getMessage(), e);
         }
-        return null;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ConvertException {
         ImageFile imageFile = new ImageFile();
         imageFile.setFileName("axios1.jpg");
         imageFile.setPath("D:\\dev-fundamentals-2\\spring-webservice\\src\\main\\resources\\source-dir\\");
