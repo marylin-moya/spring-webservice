@@ -10,7 +10,7 @@
 
 package com.jalasoft.webservice.entitities;
 
-public class ImageFile extends BaseFile{
+public class ImageFile extends BaseFile {
     private String targetType;
     private double rotate;
     private double blur;

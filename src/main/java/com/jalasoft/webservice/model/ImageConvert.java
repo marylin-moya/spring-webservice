@@ -11,54 +11,79 @@
 package com.jalasoft.webservice.model;
 
 import com.jalasoft.webservice.entitities.BaseFile;
-<<<<<<< HEAD
 import com.jalasoft.webservice.entitities.ImageFile;
+import com.jalasoft.webservice.entitities.ImageResponse;
+import com.jalasoft.webservice.entitities.Response;
+import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.im4java.core.ConvertCmd;
+import org.im4java.core.IM4JavaException;
+import org.im4java.core.IMOperation;
+import org.im4java.process.ProcessStarter;
+import org.springframework.http.HttpStatus;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
-import com.jalasoft.webservice.entitities.Response;
 
 /**
- * Image convert class
- * Version : 1.0
- * Date: 9/20/2019
+ * Image Convert class.
  */
 public class ImageConvert implements IConvert {
-    private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
-    private String targetDirectory = "file.target-dir";
     private static final Logger LOGGER = LogManager.getLogger();
+    private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
 
+    /**
+     * Convert Method to change a image to image.
+     * @param baseFile
+     * @return
+     */
     @Override
-    public BaseFile Convert(BaseFile model) {
-        BufferedImage img = null;
-        File file = null;
-        try {
-            file = new File(String.format("%s%s", model.getPath(), model.getFileName()));
-            img = ImageIO.read(file);
-        }catch (IOException e){
-            LOGGER.error("Exception at the moment to read the Image file: ", e.getMessage());
-        }
-        //write image
-        String newName = "test" + model.getFileName();
-        try{
+    public Response Convert(BaseFile baseFile) throws ConvertException {
+        String imageMagicPath = "file.imagemagic-path";
+        String targetDirectory = "file.target-dir";
+        String grayScale = "Grayscale";
+        ImageFile imageFile = (ImageFile) baseFile;
+        ProcessStarter.setGlobalSearchPath(propertiesFile.getValue(imageMagicPath));
 
-            file = new File(String.format("%s%s", propertiesFile.getValue(targetDirectory), newName));
-            ImageIO.write(img, "jpg", file);
-        }catch(IOException e){
-            LOGGER.error("Exception at the moment to save the GrayScale Image: ", e.getMessage());
+        //Create the operation, add images and operators/options
+        IMOperation op = new IMOperation();
+        op.addImage(String.format("%s%s", imageFile.getPath(), imageFile.getFileName()));
+        op.rotate(imageFile.getRotate()); //90.0
+        op.blur(imageFile.getBlur());
+        op.bordercolor(imageFile.getBorderColor());
+        op.border(imageFile.getBorder()); //10
+        if (imageFile.getResize() != 0) {
+            op.resize(imageFile.getResize());
         }
-        ImageFile imageConverted = new ImageFile();
-        imageConverted.setPath(propertiesFile.getValue(targetDirectory));
-        imageConverted.setFileName(newName);
-        return imageConverted;
-    public Response Convert(BaseFile model) {
-        return null;
+        if (imageFile.isTranspose()) {
+            op.transpose();
+        }
+        if (imageFile.isTransverse()) {
+            op.transverse();
+        }
+        if (imageFile.isGrayscale()) {
+            op.type(grayScale);
+        }
+
+        op.addImage(String.format("%s%s.%s",
+                propertiesFile.getValue(targetDirectory),
+                FileManager.getFileNameNoExtension(imageFile.getFileName()),
+                imageFile.getTargetType()));
+
+        try {
+            ConvertCmd cmd = new ConvertCmd();
+            cmd.run(op);
+            ImageResponse imageResponse =
+                    new ImageResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Image Successfully Converted.");
+            return imageResponse;
+        } catch (IOException | InterruptedException | IM4JavaException e) {
+            LOGGER.error("ImageConvert Exception.{}", e.getMessage());
+            throw new ConvertException(e.getMessage(), e);
+        }
     }
+
 }

@@ -57,4 +57,42 @@ public class Constants {
             return null;
         }
     }
+
+    public static enum URLS
+    {
+        BASE_URL("base_url","/api/v1.0"),
+        DOWNLOAD_URL("download_url", "/download"),
+        IMG_URL("img_url", "/img"),
+        ORC_URL("orc_url", "/orc");
+
+        private String name;
+        private String url;
+
+        URLS(String name, String url){
+            this.name = name;
+            this.url = url;
+        }
+
+        public String getUrl(String name){
+            for (URLS url: values()){
+                if(url.name.equals(name.toLowerCase())){
+                    if(name.toLowerCase("BASE_URL"))
+                        return url;
+                    else
+                        return
+                }
+            }
+        }
+
+        public String toName() {
+            return name;
+        }
+
+        public String toUrls() {
+            return url;
+        }
+
+
+
+    }
 }
