@@ -12,6 +12,7 @@ package com.jalasoft.webservice.model;
 
 import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.ImageFile;
+import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +39,7 @@ public class ImageConvert implements IConvert {
      * @return
      */
     @Override
-    public BaseFile Convert(BaseFile baseFile) {
+    public Response Convert(BaseFile baseFile) {
         String imageMagicPath = "file.imagemagic-path";
         String targetDirectory = "file.target-dir";
         String grayScale = "Grayscale";
