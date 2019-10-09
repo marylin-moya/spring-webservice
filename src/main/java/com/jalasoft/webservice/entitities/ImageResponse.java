@@ -10,6 +10,9 @@
 
 package com.jalasoft.webservice.entitities;
 
+/**
+ * Image Response class.
+ */
 public class ImageResponse extends Response {
     private String url;
     public ImageResponse(String name, Integer status, String detail){

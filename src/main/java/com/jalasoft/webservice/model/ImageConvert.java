@@ -38,6 +38,7 @@ public class ImageConvert implements IConvert {
 
     /**
      * Convert Method to change a image to image.
+     *
      * @param baseFile
      * @return
      */
@@ -52,10 +53,10 @@ public class ImageConvert implements IConvert {
         //Create the operation, add images and operators/options
         IMOperation op = new IMOperation();
         op.addImage(String.format("%s%s", imageFile.getPath(), imageFile.getFileName()));
-        op.rotate(imageFile.getRotate()); //90.0
+        op.rotate(imageFile.getRotate());
         op.blur(imageFile.getBlur());
         op.bordercolor(imageFile.getBorderColor());
-        op.border(imageFile.getBorder()); //10
+        op.border(imageFile.getBorder());
         if (imageFile.getResize() != 0) {
             op.resize(imageFile.getResize());
         }
@@ -69,19 +70,18 @@ public class ImageConvert implements IConvert {
             op.type(grayScale);
         }
 
-        op.addImage(String.format("%s%s.%s",
-                propertiesFile.getValue(targetDirectory),
-                FileManager.getFileNameNoExtension(imageFile.getFileName()),
-                imageFile.getTargetType()));
+        String convertedFileName = String.format("%s.%s",
+                FileManager.getFileNameNoExtension(imageFile.getFileName()), imageFile.getTargetType());
+        String convertedImage = String.format("%s%s",
+                propertiesFile.getValue(targetDirectory), convertedFileName);
+        op.addImage(convertedImage);
 
         try {
             ConvertCmd cmd = new ConvertCmd();
             cmd.run(op);
-            ImageFile metadata = new ImageFile();
-            //BaseFile metadata = new BaseFile();
+            BaseFile metadata = new BaseFile();
             metadata.setPath(propertiesFile.getValue(targetDirectory));
-            metadata.setFileName(String.format("%s.%s", FileManager.getFileNameNoExtension(imageFile.getFileName()), imageFile.getTargetType()));
-
+            metadata.setFileName(convertedFileName);
             ImageResponse imageResponse =
                     new ImageResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Image Successfully Converted.");
             imageResponse.setMetadata(metadata);
