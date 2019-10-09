@@ -60,7 +60,7 @@ public class OcrConvert implements IConvert {
             tesseract.setDatapath(propertiesFile.getValue(tesseractPath));
             tesseract.setLanguage(language);
             String content = tesseract.doOCR(new File(String.format("%s%s", ocrFile.getPath(), ocrFile.getFileName()))).trim();
-            BaseFile metadata = new BaseFile();
+            OcrFile metadata = new OcrFile();
             metadata.setPath(propertiesFile.getValue(targetDirectory));
             metadata.setFileName(String.format("%s%s", ocrFile.getFileName(), EXTENSION_FORMAT));
             FileManager.saveTextIntoFile(String.format("%s%s", metadata.getPath(), metadata.getFileName()), content);

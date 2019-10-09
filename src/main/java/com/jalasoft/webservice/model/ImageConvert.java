@@ -77,8 +77,14 @@ public class ImageConvert implements IConvert {
         try {
             ConvertCmd cmd = new ConvertCmd();
             cmd.run(op);
+            ImageFile metadata = new ImageFile();
+            //BaseFile metadata = new BaseFile();
+            metadata.setPath(propertiesFile.getValue(targetDirectory));
+            metadata.setFileName(String.format("%s.%s", FileManager.getFileNameNoExtension(imageFile.getFileName()), imageFile.getTargetType()));
+
             ImageResponse imageResponse =
                     new ImageResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Image Successfully Converted.");
+            imageResponse.setMetadata(metadata);
             return imageResponse;
         } catch (IOException | InterruptedException | IM4JavaException e) {
             LOGGER.error("ImageConvert Exception.{}", e.getMessage());

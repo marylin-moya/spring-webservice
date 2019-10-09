@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * Copyright (c) 2019 Jalasoft.
  *
@@ -11,20 +10,24 @@
 
 package com.jalasoft.webservice.entitities;
 
-public class ImageResponse extends Response{
+public class ImageResponse extends Response {
     private String url;
-    public ImageResponse(String name, Integer status, String detail, String url){
-        super(name, status, detail);
-        this.url = url;
-    }
     public ImageResponse(String name, Integer status, String detail){
         super(name, status, detail);
     }
 
+    /**
+     * Get url
+     * @return
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Set url value
+     * @param url
+     */
     public void setUrl(String url) {
         this.url = url;
     }

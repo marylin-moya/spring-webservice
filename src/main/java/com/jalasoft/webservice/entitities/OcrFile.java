@@ -10,6 +10,9 @@
 
 package com.jalasoft.webservice.entitities;
 
+import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate;
+import com.jalasoft.webservice.error_handler.ParamsInvalidException;
+
 /****
  * OcrFile : Class to convert image to text
  *  Version : 1.0
@@ -28,5 +31,24 @@ public class OcrFile extends BaseFile {
      */
     public void setLang(String lang) {
         this.lang = lang;
+    }
+
+    @Override
+    public void Validate() throws ParamsInvalidException {
+        if(this.path.isEmpty()) {
+            throw new ParamsInvalidException(10, "filePath");
+        }
+        if(this.lang.isEmpty()) {
+            throw new ParamsInvalidException(11, "Language");
+        }
+        if(this.path == null) {
+            throw new ParamsInvalidException(11, "filePath null");
+        }
+        if(this.checkSum.isEmpty()) {
+            throw new ParamsInvalidException(10, "checksum");
+        }
+        if(this.checkSum == null) {
+            throw new ParamsInvalidException(10, "checksum 111");
+        }
     }
 }

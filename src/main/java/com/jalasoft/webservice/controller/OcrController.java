@@ -15,6 +15,7 @@ import com.jalasoft.webservice.entitities.ErrorResponse;
 import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.error_handler.ParamsInvalidException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
 import com.jalasoft.webservice.model.OcrConvert;
@@ -37,13 +38,13 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
-import static com.jalasoft.webservice.utils.Constants.BASE_URL;
+import static com.jalasoft.webservice.utils.Constants.BASE_PATH;
 
 /**
  * Orc Controller class to implement Rest EndPoint to extract text from a file.
  */
 @RestController
-@RequestMapping(BASE_URL)
+@RequestMapping(BASE_PATH)
 public class OcrController {
     private static final Logger LOGGER = LogManager.getLogger();
     private String sourceFileKey = "file.source-dir";
@@ -66,10 +67,17 @@ public class OcrController {
 
         try {
             //Get file path if the file path is saved in the database
-            if (checksum == null || checksum.isEmpty()) {
+            /*if (checksum == null || checksum.isEmpty()) {
                 return new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value(),
                         "Empty checksum is not allowed");
-            }
+            }*/
+            //Instance Orc Model with fileName and lang
+            OcrFile ocrFile = new OcrFile();
+            ocrFile.setCheckSum(checksum);
+            ocrFile.setLang(lang);
+            ocrFile.setPath(propertiesFile.getValue(sourceFileKey));
+            ocrFile.setFileName(file.getOriginalFilename());
+            ocrFile.Validate();
 
             String filePath = DBManager.getPath(checksum);
 
@@ -81,12 +89,6 @@ public class OcrController {
                 FileManager.saveUploadFile(filePath, file);
             }
 
-            //Instance Orc Model with fileName and lang
-            OcrFile ocrFile = new OcrFile();
-            ocrFile.setLang(lang);
-            ocrFile.setPath(propertiesFile.getValue(sourceFileKey));
-            ocrFile.setFileName(file.getOriginalFilename());
-
             IConvert iConvert = new OcrConvert();
             return iConvert.Convert(ocrFile);
         } catch (IOException e) {
@@ -95,18 +97,12 @@ public class OcrController {
         } catch (NullPointerException | IllegalStateException e) {
             return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
                     HttpStatus.BAD_REQUEST.value(), "The file does not exist");
+        } catch (ParamsInvalidException e) {
+            return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(), e.getMessage());
         } catch (ConvertException e) {
             return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
                     HttpStatus.BAD_REQUEST.value(), e.getMessage());
-        }
-        catch (ConvertException e1)
-        {
-            return new ResponseEntity<>(new Response(HttpStatus.BAD_REQUEST.name(),
-                    HttpStatus.BAD_REQUEST.value(), "The file does not exist"), HttpStatus.BAD_REQUEST);
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-            return new ResponseEntity<>(new Response(HttpStatus.BAD_REQUEST.name(),
-                    HttpStatus.BAD_REQUEST.value(), "The file does not exist"), HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -92,4 +92,9 @@ public class ImageFile extends BaseFile {
     public void setTransverse(boolean transverse) {
         this.transverse = transverse;
     }
+
+    @Override
+    void Validate() {
+
+    }
 }
