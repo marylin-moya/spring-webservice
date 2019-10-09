@@ -11,16 +11,18 @@
 
 package com.jalasoft.webservice.entitities;
 
+import com.jalasoft.webservice.error_handler.ParamsInvalidException;
+
 /***
  * BaseFile : Class generic to manipulate information related to files
  *  Version : 1.0
  *  Date: 9/19/2019
  */
 public class BaseFile {
-    private String fileName;
-    private String path;
-    private long size;
-    private String checkSum;
+    protected String fileName;
+    protected String path;
+    protected long size;
+    protected String checkSum;
 
     /***
      * Get File Name
@@ -71,5 +73,29 @@ public class BaseFile {
      */
     public void setSize(long size) {
         this.size = size;
+    }
+
+    /**
+     * Get Checksum
+     *
+     * @return
+     */
+    public String getCheckSum() {
+        return checkSum;
+    }
+
+    /**
+     * setChecksum
+     *
+     * @param checkSum
+     */
+    public void setCheckSum(String checkSum) {
+        this.checkSum = checkSum;
+    }
+
+    /**
+     * Validate fields method.
+     */
+    public void validate() throws ParamsInvalidException {
     }
 }

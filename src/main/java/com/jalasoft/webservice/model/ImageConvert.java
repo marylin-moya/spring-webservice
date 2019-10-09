@@ -16,7 +16,7 @@ import com.jalasoft.webservice.entitities.ImageResponse;
 import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.utils.FileManager;
-import com.jalasoft.webservice.utils.PropertiesReader;
+import com.jalasoft.webservice.utils.PropertiesManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.im4java.core.ConvertCmd;
@@ -27,14 +27,11 @@ import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 
-import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
-
 /**
  * Image Convert class.
  */
 public class ImageConvert implements IConvert {
     private static final Logger LOGGER = LogManager.getLogger();
-    private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
 
     /**
      * Convert Method to change a image to image.
@@ -48,7 +45,7 @@ public class ImageConvert implements IConvert {
         String targetDirectory = "file.target-dir";
         String grayScale = "Grayscale";
         ImageFile imageFile = (ImageFile) baseFile;
-        ProcessStarter.setGlobalSearchPath(propertiesFile.getValue(imageMagicPath));
+        ProcessStarter.setGlobalSearchPath(PropertiesManager.getInstance().getPropertiesReader().getValue(imageMagicPath));
 
         //Create the operation, add images and operators/options
         IMOperation op = new IMOperation();
@@ -73,14 +70,14 @@ public class ImageConvert implements IConvert {
         String convertedFileName = String.format("%s.%s",
                 FileManager.getFileNameNoExtension(imageFile.getFileName()), imageFile.getTargetType());
         String convertedImage = String.format("%s%s",
-                propertiesFile.getValue(targetDirectory), convertedFileName);
+                PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory), convertedFileName);
         op.addImage(convertedImage);
 
         try {
             ConvertCmd cmd = new ConvertCmd();
             cmd.run(op);
             BaseFile metadata = new BaseFile();
-            metadata.setPath(propertiesFile.getValue(targetDirectory));
+            metadata.setPath(PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory));
             metadata.setFileName(convertedFileName);
             ImageResponse imageResponse =
                     new ImageResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Image Successfully Converted.");
