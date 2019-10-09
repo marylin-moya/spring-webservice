@@ -10,15 +10,15 @@
 
 package com.jalasoft.webservice.controller;
 
-import com.jalasoft.webservice.entitities.ImageFile;
-import com.jalasoft.webservice.entitities.ImageResponse;
-import com.jalasoft.webservice.entitities.Response;
+import com.jalasoft.webservice.entitities.*;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.error_handler.ParamsInvalidException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
 import com.jalasoft.webservice.model.ImageConvert;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
+import com.jalasoft.webservice.utils.ServerUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -26,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.validation.Valid;
@@ -34,6 +35,7 @@ import javax.validation.constraints.NotNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 
 import static com.jalasoft.webservice.utils.Constants.*;
 
@@ -42,13 +44,14 @@ import static com.jalasoft.webservice.utils.Constants.*;
  */
 
 @RestController
-@RequestMapping(ImgController.BASE_URL_IMG)
+@RequestMapping(IMG_PATH)
 public class ImgController {
     private static final Logger LOGGER = LogManager.getLogger();
     private String sourceFileKey = "file.source-dir";//class to read keys
     private String targetFileKey = "file.target-dir";
-    public static final String BASE_URL_IMG = BASE_URL + "/img";
     private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);///x.getResources()
+    private static String PATH_DOWNLOAD_FILE = DOWNLOAD_PATH+ "/file/";
+    private static String port = ":8080";
 
     /**
      *
@@ -59,9 +62,9 @@ public class ImgController {
      * @param rotate        Rotate new image
      * @return
      */
-    @PostMapping(value = "/convert", consumes = {"multipart/form-data"}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/convert", consumes = {"multipart/form-data"})
     @ResponseBody
-   public ImageResponse convertImage(@Valid @NotNull @NotBlank @RequestParam("fileName") MultipartFile file,
+   public Response convertImage(@Valid @NotNull @NotBlank @RequestParam("fileName") MultipartFile file,
                                           @Valid @NotNull @NotBlank @RequestParam("checksum") String checksum,
                                           @Valid @NotNull @NotBlank @RequestParam("targetType") String targetType,
                                           @Valid @NotNull @NotBlank @RequestParam(value = "resize", defaultValue = "0") String resize,
@@ -71,7 +74,7 @@ public class ImgController {
                                           @Valid @RequestParam(value ="grayscale", defaultValue = "false")  String grayscale,
                                           @Valid @RequestParam(value ="transpose", defaultValue = "false")  String transpose,
                                           @Valid @RequestParam(value ="transverse", defaultValue = "false")  String transverse,
-                                          @Valid @NotNull @NotBlank @RequestParam(value ="borderColor", defaultValue = "0") String borderColor) {
+                                          @Valid @NotNull @NotBlank @RequestParam(value ="borderColor", defaultValue = "0") String borderColor) throws ParamsInvalidException {
         LOGGER.info("/img endpoint to convert '{}' image to new format '{}'", file.getOriginalFilename(), targetType);
         try {
             if (file == null || file.isEmpty()) {
@@ -84,6 +87,14 @@ public class ImgController {
                         "Empty checksum is not allowed");
 
             }
+
+            if (!grayscale.toUpperCase().equals("FALSE") && !grayscale.toUpperCase().equals("TRUE")) {
+                return new ImageResponse(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value(),
+                        "GrayScale parameter must be True or False, current value is not allowed");
+
+            }
+
+            String hostname = ServerUtilities.GetServerHostname();
             //verify if file is saved in database
             String filePathStorage = null;//DBManager.getPath(checksum);
             if (filePathStorage == null) {
@@ -111,19 +122,19 @@ public class ImgController {
             imgFile.setTranspose(Boolean.parseBoolean(transpose));
             imgFile.setTransverse(Boolean.parseBoolean(transverse));
             IConvert iConvert = new ImageConvert();
-            ImageFile imageConverted = (ImageFile) iConvert.Convert(imgFile);
-            String urlDownload = HOST_URL + BASE_URL_DOWNLOAD + "/file/" + imageConverted.getFileName();
+            ImageResponse imageResponse = (ImageResponse) iConvert.Convert(imgFile);
+            BaseFile metadata = imageResponse.getMetadata();
+            String urlDownload = String.format("%s%s%s%s", hostname, port, PATH_DOWNLOAD_FILE, metadata.getFileName());
+            imageResponse.setUrl(urlDownload);
             LOGGER.info("New file is available in following link {}", urlDownload);
-            return  new ImageResponse(HttpStatus.OK.name(), HttpStatus.OK.value(),
-                    "Conversion image was success",
-                    String.format("Download new file using the following url : %s", urlDownload));
+            return  imageResponse;
 
         } catch (IOException e) {
             LOGGER.error("Image Controller: File was not Found. Error '{}' ", e.getMessage());
-            return  new ImageResponse(HttpStatus.NOT_FOUND.name(), HttpStatus.NOT_FOUND.value(),
+            return  new ErrorResponse(HttpStatus.NOT_FOUND.name(), HttpStatus.NOT_FOUND.value(),
                     "File was not found");
         } catch (NullPointerException | IllegalStateException e) {
-        return new ImageResponse(HttpStatus.BAD_REQUEST.name(),
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
                 HttpStatus.BAD_REQUEST.value(), "The Image File does not exist");
         } catch (ConvertException convertion) {
             LOGGER.error("Image Controller: Error in conversion operation '{}' ", convertion.getMessage());

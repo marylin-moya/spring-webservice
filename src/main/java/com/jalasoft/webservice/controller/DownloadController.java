@@ -10,6 +10,7 @@
 
 package com.jalasoft.webservice.controller;
 
+import com.jalasoft.webservice.utils.CheckSum;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
@@ -26,14 +27,14 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 
 import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
-import static com.jalasoft.webservice.utils.Constants.BASE_URL_DOWNLOAD;
+import static com.jalasoft.webservice.utils.Constants.DOWNLOAD_PATH;
 
 /***
  * Download Controller class to download a file
  */
 
 @RestController
-@RequestMapping(BASE_URL_DOWNLOAD)
+@RequestMapping(DOWNLOAD_PATH)
 public class DownloadController {
     private static final Logger LOGGER = LogManager.getLogger();
     private String targetFileKey = "file.target-dir";
@@ -50,13 +51,33 @@ public class DownloadController {
         String fullPathName = propertiesFile.getValue(targetFileKey) + fileName;
         try {
             File file = new File(fullPathName);
+            CheckSum check = new CheckSum();
+            String check1 = check.getCheckSum(fullPathName);
             if (file.exists()) {
-                if(FileManager.isImageFile(fullPathName))
+                try
                 {
-                    response.setContentType("image/jpg");
+                    // the line that reads the image file
+                    BufferedImage image = ImageIO.read(file);//read getContentType
+                    response.setContentType("image/png");
+                    OutputStream out = response.getOutputStream();
+                    ImageIO.write(image, "png", out);
+                    out.close();
+                    // work with the image here ...
+                }
+                catch (IOException e)
+                {
+                    // log the exception
+                    // re-throw if desired
+                    response.setContentType("application/octet-stream");    // Download the file directly
+                    InputStream is = new BufferedInputStream(new FileInputStream(file));
+                    FileCopyUtils.copy(is, response.getOutputStream());
+                }
+                /*if(FileManager.isImageFile(fullPathName))
+                {
+                    response.setContentType("image/png");
                     BufferedImage bi = ImageIO.read(file);
                     OutputStream out = response.getOutputStream();
-                    ImageIO.write(bi, "jpg", out);
+                    ImageIO.write(bi, "png", out);
                     out.close();
                 }
                 else
@@ -64,7 +85,7 @@ public class DownloadController {
                     response.setContentType("application/octet-stream");    // Download the file directly
                     InputStream is = new BufferedInputStream(new FileInputStream(file));
                     FileCopyUtils.copy(is, response.getOutputStream());
-                }
+                }*/
             }
         } catch (IOException e) {
             LOGGER.info("File was not download..." + e.getMessage());

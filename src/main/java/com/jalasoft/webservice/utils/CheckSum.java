@@ -33,7 +33,7 @@ public class CheckSum {
 
     public String getCheckSum(String filePath) {
         try {
-            MessageDigest md = MessageDigest.getInstance(propertiesFile.getValue("tesseract-path")); //SHA, MD2, MD5, SHA-256, SHA-384...
+            MessageDigest md = MessageDigest.getInstance(propertiesFile.getValue("file.type-checksum")); //SHA, MD2, MD5, SHA-256, SHA-384...
             DigestInputStream dis = new DigestInputStream(new FileInputStream(filePath), md);
             while (dis.read() != -1) ; //empty loop to clear the data
             md = dis.getMessageDigest();
