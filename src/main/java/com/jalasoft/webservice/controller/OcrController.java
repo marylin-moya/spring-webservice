@@ -59,7 +59,7 @@ public class OcrController {
      */
     @PostMapping(value = "/orc", consumes = {"multipart/form-data"})
     public Response getOrcFromUploadFile(@Valid @NotNull @NotBlank @RequestParam("fileName") MultipartFile file,
-                                         @Valid @NotNull @NotBlank @RequestParam(value = "lang", defaultValue = "eng") String lang,
+                                                  @Valid @NotNull @NotBlank @RequestParam(value = "lang", defaultValue = "english") String lang,
                                          @Valid @NotNull @NotBlank @RequestParam("checksum") String checksum) {
         LOGGER.info("/orc endpoint to extract '{}' text from '{}'", lang, file.getOriginalFilename());
 
