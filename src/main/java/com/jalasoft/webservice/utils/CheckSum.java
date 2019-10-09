@@ -20,21 +20,18 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
-
 /***
  * Class to calculate the checksum related to specific file
  *  Version : 1.0
  *  Date: 9/20/2019
  */
 public class CheckSum {
-
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static String getCheckSum(String filePath) {
-        PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
         try {
-            MessageDigest md = MessageDigest.getInstance(propertiesFile.getValue("file.type-checksum"));
+            MessageDigest md = MessageDigest.getInstance(
+                    PropertiesManager.getInstance().getPropertiesReader().getValue("file.type-checksum")); //SHA, MD2, MD5, SHA-256, SHA-384...
             DigestInputStream dis = new DigestInputStream(new FileInputStream(filePath), md);
             while (dis.read() != -1) ; //empty loop to clear the data
             md = dis.getMessageDigest();
