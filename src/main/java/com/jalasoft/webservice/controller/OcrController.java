@@ -15,10 +15,10 @@ import com.jalasoft.webservice.entitities.ErrorResponse;
 import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.error_handler.ParamsInvalidException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
 import com.jalasoft.webservice.model.OcrConvert;
-import com.jalasoft.webservice.utils.Constants;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
@@ -64,11 +64,13 @@ public class OcrController {
         LOGGER.info("/orc endpoint to extract '{}' text from '{}'", lang, file.getOriginalFilename());
 
         try {
-            //Get file path if the file path is saved in the database
-            if (checksum == null || checksum.isEmpty()) {
-                return new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value(),
-                        "Empty checksum is not allowed");
-            }
+            //Instance Orc Model with fileName and lang
+            OcrFile ocrFile = new OcrFile();
+            ocrFile.setLang(lang);
+            ocrFile.setPath(propertiesFile.getValue(sourceFileKey));
+            ocrFile.setFileName(file.getOriginalFilename());
+            ocrFile.setCheckSum(checksum);
+            ocrFile.validate();
 
             String filePath = DBManager.getPath(checksum);
 
@@ -80,23 +82,17 @@ public class OcrController {
                 FileManager.saveUploadFile(filePath, file);
             }
 
-            //Instance Orc Model with fileName and lang
-            OcrFile ocrFile = new OcrFile();
-            ocrFile.setLang(lang);
-            ocrFile.setPath(propertiesFile.getValue(sourceFileKey));
-            ocrFile.setFileName(file.getOriginalFilename());
-
             IConvert iConvert = new OcrConvert();
             return iConvert.Convert(ocrFile);
+        } catch (ParamsInvalidException | ConvertException e) {
+            return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(), e.getMessage());
         } catch (IOException e) {
             return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
                     HttpStatus.BAD_REQUEST.value(), "IOException");
         } catch (NullPointerException | IllegalStateException e) {
             return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
                     HttpStatus.BAD_REQUEST.value(), "The file does not exist");
-        } catch (ConvertException e) {
-            return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
-                    HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
     }
 }

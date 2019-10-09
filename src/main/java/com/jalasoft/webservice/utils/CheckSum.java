@@ -28,12 +28,13 @@ import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
  *  Date: 9/20/2019
  */
 public class CheckSum {
-    private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
+
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public String getCheckSum(String filePath) {
+    public static String getCheckSum(String filePath) {
+        PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
         try {
-            MessageDigest md = MessageDigest.getInstance(propertiesFile.getValue("tesseract-path")); //SHA, MD2, MD5, SHA-256, SHA-384...
+            MessageDigest md = MessageDigest.getInstance(propertiesFile.getValue("file.type-checksum"));
             DigestInputStream dis = new DigestInputStream(new FileInputStream(filePath), md);
             while (dis.read() != -1) ; //empty loop to clear the data
             md = dis.getMessageDigest();
