@@ -16,9 +16,16 @@ import org.apache.logging.log4j.Logger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * Utilities for Server site
+ */
 public class ServerUtilities {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    /***
+     * Get Hostname of server
+     * @return
+     */
     public static String GetServerHostname(){
         InetAddress ip;
         String hostname;

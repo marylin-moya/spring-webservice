@@ -12,6 +12,7 @@ package com.jalasoft.webservice.controller;
 
 import com.jalasoft.webservice.utils.CheckSum;
 import com.jalasoft.webservice.utils.FileManager;
+import com.jalasoft.webservice.utils.PropertiesManager;
 import com.jalasoft.webservice.utils.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
@@ -38,7 +40,6 @@ import static com.jalasoft.webservice.utils.Constants.DOWNLOAD_PATH;
 public class DownloadController {
     private static final Logger LOGGER = LogManager.getLogger();
     private String targetFileKey = "file.target-dir";
-    private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
 
     /***
      *
@@ -48,44 +49,26 @@ public class DownloadController {
     @GetMapping("/file/{fileName:.+}")
     public void getFile(HttpServletResponse response,
                         @PathVariable("fileName") String fileName) {
-        String fullPathName = propertiesFile.getValue(targetFileKey) + fileName;
+        String fullPathName = PropertiesManager.getInstance().getPropertiesReader().getValue(targetFileKey) + fileName;
         try {
             File file = new File(fullPathName);
-            CheckSum check = new CheckSum();
-            String check1 = check.getCheckSum(fullPathName);
             if (file.exists()) {
                 try
                 {
-                    // the line that reads the image file
-                    BufferedImage image = ImageIO.read(file);//read getContentType
-                    response.setContentType("image/png");
+                    String contenType = fullPathName.substring(fullPathName.lastIndexOf(".") +1).toLowerCase();
+                    contenType = String.format("image/%s",contenType); //getContentType
+                    BufferedImage image = ImageIO.read(file);
+                    response.setContentType(contenType);
                     OutputStream out = response.getOutputStream();
                     ImageIO.write(image, "png", out);
                     out.close();
-                    // work with the image here ...
                 }
                 catch (IOException e)
                 {
-                    // log the exception
-                    // re-throw if desired
                     response.setContentType("application/octet-stream");    // Download the file directly
                     InputStream is = new BufferedInputStream(new FileInputStream(file));
                     FileCopyUtils.copy(is, response.getOutputStream());
                 }
-                /*if(FileManager.isImageFile(fullPathName))
-                {
-                    response.setContentType("image/png");
-                    BufferedImage bi = ImageIO.read(file);
-                    OutputStream out = response.getOutputStream();
-                    ImageIO.write(bi, "png", out);
-                    out.close();
-                }
-                else
-                {
-                    response.setContentType("application/octet-stream");    // Download the file directly
-                    InputStream is = new BufferedInputStream(new FileInputStream(file));
-                    FileCopyUtils.copy(is, response.getOutputStream());
-                }*/
             }
         } catch (IOException e) {
             LOGGER.info("File was not download..." + e.getMessage());

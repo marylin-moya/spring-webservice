@@ -35,13 +35,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
-import static com.jalasoft.webservice.utils.Constants.BASE_URL;
+import static com.jalasoft.webservice.utils.Constants.ORC_PATH;
 
 /**
  * Orc Controller class to implement Rest EndPoint to extract text from a file.
  */
 @RestController
-@RequestMapping(BASE_URL)
+@RequestMapping(ORC_PATH)
 public class OcrController {
     private static final Logger LOGGER = LogManager.getLogger();
     private String sourceFileKey = "file.source-dir";
@@ -64,7 +64,7 @@ public class OcrController {
             //Instance Orc Model with fileName and lang
             OcrFile ocrFile = new OcrFile();
             ocrFile.setLang(lang);
-            ocrFile.setPath(propertiesFile.getValue(sourceFileKey));
+            ocrFile.setPath(PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey));
             ocrFile.setFileName(file.getOriginalFilename());
             ocrFile.setCheckSum(checksum);
             ocrFile.validate();
