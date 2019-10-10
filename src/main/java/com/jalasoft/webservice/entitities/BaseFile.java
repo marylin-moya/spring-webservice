@@ -18,19 +18,10 @@ import com.jalasoft.webservice.error_handler.ParamsInvalidException;
  *  Version : 1.0
  *  Date: 9/19/2019
  */
-public abstract class BaseFile {
+public class BaseFile {
     protected String fileName;
     protected String path;
     protected long size;
-
-    public String getCheckSum() {
-        return checkSum;
-    }
-
-    public void setCheckSum(String checkSum) {
-        this.checkSum = checkSum;
-    }
-
     protected String checkSum;
 
     /***
@@ -84,5 +75,27 @@ public abstract class BaseFile {
         this.size = size;
     }
 
-    abstract void Validate() throws ParamsInvalidException;
+    /**
+     * Get Checksum
+     *
+     * @return
+     */
+    public String getCheckSum() {
+        return checkSum;
+    }
+
+    /**
+     * setChecksum
+     *
+     * @param checkSum
+     */
+    public void setCheckSum(String checkSum) {
+        this.checkSum = checkSum;
+    }
+
+    /**
+     * Validate fields method.
+     */
+    public void validate() throws ParamsInvalidException {
+    }
 }

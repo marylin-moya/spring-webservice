@@ -21,16 +21,13 @@ import java.util.Properties;
 public class PropertiesReader {
     private static final Logger LOGGER = LogManager.getLogger();
     private Properties userProperties;
-    private String projectPath = String.format("%s/", System.getProperty("user.dir"));
 
     /**
      * Constructor to load properties file.
      *
-     * @param filePath file path.
-     * @param fileName file name.
+     * @param propertyFilePath property file path.
      */
-    public PropertiesReader(String filePath, String fileName) {
-        String propertyFilePath = (String.format("%s%s%s", projectPath, filePath, fileName));
+    public PropertiesReader(String propertyFilePath) {
         try (FileInputStream fileInputStream = new FileInputStream(propertyFilePath)) {
             userProperties = new Properties();
             userProperties.load(fileInputStream);

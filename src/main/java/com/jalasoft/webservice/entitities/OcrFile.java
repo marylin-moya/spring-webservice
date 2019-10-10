@@ -10,7 +10,6 @@
 
 package com.jalasoft.webservice.entitities;
 
-import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate;
 import com.jalasoft.webservice.error_handler.ParamsInvalidException;
 
 /****
@@ -33,22 +32,28 @@ public class OcrFile extends BaseFile {
         this.lang = lang;
     }
 
+    /**
+     * Validate fields method.
+     */
     @Override
-    public void Validate() throws ParamsInvalidException {
-        if(this.path.isEmpty()) {
-            throw new ParamsInvalidException(10, "filePath");
+    public void validate() throws ParamsInvalidException {
+        if (this.path.isEmpty()) {
+            throw new ParamsInvalidException(11, "path");
         }
-        if(this.lang.isEmpty()) {
-            throw new ParamsInvalidException(11, "Language");
+        if (this.lang.isEmpty()) {
+            throw new ParamsInvalidException(11, "lang");
         }
-        if(this.path == null) {
-            throw new ParamsInvalidException(11, "filePath null");
+        if (this.lang == null) {
+            throw new ParamsInvalidException(10, "lang");
         }
-        if(this.checkSum.isEmpty()) {
+        if (this.path == null) {
+            throw new ParamsInvalidException(10, "path");
+        }
+        if (this.checkSum == null) {
             throw new ParamsInvalidException(10, "checksum");
         }
-        if(this.checkSum == null) {
-            throw new ParamsInvalidException(10, "checksum 111");
+        if (this.checkSum.isEmpty()) {
+            throw new ParamsInvalidException(11, "checksum");
         }
     }
 }

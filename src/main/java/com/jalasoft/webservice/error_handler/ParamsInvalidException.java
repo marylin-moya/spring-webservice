@@ -10,25 +10,38 @@
 
 package com.jalasoft.webservice.error_handler;
 
-public class ParamsInvalidException extends Exception{
+/**
+ * ParamsInvalidException class.
+ */
+public class ParamsInvalidException extends Exception {
     int code;
     String message;
     String param;
-    public ParamsInvalidException(int code, String params)
-    {
+
+    /**
+     * ParamsInvalidException Constructor.
+     * @param code
+     * @param param
+     */
+    public ParamsInvalidException(int code, String param) {
         this.code = code;
-        this.param = params;
+        this.param = param;
     }
 
-    public String getMesage(){
-        switch (this.code){
+    /**
+     * Get Message
+     * @return
+     */
+    public String getMessage() {
+        switch (this.code) {
             case 10:
-                this.message ="The parameter "+ this.param + "is null";
+                this.message = String.format("the param %s is null", this.param);
                 break;
             case 11:
-                this.message ="The parameter "+ this.param + "is empty";
+                this.message = String.format("the param %s is empty", this.param);
                 break;
         }
-        return message;
+        return this.message;
     }
+
 }

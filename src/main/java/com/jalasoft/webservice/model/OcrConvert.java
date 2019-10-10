@@ -15,8 +15,9 @@ import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.entitities.OcrResponse;
 import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.utils.CheckSum;
 import com.jalasoft.webservice.utils.FileManager;
-import com.jalasoft.webservice.utils.PropertiesReader;
+import com.jalasoft.webservice.utils.PropertiesManager;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +27,6 @@ import org.springframework.http.HttpStatus;
 import java.io.File;
 import java.io.IOException;
 
-import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 import static com.jalasoft.webservice.utils.Constants.LANGUAGES;
 
 /**
@@ -35,16 +35,22 @@ import static com.jalasoft.webservice.utils.Constants.LANGUAGES;
  * Date: 9/19/2019
  */
 public class OcrConvert implements IConvert {
-    private PropertiesReader propertiesFile = new PropertiesReader("src/main/resources/", APPLICATION_PROPERTIES);
     private static final Logger LOGGER = LogManager.getLogger();
     private String defaultLanguageProperty = "file.default-language";
     private static final String EXTENSION_FORMAT = ".csv";
-    
+
+    /**
+     * Convert method to extract text from a image
+     *
+     * @param baseFile
+     * @return
+     * @throws ConvertException
+     */
     @Override
     public Response Convert(BaseFile baseFile) throws ConvertException {
         String tesseractPath = "file.tesseract-path";
         String targetDirectory = "file.target-dir";
-        String defaultLanguage = propertiesFile.getValue(defaultLanguageProperty);
+        String defaultLanguage = PropertiesManager.getInstance().getPropertiesReader().getValue(defaultLanguageProperty);
         String language = null;
         OcrFile ocrFile = (OcrFile) baseFile;
         Tesseract tesseract = new Tesseract();
@@ -57,12 +63,14 @@ public class OcrConvert implements IConvert {
         }
 
         try {
-            tesseract.setDatapath(propertiesFile.getValue(tesseractPath));
+            tesseract.setDatapath(PropertiesManager.getInstance().getPropertiesReader().getValue(tesseractPath));
             tesseract.setLanguage(language);
             String content = tesseract.doOCR(new File(String.format("%s%s", ocrFile.getPath(), ocrFile.getFileName()))).trim();
-            OcrFile metadata = new OcrFile();
-            metadata.setPath(propertiesFile.getValue(targetDirectory));
-            metadata.setFileName(String.format("%s%s", ocrFile.getFileName(), EXTENSION_FORMAT));
+            BaseFile metadata = new BaseFile();
+            metadata.setPath(PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory));
+            String fileName = String.format("%s%s", ocrFile.getFileName(), EXTENSION_FORMAT);
+            metadata.setFileName(fileName);
+            metadata.setCheckSum(CheckSum.getCheckSum(String.format("%s%s", propertiesFile.getValue(targetDirectory), fileName)));
             FileManager.saveTextIntoFile(String.format("%s%s", metadata.getPath(), metadata.getFileName()), content);
             OcrResponse ocrResponse = new OcrResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Text Successfully Extracted.", content);
             ocrResponse.setMetadata(metadata);
