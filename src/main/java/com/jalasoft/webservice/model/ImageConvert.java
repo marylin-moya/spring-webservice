@@ -88,4 +88,5 @@ public class ImageConvert implements IConvert {
             throw new ConvertException(e.getMessage(), e);
         }
     }
+
 }

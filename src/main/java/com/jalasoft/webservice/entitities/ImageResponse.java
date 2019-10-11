@@ -13,16 +13,25 @@ package com.jalasoft.webservice.entitities;
 /**
  * Image Response class.
  */
-public class ImageResponse extends Response{
+public class ImageResponse extends Response {
+    private String url;
+    public ImageResponse(String name, Integer status, String detail){
+        super(name, status, detail);
+    }
 
     /**
-     * Image Response Constructor
-     *
-     * @param name
-     * @param status
-     * @param detail
+     * Get url
+     * @return
      */
-    public ImageResponse(String name, Integer status, String detail) {
-        super(name, status, detail);
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * Set url value
+     * @param url
+     */
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

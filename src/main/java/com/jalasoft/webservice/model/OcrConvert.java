@@ -25,6 +25,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 
 import java.io.File;
+import java.io.IOException;
 
 import static com.jalasoft.webservice.utils.Constants.LANGUAGES;
 
@@ -69,7 +70,7 @@ public class OcrConvert implements IConvert {
             metadata.setPath(PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory));
             String fileName = String.format("%s%s", ocrFile.getFileName(), EXTENSION_FORMAT);
             metadata.setFileName(fileName);
-            metadata.setCheckSum(CheckSum.getCheckSum(String.format("%s%s", propertiesFile.getValue(targetDirectory), fileName)));
+            metadata.setCheckSum(CheckSum.getCheckSum(String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory), fileName)));
             FileManager.saveTextIntoFile(String.format("%s%s", metadata.getPath(), metadata.getFileName()), content);
             OcrResponse ocrResponse = new OcrResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Text Successfully Extracted.", content);
             ocrResponse.setMetadata(metadata);
