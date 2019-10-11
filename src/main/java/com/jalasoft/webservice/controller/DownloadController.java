@@ -10,10 +10,8 @@
 
 package com.jalasoft.webservice.controller;
 
-import com.jalasoft.webservice.utils.CheckSum;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesManager;
-import com.jalasoft.webservice.utils.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.util.FileCopyUtils;
@@ -22,13 +20,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
-import static com.jalasoft.webservice.utils.Constants.APPLICATION_PROPERTIES;
 import static com.jalasoft.webservice.utils.Constants.DOWNLOAD_PATH;
 
 /***
@@ -49,23 +45,22 @@ public class DownloadController {
     @GetMapping("/file/{fileName:.+}")
     public void getFile(HttpServletResponse response,
                         @PathVariable("fileName") String fileName) {
-        String fullPathName = PropertiesManager.getInstance().getPropertiesReader().getValue(targetFileKey) + fileName;
+        String fullPathName = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(targetFileKey), fileName);
+        String commonContentType = "application/octet-stream";
         try {
             File file = new File(fullPathName);
             if (file.exists()) {
-                try
-                {
-                    String contenType = fullPathName.substring(fullPathName.lastIndexOf(".") +1).toLowerCase();
-                    contenType = String.format("image/%s",contenType); //getContentType
+                try {
+                    String contentType = FileManager.getFileNameExtension(fullPathName).toLowerCase();
+                    String imageFormat = "image";
+                    contentType = String.format("%s/%s", imageFormat, contentType); //getContentType
                     BufferedImage image = ImageIO.read(file);
-                    response.setContentType(contenType);
+                    response.setContentType(contentType);
                     OutputStream out = response.getOutputStream();
-                    ImageIO.write(image, "png", out);
+                    ImageIO.write(image, contentType, out);
                     out.close();
-                }
-                catch (IOException e)
-                {
-                    response.setContentType("application/octet-stream");    // Download the file directly
+                } catch (IOException e) {
+                    response.setContentType(commonContentType);    // Download the file directly
                     InputStream is = new BufferedInputStream(new FileInputStream(file));
                     FileCopyUtils.copy(is, response.getOutputStream());
                 }
