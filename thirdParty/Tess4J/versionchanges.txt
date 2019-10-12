@@ -50,7 +50,7 @@ Version 1.4 (18 January 2015)
 - Autoload Windows native libraries
 
 Version 1.4.1 (24 January 2015)
-- Enable use of jna.library.path system property for userName-customizable path
+- Enable use of jna.library.path system property for user-customizable path
 
 Version 1.5 (13 March 2015)
 - Add UNLV zone file support
