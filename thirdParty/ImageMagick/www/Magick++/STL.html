@@ -1768,7 +1768,7 @@ or to capture image from</font></td>
 <p>Magick++ provides the&#160;<a name="coderInfoList"></a> <i>coderInfoList()</i>
 function to support obtaining information about the image formats
 supported by ImageMagick. Support for image formats in ImageMagick
-is provided by modules known as "coders". A user-provided container is
+is provided by modules known as "coders". A userName-provided container is
 updated based on a boolean truth-table match. The truth-table supports
 matching based on whether ImageMagick can read the format, write the
 format, or supports multiple frames for the format. A wildcard specifier
@@ -1839,7 +1839,7 @@ listed formats will be readable): </p>
  style="font-weight: bold;">colorHistogram</span> template function to
 retrieve a color histogram from an image. A color histogram provides a
 count of how many times each color occurs in the image. The histogram is
-written into a user-provided container, which (for example) could be a <span
+written into a userName-provided container, which (for example) could be a <span
  style="font-style: italic;">&lt;vector&gt;</span> or a <span
  style="font-style: italic;">&lt;map&gt;</span>. &#160;When a
 &lt;map&gt; is used, the <span style="font-style: italic;">Color</span>

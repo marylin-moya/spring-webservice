@@ -155,7 +155,7 @@ file or data stream.
 
 <dt class="col-md-4"><a href="https://www.imagemagick.org/source/policy.xml">policy.xml</a></dt>
   <dd class="col-md-8">Configure ImageMagick policies.
-  By default any coder, delegate, filter, or file path is permitted.  Use a policy to deny access to, for example, the MPEG video delegate, or permit reading images from a file system but deny writing to that same file system.  Or use the resource policy to set resource limits.  Policies are useful for multi-user servers that want to limit the overall impact ImageMagick has on the system.  For example, to limit the maximum image size in memory to 100MP:
+  By default any coder, delegate, filter, or file path is permitted.  Use a policy to deny access to, for example, the MPEG video delegate, or permit reading images from a file system but deny writing to that same file system.  Or use the resource policy to set resource limits.  Policies are useful for multi-userName servers that want to limit the overall impact ImageMagick has on the system.  For example, to limit the maximum image size in memory to 100MP:
 
 <pre class="highlight"><code>&lt;policy domain="resource" name="area" value="100KP"/></code></pre>
 
@@ -287,15 +287,15 @@ $MAGICK_FONT_PATH</code></pre>
   </tr>
   <tr>
     <td>MAGICK_CODER_FILTER_PATH</td>
-    <td>Set search path to use when searching for filter process modules (invoked via  <a href="command-line-options.html#process">-process</a>).  This path permits the user to extend ImageMagick's image processing functionality by adding loadable modules to a preferred location rather than copying them into the ImageMagick installation directory.  The formatting of the search path is similar to operating system search paths (i.e. colon delimited for Unix, and semi-colon delimited for Microsoft Windows). This user specified search path is searched before trying the <a href="resources.html#modules">default search path</a>.</td>
+    <td>Set search path to use when searching for filter process modules (invoked via  <a href="command-line-options.html#process">-process</a>).  This path permits the userName to extend ImageMagick's image processing functionality by adding loadable modules to a preferred location rather than copying them into the ImageMagick installation directory.  The formatting of the search path is similar to operating system search paths (i.e. colon delimited for Unix, and semi-colon delimited for Microsoft Windows). This userName specified search path is searched before trying the <a href="resources.html#modules">default search path</a>.</td>
   </tr>
   <tr>
     <td>MAGICK_CODER_MODULE_PATH</td>
-    <td>Set path where ImageMagick can locate its coder modules.  This path permits the user to arbitrarily extend the image formats supported by ImageMagick by adding loadable coder modules from an preferred location rather than copying them into the ImageMagick installation directory.  The formatting of the search path is similar to operating system search paths (i.e. colon delimited for Unix, and semi-colon delimited for Microsoft Windows). This user specified search path is searched before trying the <a href="resources.html#modules">default search path</a>.</td>
+    <td>Set path where ImageMagick can locate its coder modules.  This path permits the userName to arbitrarily extend the image formats supported by ImageMagick by adding loadable coder modules from an preferred location rather than copying them into the ImageMagick installation directory.  The formatting of the search path is similar to operating system search paths (i.e. colon delimited for Unix, and semi-colon delimited for Microsoft Windows). This userName specified search path is searched before trying the <a href="resources.html#modules">default search path</a>.</td>
   </tr>
   <tr>
     <td>MAGICK_CONFIGURE_PATH</td>
-    <td>Set path where ImageMagick can locate its configuration files.  Use this search path to search for configuration (.xml) files. The formatting of the search path is similar to operating system search paths (i.e. colon delimited for Unix, and semi-colon delimited for Microsoft Windows). This user specified search path is searched before trying the <a href="resources.html#configure">default search path</a>.</td>
+    <td>Set path where ImageMagick can locate its configuration files.  Use this search path to search for configuration (.xml) files. The formatting of the search path is similar to operating system search paths (i.e. colon delimited for Unix, and semi-colon delimited for Microsoft Windows). This userName specified search path is searched before trying the <a href="resources.html#configure">default search path</a>.</td>
   </tr>
   <tr>
     <td>MAGICK_DEBUG</td>

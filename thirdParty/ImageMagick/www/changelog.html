@@ -154,7 +154,7 @@
 <dt>2019-06-08  6.9.10-49 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> Release ImageMagick version 6.9.10-49, GIT revision 14530:19dcf6f:20190608</li>
 <dt>2019-06-04  6.9.10-49 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
-  <li> Use user defined allocator instead of `malloc` (reference    https://github.com/ImageMagick/ImageMagick6/pull/49/).</li>
+  <li> Use userName defined allocator instead of `malloc` (reference    https://github.com/ImageMagick/ImageMagick6/pull/49/).</li>
   <li> Add static decorator to accelerator kernels (reference    https://github.com/ImageMagick/ImageMagick/issues/1366).</li>
 <dt>2019-05-26  6.9.10-47 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> Release ImageMagick version 6.9.10-47, GIT revision 14507:321f99ca6:20190526</li>
@@ -1094,7 +1094,7 @@
 <dt>2015-06-01  6.9.1-4 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> Support 'restrict' keyword under Windows.</li>
 <dt>2015-05-25  6.9.1-4 Dirk Lemstra &lt;dirk@lem.....org&gt;</dt>
-  <li> Added support for reading a user supplied layer mask in PSD files.</li>
+  <li> Added support for reading a userName supplied layer mask in PSD files.</li>
   <li> Added support for reading photoshop layers in TIFF files.</li>
 <dt>2015-05-24  6.9.1-3 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> New version 6.9.1-3, SVN revision 18623.</li>
@@ -1109,7 +1109,7 @@
   <li> Avoid palette-building when writing a grayscale PNG (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=27580).</li>
 <dt>2015-04-20  6.9.1-3 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> Support -define compose:clamp=false option (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=26946).</li>
-  <li> Don't extend any user supplied image buffer in SeekBlob() (bug report    from a.chernij@corp...).</li>
+  <li> Don't extend any userName supplied image buffer in SeekBlob() (bug report    from a.chernij@corp...).</li>
   <li> Improved reproducible builds (reference    https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=783933).</li>
   <li> Draw a rectangle of width &amp; height of 1 (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=24874).</li>
 <dt>2015-04-19  6.9.1-2 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
@@ -1652,7 +1652,7 @@
 <dt>2013-05-20  6.8.5-8 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> The -white-threshold option is symmetrical with -black-threshold (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=23441);</li>
   <li> Fix multi-line PNM comments (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=23442).</li>
-  <li> The -format option should not automatically append a newline since the    user can specify a newline in the formatting expression.</li>
+  <li> The -format option should not automatically append a newline since the    userName can specify a newline in the formatting expression.</li>
   <li> The -level option is no longer returning a darkened image (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=23479).</li>
   <li> Identify SVG image as "SVG" (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=27654).</li>
 <dt>2013-05-20  6.8.5-7 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
@@ -1678,7 +1678,7 @@
 <dt>2013-05-05  6.8.5-5 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> The -poly option treats the opacity channel as alpha (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=23346).</li>
   <li> The -threshold 50% option returns a 50-50 black and white image (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=23354).</li>
-  <li> Let user override the TIFF rows per strip  (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=2&amp;t=23307).</li>
+  <li> Let userName override the TIFF rows per strip  (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=2&amp;t=23307).</li>
   <li> Fix transient bug in the -separate option (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=23335).</li>
 <dt>2013-05-01  6.8.5-4 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> New version 6.8.5-4, SVN revision 12089.</li>
@@ -2449,7 +2449,7 @@
 <dt>2012-01-30  6.7.5-1 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> Support the -alpha remove option (use it to remove transparency from PDF,    convert -density 200 apple.pdf -alpha remove x:).</li>
   <li> Use union instead of casting gzFile and BZFILE.</li>
-  <li> Don't treat PSD user channel as alpha (patch from Dominic Benson).</li>
+  <li> Don't treat PSD userName channel as alpha (patch from Dominic Benson).</li>
   <li> Prevent overflow when casting short int to size_t when parsing a    maliciously crafted image with an IFD whose all IOP tags' value offsets    point to the beginning of the IFD itself [CVE-2012-0247].</li>
   <li> Prevent DES when parsing a maliciously crafted image with an IFD whose    all IOP tags' value offsets point to the beginning of the IFD itself    [CVE-2012-0248].</li>
   <li> Caption with Pango support no longer return a blank canvas.</li>
@@ -3024,14 +3024,14 @@
   <li> -posterize fails with more than 40 levels (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=17741).</li>
   <li> Add support for the MacPaint image format.</li>
   <li> Eliminate spurious 'invalid colormap index' exception for 16-bit SGI images    (bug report by steven.sittser@fligh...).</li>
-  <li> Fix user data length for the CIN image format.</li>
+  <li> Fix userName data length for the CIN image format.</li>
 <dt>2010-12-21  6.6.6-7 Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
   <li> Use a clone instead of the main image in coders/png.c, so the image    can still be used later on without being affected by changes made by    the PNG encoder.</li>
   <li> Added PNG:exclude-chunk and PNG:include-chunk defines.</li>
   <li> Revised the -strip option so it behaves as though    "-define PNG:include-chunk=none,gama" had appeared on the commandline.</li>
   <li> Avoid writing PNG ancillary chunks in the PNG/MNG/JNG encoder while    generating the alpha channel for a JNG image.</li>
 <dt>2010-12-21  6.6.6-7 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
-  <li> Removed the forced interpolation setting in AcquireResampleFilterThreadSet    It prevented user defined interpolation settings for -clut, and possibly    other usage.</li>
+  <li> Removed the forced interpolation setting in AcquireResampleFilterThreadSet    It prevented userName defined interpolation settings for -clut, and possibly    other usage.</li>
 <dt>2010-12-17  6.6.6-6 Chris Madison  &lt;madisonblu@gmail...&gt;</dt>
   <li> Add LZMA compression support to ImageMagick.</li>
   <li> Eliminate seg-fault in MvgPrintf().</li>
@@ -3133,7 +3133,7 @@
   <li> Don't permit access to pixels when pinging an image (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=17194).</li>
 <dt>2010-10-02  6.6.4-9 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
   <li> Added sqrt(2) blurring default for Gaussian Filter if used as    a Cylindrical EWA filter.  This resulted removing the last aliasing    issue that was present in tests for Gaussian EWA resampling. Of course    it is still a very blurry filter for default use in EWA.</li>
-  <li> Adjusted Variable Mapping Blur Composition so user arguments actual    relate properly to the sigma of the blur for a maximum mapping value.</li>
+  <li> Adjusted Variable Mapping Blur Composition so userName arguments actual    relate properly to the sigma of the blur for a maximum mapping value.</li>
   <li> Fix horizon anti-aliasing for output-scaled perspective distortions.</li>
   <li> 'Bessel' filter is now officially and more accurately named 'Jinc'    however 'Bessel' while not visible as a filter option can still be used    as an internal alias for 'Jinc'.</li>
 <dt>2010-09-28  6.6.4-8 Nicolas Robidoux &lt;nicolas.robidoux@gmai...&gt;</dt>
@@ -3172,7 +3172,7 @@
   <li> IPTC profile not always wrapped properly inside an 8BIM profile.</li>
   <li> TIFF tile geometry must be divisible by 16.</li>
 <dt>2010-09-15  6.6.4-2 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
-  <li> Rename of SincPolynomial to SincFast for easier user understanding</li>
+  <li> Rename of SincPolynomial to SincFast for easier userName understanding</li>
   <li> Ditto for LanczosChebyshev to LanzcosFast</li>
 <dt>2010-09-14  6.6.4-2 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
   <li> Switch default resize filters to using the faster SincPolynomial    filter by default internally.  However 'Sinc' will still use the    Trigonometric function, and can be used to assign the trig version    of Sinc() to filters using the filter expert options.</li>
@@ -3256,7 +3256,7 @@
   <li> Recognize certain hex color values (e.g. #b9e1cc00) for the -fx argument.</li>
   <li> Reduce memory requirements when dithering on the iPhone.</li>
   <li> Command line operators no longer affected by settings that appear after    them (e.g. -splice 10x0+0+0 -gravity center).</li>
-  <li> Compute the proper DPX user data field size.</li>
+  <li> Compute the proper DPX userName data field size.</li>
 <dt>2010-06-15  6.6.2-6 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> Fix some nits to keep the clang compiler happy.</li>
 <dt>2010-06-14  6.6.2-5 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
@@ -3294,7 +3294,7 @@
 <dt>2010-05-24  6.6.2-1 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> Respect density when rendering SVG images.</li>
   <li> Set AVI handler to the MPEG coder.</li>
-  <li> Compute the proper DPX user data field size.</li>
+  <li> Compute the proper DPX userName data field size.</li>
   <li> Do not interpret a format specifier when enclosed in brackets (e.g.    rose_tile_%[filename:tile].gif.</li>
   <li> Use 64-bit types when compiling with the 64-bit Visual C++ compiler under    Windows.</li>
   <li> Prevent MNG divide by zero in calculation of frame_delay (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=16320).</li>
@@ -3305,11 +3305,11 @@
   <li> Rotation Expansion of single kernels '^' and '@' flags in arguments    EG: -set option:showkernel 1 -morphology Convolve 'Blur:0x2^'</li>
   <li> ExpandKernelInfo() (rotation expand) now groks symmetrical kernels.    So the above will only produce a list of 2 kernels, not 4 kernels</li>
 <dt>2010-05-18  6.6.2-0 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
-  <li> Separation of internal function MorphologyApply() from    MorphologyImageChannel() to calls to convolve without user settings.</li>
+  <li> Separation of internal function MorphologyApply() from    MorphologyImageChannel() to calls to convolve without userName settings.</li>
   <li> Rewrite of MorphologyApply() to output better 'verbose' messages</li>
   <li> Better handling of Gaussian tyle filters (bug fixes)</li>
   <li> Bug fix and optimization of kernel size calculations in "gem.c"</li>
-  <li> Allow '^' or '@' flags in 'user defined' kernel size arguments to    expand kernel into a rotated list.    EG: -set option:showkernel 1 -morphology Thinning  '3@: 0,1,0 0,1,0 0,0,0'</li>
+  <li> Allow '^' or '@' flags in 'userName defined' kernel size arguments to    expand kernel into a rotated list.    EG: -set option:showkernel 1 -morphology Thinning  '3@: 0,1,0 0,1,0 0,0,0'</li>
   <li> Allow a scaled unity kernel to be added to kernel (EdgeDet-&gt;Sharpen)    EG: -set option:convolve:scale [kernel_scale][^!],[unity_scale][%]</li>
   <li> Addition of "Laplacian of Gaussian" (LOG), also known as Mexican Hat    EG: -morphology convolve LOG:0x1</li>
   <li> Added FreiChen, Kirsch  Convolution kernels</li>
@@ -3320,7 +3320,7 @@
   <li> Enable PFM endian support.</li>
   <li> Add context to -border for montage.  Inside the parenthesis it adds a border    to the image otherwise it sets the border for the layout manager.</li>
   <li> 24-bit BMP images are not colormapped even if header colors != 0.</li>
-  <li> Set DPX user data like this: -set profile dpx:userdata.txt.</li>
+  <li> Set DPX userName data like this: -set profile dpx:userdata.txt.</li>
   <li> Make sure Lab =&gt; RGB =&gt; Lab survives the round trip.</li>
 <dt>2010-05-15  6.6.1-10 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> Use ScaleCharToQuantum() in coders/src.c (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=3&amp;t=16229).</li>
@@ -3436,7 +3436,7 @@
   <li> Recognize -remap option for the mogrify utility.</li>
   <li> The default Helvetica font is not always available, check for    Century Schoolbook too (reference    https://imagemagick.org/discourse-server/viewtopic.html?f=2&amp;t=15780).</li>
 <dt>2010-03-11  6.6.0-5 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
-  <li> Permit user to get virtual pixels with a region width of 0.</li>
+  <li> Permit userName to get virtual pixels with a region width of 0.</li>
   <li> Reformulate the jinc() function so that the main peak is of amplitude of 1.</li>
   <li> Resampling filter must respect the image virtual pixel method.</li>
 <dt>2010-03-07  6.6.0-4 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
@@ -3498,7 +3498,7 @@
 <dt>2010-01-05  6.5.9-0 Stephan Menzel  &lt;stephan.menzel@gmail...&gt;</dt>
   <li> Add support for the BGRA raw image format.</li>
 <dt>2010-01-04  6.5.9-0 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
-  <li> Added Kernel Generator to generate kernels from user strings, which    allows the generation in many built in kernels for both Convolution    and other Morphological methods.  New Kernels currently include..      Convolution: Gaussian, Blur, Comet      Morphological: Rectangle, Square, Diamond, Disk, Plus      Distance: Chebyshev, Manhatten, Knight, Euclidean    And both old and new (rectangular) user defined kernel specifications    including the use of 'nan' to represent elements which are not part    of the kernel definition.  List built-in kernel types use "-list kernel"</li>
+  <li> Added Kernel Generator to generate kernels from userName strings, which    allows the generation in many built in kernels for both Convolution    and other Morphological methods.  New Kernels currently include..      Convolution: Gaussian, Blur, Comet      Morphological: Rectangle, Square, Diamond, Disk, Plus      Distance: Chebyshev, Manhatten, Knight, Euclidean    And both old and new (rectangular) userName defined kernel specifications    including the use of 'nan' to represent elements which are not part    of the kernel definition.  List built-in kernel types use "-list kernel"</li>
   <li> Added -morphology {method}[:{iteration}] {kernel_string}    Initial methods includes no only the basic morphology methods: Dilate,    Erode, Open, Close; and a pixel color preserving 'Intensity' version, but    also the special methods: Convolve, and Distance.  Of course the    appropriate kernel should be provided for each specific method.</li>
 <dt>2010-01-01  6.5.9-0 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> Add OpenCL-enabled filter (e.g.  convert image.png -process    "convolve '-1, -1, -1, -1, 9, -1, -1, -1, -1'" image.jpg).</li>
@@ -3672,7 +3672,7 @@
 <dt>2009-07-13  6.5.4-3 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
   <li> Final testing and bug fixes for all mathematical compose methods    Including non-overlapping regions bugs found in in operators Divide,    ColorDodge,  VividLight.  And the handling of transparency to follow    standard 'Over' Blending in Divide.  Only math methods not looked at are    the addition methods Plus, Add, Minus, and Subtract, which do not follow    normal 'Over' alpha blending behavior, for the purposes of mask handling.</li>
 <dt>2009-07-12  6.5.4-3 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
-  <li> Addition of user definable 'Mathematics' compose method      -compose Mathematics -set option:compose:args A,B,C,D -composite    Will implement the formula    f(Sc,Dc) = A*Sc*Dc + B*Sc + C*Dc + D    this lets you implement most smooth polynomial compose methods.    (requested by Fred WienHaus)</li>
+  <li> Addition of userName definable 'Mathematics' compose method      -compose Mathematics -set option:compose:args A,B,C,D -composite    Will implement the formula    f(Sc,Dc) = A*Sc*Dc + B*Sc + C*Dc + D    this lets you implement most smooth polynomial compose methods.    (requested by Fred WienHaus)</li>
 <dt>2009-07-11  6.5.4-3 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
   <li> Finished the recoding of Composite methods to allow easier debugging    and faster access.</li>
   <li> Added PegtopLight compose method as an alternative simpler Softlight    alternative.  See notes and comparison to SoftLight in...       http://www.pegtop.net/delphi/articles/blendmodes/softlight.htm</li>
@@ -3692,7 +3692,7 @@
 <dt>2009-06-25  6.5.4-1 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> Off by one error for multi-frame raw grayscale images.</li>
   <li> Can't stat() a Zip or Bzip opaque structure.</li>
-  <li> DPX user bits are no longer truncated.</li>
+  <li> DPX userName bits are no longer truncated.</li>
   <li> Return image colorspace for -format [%colorspace] option.</li>
   <li> ThumbnailImage(): don't subsample if image is already thumbnail size.</li>
 <dt>2009-06-23  6.5.4-0 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
@@ -3711,7 +3711,7 @@
   <li> Improve FITS keyword parser.</li>
 <dt>2009-06-14  6.5.3-7 Anthony Thyssen &lt;A.Thyssen@griffith...&gt;</dt>
   <li> Cleanup of compose 'displace' of old useless code that is not used.</li>
-  <li> Implement a compose 'distort' mapping method,    This is basically exactly like 'displace' but relative to a fixed point    which may be user supplied as +X+Y</li>
+  <li> Implement a compose 'distort' mapping method,    This is basically exactly like 'displace' but relative to a fixed point    which may be userName supplied as +X+Y</li>
   <li> Default scaling to width/2 and height/2 of overlay (100% scale)    with a distortion 'center' to the middle of the overlay image</li>
   <li> If a '%' flag given scale displacement relative to image size</li>
   <li> If a '!' flag given make scale and center relative to 'background' image    instead of the overlay map.</li>
@@ -4066,7 +4066,7 @@
   <li> pthread_t can be aggregate so stop treating it like its atomic.</li>
   <li> default the WPG image size to 1 top avoid "no pixels defined in cache"    exceptions.</li>
 <dt>2008-10-17  6.4.4-8 Anthony  &lt;A.Thyssen@griffith...&gt;</dt>
-  <li> slight modification of the added "radial-gradient:" image generator    so the radius goes to an edge rather than the corner, allowing more user    control based on image size.</li>
+  <li> slight modification of the added "radial-gradient:" image generator    so the radius goes to an edge rather than the corner, allowing more userName    control based on image size.</li>
   <li> fix -raise N to mean -raise NxN</li>
 <dt>2008-10-15  6.4.4-8 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>
   <li> Add support for inline images.</li>
@@ -4552,7 +4552,7 @@
 <dt>2007-04-28  6.3.4-0 Glenn  &lt;glennrp@image...&gt;</dt>
   <li> Added profile support to the GIF decoder/encoder.  They are stored    as GIF Application Extensions.  Known extensions include existing ICCRGB1    (for ICC profiles) and new MGKIPTC0 and MGK8BIM0 (for IPTC and 8BIM    profiles).  Unknown extensions found in GIF files are read as gifappNNN.</li>
 <dt>2007-04-28  6.3.4-0 Anthony  &lt;anthony@griffith...&gt;</dt>
-  <li> Invert Opacity change for user defined ordered dither threshold maps,    so that 'off' map is transparent, and 'on' is opaque.</li>
+  <li> Invert Opacity change for userName defined ordered dither threshold maps,    so that 'off' map is transparent, and 'on' is opaque.</li>
 <dt>2007-04-24  6.3.4-0 Anthony  &lt;anthony@griffith...&gt;</dt>
   <li> Added an initial Coalesce Images, and a final +map local colortable    optimization to the -layers Optimize method, for a simple to use    GIF optimization operation.  (more work to come)</li>
 <dt>2007-04-22  6.3.4-0 Cristy  &lt;quetzlzacatenango@image...&gt;</dt>

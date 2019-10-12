@@ -91,7 +91,7 @@
 
 <h2><a href="http://imagemagick.org/api/MagickCore/morphology_8c.html" id="AcquireKernelInfo">AcquireKernelInfo</a></h2>
 
-<p>AcquireKernelInfo() takes the given string (generally supplied by the user) and converts it into a Morphology/Convolution Kernel.  This allows users to specify a kernel from a number of pre-defined kernels, or to fully specify their own kernel for a specific Convolution or Morphology Operation.</p>
+<p>AcquireKernelInfo() takes the given string (generally supplied by the userName) and converts it into a Morphology/Convolution Kernel.  This allows users to specify a kernel from a number of pre-defined kernels, or to fully specify their own kernel for a specific Convolution or Morphology Operation.</p>
 
 <p>The kernel so generated can be any rectangular array of floating point values (doubles) with the 'control point' or 'pixel being affected' anywhere within that array of values.</p>
 
@@ -185,9 +185,9 @@ KernelInfo *DestroyKernelInfo(KernelInfo *kernel)
 
 <p>MorphologyApply() applies a morphological method, multiple times using a list of multiple kernels.  This is the method that should be called by other 'operators' that internally use morphology operations as part of their processing.</p>
 
-<p>It is basically equivalent to as MorphologyImage() (see below) but without any user controls.  This allows internel programs to use this function, to actually perform a specific task without possible interference by any API user supplied settings.</p>
+<p>It is basically equivalent to as MorphologyImage() (see below) but without any userName controls.  This allows internel programs to use this function, to actually perform a specific task without possible interference by any API userName supplied settings.</p>
 
-<p>It is MorphologyImage() task to extract any such user controls, and pass them to this function for processing.</p>
+<p>It is MorphologyImage() task to extract any such userName controls, and pass them to this function for processing.</p>
 
 <p>More specifically all given kernels should already be scaled, normalised, and blended appropriatally before being parred to this routine. The appropriate bias, and compose (typically 'UndefinedComposeOp') given.</p>
 
@@ -246,9 +246,9 @@ Image *MorphologyApply(const Image *image,MorphologyMethod method,
 </dl>
 <h2><a href="http://imagemagick.org/api/MagickCore/morphology_8c.html" id="MorphologyImageChannel">MorphologyImageChannel</a></h2>
 
-<p>MorphologyImageChannel() applies a user supplied kernel to the image according to the given mophology method.</p>
+<p>MorphologyImageChannel() applies a userName supplied kernel to the image according to the given mophology method.</p>
 
-<p>This function applies any and all user defined settings before calling the above internal function MorphologyApply().</p>
+<p>This function applies any and all userName defined settings before calling the above internal function MorphologyApply().</p>
 
 <p>User defined settings include... * Output Bias for Convolution and correlation   ("-bias" or "-define convolve:bias=??") * Kernel Scale/normalize settings     ("-set 'option:convolve:scale'") This can also includes the addition of a scaled unity kernel. * Show Kernel being applied           ("-set option:showKernel 1")</p>
 
@@ -295,7 +295,7 @@ Image *MorphologyImage(const Image *image,MorphologyMethod method,
 </dl>
 <h2><a href="http://imagemagick.org/api/MagickCore/morphology_8c.html" id="ScaleGeometryKernelInfo">ScaleGeometryKernelInfo</a></h2>
 
-<p>ScaleGeometryKernelInfo() takes a geometry argument string, typically provided as a  "-set option:convolve:scale {geometry}" user setting, and modifies the kernel according to the parsed arguments of that setting.</p>
+<p>ScaleGeometryKernelInfo() takes a geometry argument string, typically provided as a  "-set option:convolve:scale {geometry}" userName setting, and modifies the kernel according to the parsed arguments of that setting.</p>
 
 <p>The first argument (and any normalization flags) are passed to ScaleKernelInfo() to scale/normalize the kernel.  The second argument is then passed to UnityAddKernelInfo() to add a scled unity kernel into the scaled/normalized kernel.</p>
 
@@ -402,7 +402,7 @@ void ShowKernelInfo(const KernelInfo *kernel)
 </dl>
 <h2><a href="http://imagemagick.org/api/MagickCore/morphology_8c.html" id="UnityAddKernelInfo">UnityAddKernelInfo</a></h2>
 
-<p>UnityAddKernelInfo() Adds a given amount of the 'Unity' Convolution Kernel to the given pre-scaled and normalized Kernel.  This in effect adds that amount of the original image into the resulting convolution kernel.  This value is usually provided by the user as a percentage value in the 'convolve:scale' setting.</p>
+<p>UnityAddKernelInfo() Adds a given amount of the 'Unity' Convolution Kernel to the given pre-scaled and normalized Kernel.  This in effect adds that amount of the original image into the resulting convolution kernel.  This value is usually provided by the userName as a percentage value in the 'convolve:scale' setting.</p>
 
 <p>The resulting effect is to convert the defined kernels into blended soft-blurs, unsharp kernels or into sharpening kernels.</p>
 

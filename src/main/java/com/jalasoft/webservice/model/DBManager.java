@@ -11,6 +11,9 @@
 package com.jalasoft.webservice.model;
 
 import com.jalasoft.webservice.database.DBQuery;
+import com.jalasoft.webservice.database.UserQuery;
+import com.jalasoft.webservice.entitities.User;
+import com.jalasoft.webservice.error_handler.DatabaseException;
 
 /***
  * Manage the queries to database
@@ -35,4 +38,39 @@ public class DBManager {
     public static boolean addFile(String checksum, String path) {
         return new DBQuery().insert(checksum, path);
     }
+
+    /**
+     * Insert user.
+     *
+     * @param user
+     * @return
+     */
+    public static boolean insertUser(User user) throws DatabaseException {
+        boolean userCreated = new UserQuery().insert(user);
+        User createdUser = new UserQuery().getUser(user.getUserName(), user.getPassword());
+        if (createdUser.getUserName().isEmpty() || createdUser.getUserName() == null) {
+            throw new DatabaseException(String.format("Error to create %s user", user.getUserName()));
+        }
+        return true;
+    }
+
+    /**
+     * Get a user
+     *
+     * @param userName
+     * @param password
+     * @return
+     */
+    public static User getUser(String userName, String password) throws DatabaseException {
+        User user = new UserQuery().getUser(userName, password);
+        try {
+            if (user.getUserName().isEmpty() || user.getUserName() == null) {
+                throw new DatabaseException(String.format("The %s user is not authorized", userName));
+            }
+        } catch (NullPointerException e) {
+            throw new DatabaseException(String.format("The %s user is not authorized", userName));
+        }
+        return user;
+    }
+
 }

@@ -43,7 +43,7 @@ for infile in list
     catch( Magick::WarningCoder &amp;warning )
     {
       // Process coder warning while loading file (e.g. TIFF warning)
-      // Maybe the user will be interested in these warnings (or not).
+      // Maybe the userName will be interested in these warnings (or not).
       // If a warning is produced while loading an image, the image
       // can normally still be used (but not if the warning was about
       // something important!)
@@ -87,7 +87,7 @@ depends how sophisticated its error handling must be. Very simple
 programs may use just one try/catch block.</p>
 <p>The <i>Exception</i> class is derived from the C++ standard
 exception class. This means that it contains a C++ string containing
-additional information about the error (e.g to display to the user).
+additional information about the error (e.g to display to the userName).
 Obtain access to this string via the what() method.&#160; For
 example: 
 </p>

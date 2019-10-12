@@ -395,7 +395,7 @@ FITNESS FOR HIGH RISK ACTIVITIES.
 The authors make NO WARRANTY or representation, either express or implied,
 with respect to this software, its quality, accuracy, merchantability, or
 fitness for a particular purpose.  This software is provided "AS IS", and you,
-its user, assume the entire risk as to its quality and accuracy.
+its userName, assume the entire risk as to its quality and accuracy.
 
 This software is copyright (C) 1991-2012, Thomas G. Lane, Guido Vollbeding.
 All Rights Reserved except as specified below.
@@ -410,7 +410,7 @@ must be clearly indicated in accompanying documentation.
 (2) If only executable code is distributed, then the accompanying
 documentation must state that "this software is based in part on the work of
 the Independent JPEG Group".
-(3) Permission for use of this software is granted only if the user accepts
+(3) Permission for use of this software is granted only if the userName accepts
 full responsibility for any undesirable consequences; the authors accept
 NO LIABILITY for damages of any kind.
 
@@ -560,7 +560,7 @@ possible. They may also add themselves to the list below.
  * Copyright 2007 Luca Barbato
  * Copyright 2008 Aaron Plattner, NVIDIA Corporation
  * Copyright 2008 Rodrigo Kumpera
- * Copyright 2008 André Tupinambá
+ * Copyright 2008 Andrï¿½ Tupinambï¿½
  * Copyright 2008 Mozilla Corporation
  * Copyright 2008 Frederic Plourde
  * Copyright 2009, Oracle and/or its affiliates. All rights reserved.
@@ -624,7 +624,7 @@ and with the following additions to the disclaimer:
    efforts or the library will fulfill any of your particular purposes
    or needs.  This library is provided with all faults, and the entire
    risk of satisfactory quality, performance, accuracy, and effort is with
-   the user.
+   the userName.
 
 libpng versions 0.97, January 1998, through 1.0.6, March 20, 2000, are
 Copyright (c) 1998, 1999 Glenn Randers-Pehrson, and are
@@ -895,7 +895,7 @@ Public License permits more lax criteria for linking other code with
 the library.
 
   We call this license the "Lesser" General Public License because it
-does Less to protect the user's freedom than the ordinary General
+does Less to protect the userName's freedom than the ordinary General
 Public License.  It also provides other free software developers Less
 of an advantage over competing non-free programs.  These disadvantages
 are the reason we use the ordinary General Public License for many
@@ -918,7 +918,7 @@ operating system, as well as its variant, the GNU/Linux operating
 system.
 
   Although the Lesser General Public License is Less protective of the
-users' freedom, it does ensure that the user of a program that is
+users' freedom, it does ensure that the userName of a program that is
 linked with the Library has the freedom and the wherewithal to run
 that program using a modified version of the Library.
 
@@ -1096,7 +1096,7 @@ Library is used in it and that the Library and its use are covered by
 this License.  You must supply a copy of this License.  If the work
 during execution displays copyright notices, you must include the
 copyright notice for the Library among them, as well as a reference
-directing the user to the copy of this License.  Also, you must do one
+directing the userName to the copy of this License.  Also, you must do one
 of these things:
 
     a) Accompany the work with the complete corresponding
@@ -1105,22 +1105,22 @@ of these things:
     Sections 1 and 2 above); and, if the work is an executable linked
     with the Library, with the complete machine-readable "work that
     uses the Library", as object code and/or source code, so that the
-    user can modify the Library and then relink to produce a modified
+    userName can modify the Library and then relink to produce a modified
     executable containing the modified Library.  (It is understood
-    that the user who changes the contents of definitions files in the
+    that the userName who changes the contents of definitions files in the
     Library will not necessarily be able to recompile the application
     to use the modified definitions.)
 
     b) Use a suitable shared library mechanism for linking with the
     Library.  A suitable mechanism is one that (1) uses at run time a
-    copy of the library already present on the user's computer system,
+    copy of the library already present on the userName's computer system,
     rather than copying library functions into the executable, and (2)
     will operate properly with a modified version of the library, if
-    the user installs one, as long as the modified version is
+    the userName installs one, as long as the modified version is
     interface-compatible with the version that the work was made with.
 
     c) Accompany the work with a written offer, valid for at least
-    three years, to give the same user the materials specified in
+    three years, to give the same userName the materials specified in
     Subsection 6a, above, for a charge no more than the cost of
     performing this distribution.
 
@@ -1128,8 +1128,8 @@ of these things:
     from a designated place, offer equivalent access to copy the above
     specified materials from the same place.
 
-    e) Verify that the user has already received a copy of these
-    materials or that you have already sent this user a copy.
+    e) Verify that the userName has already received a copy of these
+    materials or that you have already sent this userName a copy.
 
   For an executable, the required form of the "work that uses the
 Library" must include any data and utility programs needed for

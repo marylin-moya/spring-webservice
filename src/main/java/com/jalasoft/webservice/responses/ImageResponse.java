@@ -8,12 +8,12 @@
  * with Jalasoft.
  */
 
-package com.jalasoft.webservice.entitities;
+package com.jalasoft.webservice.responses;
 
 /**
  * Image Response class.
  */
-public class ImageResponse extends Response{
+public class ImageResponse extends SuccessResponse {
 
     /**
      * Image Response Constructor

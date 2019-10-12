@@ -32,7 +32,7 @@
     resource
     trace
     transform
-    user
+    userName
     wand
     x11
 
@@ -63,7 +63,7 @@
     %p   process id
     %r   real CPU time
     %t   wall clock time
-    %u   user CPU time
+    %u   userName CPU time
     %v   version
     %%   percent sign
     \n   newline
