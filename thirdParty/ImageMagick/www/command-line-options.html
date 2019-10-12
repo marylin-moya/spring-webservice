@@ -532,7 +532,7 @@ specified or found in the image) is white.</p>
 
 <p class="magick-description">Measure performance.</p>
 
-<p>Repeat the entire command for the given number of <var>iterations</var> and report the userName-time and elapsed time. For instance,
+<p>Repeat the entire command for the given number of <var>iterations</var> and report the user-time and elapsed time. For instance,
 consider the following command and its output.  Modify the benchmark with the
 -duration to run the benchmark for a fixed number of seconds and -concurrent
 to run the benchmark in parallel (requires the OpenMP feature).</p>
@@ -546,7 +546,7 @@ Performance[4]: 5i 0.875657ips 6.880u 0:05.710
 </code></pre>
 
 <p>In this example, 5 iterations were completed at 2.174 iterations per
-second, using 3 threads and 3.190 seconds of the userName allotted time, for
+second, using 3 threads and 3.190 seconds of the user allotted time, for
 a total elapsed time of 2.300 seconds.</p>
 
 <div style="margin: auto;">
@@ -943,7 +943,7 @@ include the following.
 </p>
 
 <p>Warning, some operators behave differently when the <a href="command-line-options.html#channel"
->+channel</a> default setting is in effect, versus ANY userName defined <a
+>+channel</a> default setting is in effect, versus ANY user defined <a
 href="command-line-options.html#channel" >-channel</a> setting (including the equivalent of the
 default). These operators have yet to be made to understand the newer 'Sync'
 flag. </p>
@@ -1582,7 +1582,7 @@ normalization of mathematical images. </p>
   <h3><a class="anchor" id="convolve"></a>-convolve <var>kernel</var></h3>
 </div>
 
-<p class="magick-description">Convolve an image with a userName-supplied convolution kernel.</p>
+<p class="magick-description">Convolve an image with a user-supplied convolution kernel.</p>
 
 <p>The <var>kernel</var> is a matrix specified as
 a comma-separated list of integers (with no spaces), ordered left-to right,
@@ -1591,7 +1591,7 @@ supported, and therefore the number of entries in the specified <var>kernel</var
 7<sup>2</sup>=49, etc. </p>
 
 <p>Note that the <a href="../www/www/command-line-options.html#convolve">&#x2011;convolve</a> operator supports the <a href="../www/www/command-line-options.html#bias">&#x2011;bias</a> setting. This option shifts the convolution so that
-positive and negative results are relative to a userName-specified bias value.
+positive and negative results are relative to a user-specified bias value.
 This is important for non-HDRI compilations of ImageMagick when dealing with
 convolutions that contain negative as well as positive values. This is
 especially the case with convolutions involving high pass filters or edge
@@ -1697,7 +1697,7 @@ a comma-separated list consisting of one or more of the following domains:
 <pre class="highlight"><code>convert -debug "Cache,Blob" rose: rose.png
 </code></pre>
 
-<p>The <code>User</code> domain is normally empty, but developers can log userName
+<p>The <code>User</code> domain is normally empty, but developers can log user
 events in their private copy of ImageMagick.</p>
 
 <p>To print the complete list of debug methods, use <a href="command-line-options.html#list">-list
@@ -2902,7 +2902,7 @@ and meaning of the floating point values depends on the distortion <var>method</
        The resulting image is always resized to best fit the resulting image,
        (as if using <a href="command-line-options.html#distort" >+distort</a>) while attempting to
        preserve scale and aspect ratio of the original image as much as
-       possible with the arguments given by the userName. All four arguments will
+       possible with the arguments given by the user. All four arguments will
        be needed to change the overall aspect ratio of an 'Arc'ed image. <br/>
 
        This a variation of a polar distortion designed to try to preserve the
@@ -3143,7 +3143,7 @@ when saving to specific formats. This is enabled by default.</p>
 eye a closer approximation of the images original color is reproduced. This
 reduces the number of colors needed to reproduce the image but at the cost of
 a lower level pattern of colors. Error diffusion dithers can use any set of
-colors (generated or userName defined) to an image.  </p>
+colors (generated or user defined) to an image.  </p>
 
 <p>Dithering is turned on by default, to turn it off use the plus form of the
 setting, <a href="command-line-options.html#dither">+dither</a>. This will also also render PostScript
@@ -5586,7 +5586,7 @@ characters:</p>
 <dt class="col-md-4">%p</dt><dd class="col-md-8">process ID</dd>
 <dt class="col-md-4">%r</dt><dd class="col-md-8">real CPU time</dd>
 <dt class="col-md-4">%t</dt><dd class="col-md-8">wall clock time</dd>
-<dt class="col-md-4">%u</dt><dd class="col-md-8">userName CPU time</dd>
+<dt class="col-md-4">%u</dt><dd class="col-md-8">user CPU time</dd>
 <dt class="col-md-4">%%</dt><dd class="col-md-8">percent sign</dd>
 <dt class="col-md-4">\n</dt><dd class="col-md-8">newline</dd>
 <dt class="col-md-4">\r</dt><dd class="col-md-8">carriage return</dd>

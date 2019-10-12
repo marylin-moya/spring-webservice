@@ -678,7 +678,7 @@ in image)</font></td>
       <center><a name="convolve"></a> <font size="-1">convolve</font></center>
       </td>
       <td><font size="-1">size_t order_, const double *kernel_</font></td>
-      <td><font size="-1">Convolve image.  Applies a userName-specified
+      <td><font size="-1">Convolve image.  Applies a user-specified
 convolution to the image. The <i>order_</i> parameter represents the
 number of columns and rows in the filter kernel, and <i>kernel_</i>
 is a two-dimensional array of doubles representing the convolution
@@ -722,7 +722,7 @@ altered. Use a copy of the original if this is a problem.</font></td>
       <center><a name="distort"></a> <font size="-1">distort</font></center>
       </td>
       <td><font size="-1">const DistortImageMethod method, const size_t number_arguments, const double *arguments, const bool bestfit = false </font></td>
-      <td><font size="-1">Distort image.  Applies a userName-specified
+      <td><font size="-1">Distort image.  Applies a user-specified
 distortion to the image.</font></td>
     </tr>
     <tr>
@@ -2638,7 +2638,7 @@ image (such as for a scene in an animation)</font></p>
       </small></td>
       <td valign="top"><small>Get/set/remove </small><small> a named
 profile</small><small>. Valid names include </small><small>"*",
-"8BIM", "ICM", "IPTC", or a userName/format-defined profile name. </small><br>
+"8BIM", "ICM", "IPTC", or a user/format-defined profile name. </small><br>
       </td>
     </tr>
     <tr>
@@ -2827,7 +2827,7 @@ distance into the dash pattern to start the dash (default 0).</font></td>
       <td><font size="-1">Specify the pattern of dashes and gaps used
 to stroke paths. The strokeDashArray represents a zero-terminated
 array of numbers that specify the lengths (in pixels) of alternating
-dashes and gaps in userName units. If an odd number of values is provided,
+dashes and gaps in user units. If an odd number of values is provided,
 then the list of values is repeated to yield an even number of
 values.  A typical strokeDashArray_ array might contain the
 members 5 3 2 0, where the zero value indicates the end of the pattern
@@ -3108,7 +3108,7 @@ cache as defined by the specified rectangular region. </font><font
  size="-1">The returned pointer remains valid until the next getPixel,
 getConstPixels, or setPixels call and should never be deallocated by
 the
-userName.</font></td>
+user.</font></td>
     </tr>
     <tr>
       <td>
@@ -3120,7 +3120,7 @@ userName.</font></td>
 corresponding to a previous </font><font size="-1">getPixel,
 getConstPixels, or setPixels call.  </font><font size="-1">The
 returned pointer remains valid until the next getPixel, getConstPixels,
-or setPixels call and should never be deallocated by the userName.</font><font
+or setPixels call and should never be deallocated by the user.</font><font
  size="-1"> Only valid for PseudoClass images or CMYKA images. The
 pixel indexes represent an array of type IndexPacket, with each entry
 corresponding to an x,y pixel position. For PseudoClass images, the
@@ -3140,7 +3140,7 @@ corresponding to the pixel region requested by the last <a
 , or <a href="Image++.html#setPixels">setPixels</a> call. </font><font
  size="-1">The
 returned pointer remains valid until the next getPixel, getConstPixels,
-or setPixels call and should never be deallocated by the userName.</font><font
+or setPixels call and should never be deallocated by the user.</font><font
  size="-1"> </font><font size="-1">Only valid for PseudoClass images
 or
 CMYKA images. The pixel indexes represent an array of type
@@ -3163,7 +3163,7 @@ may be subsequently transferred back to the image via syncPixels. </font><font
  size="-1">The returned pointer remains valid until the next getPixel,
 getConstPixels, or setPixels call and should never be deallocated by
 the
-userName.</font><font size="-1"></font></td>
+user.</font><font size="-1"></font></td>
     </tr>
     <tr>
       <td>
@@ -3177,7 +3177,7 @@ pixels as defined by the region rectangle.  This area is
 subsequently transferred from the pixel cache to the image via
 syncPixels. </font><font size="-1">The returned pointer remains
 valid until the next getPixel, getConstPixels, or setPixels call and
-should never be deallocated by the userName.</font></td>
+should never be deallocated by the user.</font></td>
     </tr>
     <tr>
       <td>

@@ -51,7 +51,7 @@
   Set option delegate:bimodal=true to process bimodal delegates otherwise they
   are ignored.
 
-  If stealth="True" the delegate is not listed in userName requested
+  If stealth="True" the delegate is not listed in user requested
   "-list delegate" listings. These are typically special internal delegates.
 
   If spawn="True", ImageMagick does not wait for the delegate to finish, nor
