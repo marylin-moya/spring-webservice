@@ -14,15 +14,32 @@ package com.jalasoft.webservice.responses;
  * Image Response class.
  */
 public class ImageResponse extends SuccessResponse {
-
-    /**
+    private String url;
+    
+     /**
      * Image Response Constructor
      *
      * @param name
      * @param status
      * @param detail
      */
-    public ImageResponse(String name, Integer status, String detail) {
+    public ImageResponse(String name, Integer status, String detail){
         super(name, status, detail);
+    }
+
+    /**
+     * Get url
+     * @return
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * Set url value
+     * @param url
+     */
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

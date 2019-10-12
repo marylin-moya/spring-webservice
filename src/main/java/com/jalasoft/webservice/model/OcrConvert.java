@@ -25,6 +25,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 
 import java.io.File;
+import java.io.IOException;
 
 import static com.jalasoft.webservice.utils.Constants.LANGUAGES;
 

@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.activation.MimetypesFileTypeMap;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -129,4 +130,18 @@ public class FileManager {
         int lastIndex = fullFileName.lastIndexOf(".");
         return fullFileName.substring(lastIndex + 1);
     }
+
+    /***
+     * Verify if a file is image or not
+     * @param fullPathFile
+     * @return
+     */
+    static public boolean isImageFile(String fullPathFile){
+        File file = new File(fullPathFile);
+        String mimeType = new MimetypesFileTypeMap().getContentType(file);
+        LOGGER.info("MimeType {} refers to File {}.", mimeType, file.getName());
+        String type = mimeType.split("/")[0].toLowerCase();
+        return type.equals("image");
+    }
+
 }
