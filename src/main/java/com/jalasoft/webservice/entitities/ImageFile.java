@@ -26,7 +26,7 @@ public class ImageFile extends BaseFile {
     private boolean transpose;
     private boolean transverse;
     private enum Color{
-        red, yellow, blue,green, black;
+        red, yellow, blue,green,black;
     }
 
     public ImageFile(){
@@ -259,7 +259,7 @@ public class ImageFile extends BaseFile {
      */
     public void validateColor(String field, String nameField) throws ParamsInvalidException{
         if(!IsColor(field)){
-            throw new ParamsInvalidException(13, String.format("{%s}: Field required, needs to be color value.", nameField));
+            throw new ParamsInvalidException(13, String.format("{%s}: Field required, its value is not color.", nameField));
         }
     }
 
@@ -270,7 +270,7 @@ public class ImageFile extends BaseFile {
      */
     public boolean IsColor(String color){
         for (Color colorObj: Color.values()){
-            if(colorObj.equals(color))
+            if(colorObj.toString().equals(color))
                 return true;
         }
         return false;
