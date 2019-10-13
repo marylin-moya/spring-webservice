@@ -10,11 +10,8 @@
 
 package com.jalasoft.webservice.controller;
 
-import com.drew.imaging.ImageProcessingException;
 import com.jalasoft.webservice.utils.FileManager;
-import com.jalasoft.webservice.utils.MetadataExtractor;
 import com.jalasoft.webservice.utils.PropertiesManager;
-import com.jalasoft.webservice.utils.ZipManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.util.FileCopyUtils;
@@ -80,7 +77,7 @@ public class DownloadController {
      */
     @GetMapping("/filemetadatazip/{fileName:.+}")
     public void getFileAndMetadataInfo(HttpServletResponse response,
-                        @PathVariable("fileName") String fileName) {
+                                       @PathVariable("fileName") String fileName) {
         String fullPathName = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(targetFileKey), fileName);
         String commonContentType = "application/octet-stream";
         try {
@@ -89,7 +86,7 @@ public class DownloadController {
                 response.setContentType(commonContentType);    // Download the file directly
                 InputStream is = new BufferedInputStream(new FileInputStream(fullPathName));
                 FileCopyUtils.copy(is, response.getOutputStream());
-                }
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }

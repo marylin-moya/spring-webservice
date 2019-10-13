@@ -64,7 +64,7 @@ public class ImgController {
                                  @Valid @RequestParam(value = "grayscale", defaultValue = "false") boolean grayscale,
                                  @Valid @RequestParam(value = "transpose", defaultValue = "false") boolean transpose,
                                  @Valid @RequestParam(value = "transverse", defaultValue = "false") boolean transverse,
-                                 @Valid @NotNull @NotBlank @RequestParam(value = "borderColor", defaultValue = "black") String borderColor){
+                                 @Valid @NotNull @NotBlank @RequestParam(value = "borderColor", defaultValue = "black") String borderColor) {
         LOGGER.info("/img endpoint to convert '{}' image to new format '{}'", file.getOriginalFilename(), targetType);
 
         try {
@@ -107,7 +107,7 @@ public class ImgController {
 
             String urlDownload = String.format("%s%s%s%s", hostname, PORT, PATH_DOWNLOAD_FILE, metadata.getFileName());
             String urlMetadataDownload = String.format("%s%s%s%s", hostname, PORT, PATH_DOWNLOAD_ZIP_FILE, FileManager.getFileName(zipFile));
-            imageResponse.setUrl(String.format("%s Or %s",urlDownload, urlMetadataDownload));
+            imageResponse.setUrl(String.format("%s Or %s", urlDownload, urlMetadataDownload));
             LOGGER.info("New file is available in following link {}", urlDownload);
             return imageResponse;
 
@@ -125,7 +125,7 @@ public class ImgController {
             LOGGER.error("Image Controller: Error in conversion operation '{}' ", convertion.getMessage());
             return new ImageResponse(HttpStatus.NOT_FOUND.name(), HttpStatus.NOT_FOUND.value(),
                     convertion.getMessage());
-        } catch (ImageProcessingException ie){
+        } catch (ImageProcessingException ie) {
             return new ErrorResponse(HttpStatus.NOT_FOUND.name(), HttpStatus.NOT_FOUND.value(),
                     String.format("Error with Get Metadata information: %s", ie.getMessage()));
         }

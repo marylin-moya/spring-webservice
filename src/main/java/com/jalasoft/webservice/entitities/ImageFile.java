@@ -25,11 +25,12 @@ public class ImageFile extends BaseFile {
     private boolean grayscale;
     private boolean transpose;
     private boolean transverse;
-    private enum Color{
-        red, yellow, blue,green,black;
+
+    private enum Color {
+        red, yellow, blue, green, black;
     }
 
-    public ImageFile(){
+    public ImageFile() {
         borderColor = Color.black.toString();
         rotate = 0.0;
         blur = 0.0;
@@ -39,6 +40,7 @@ public class ImageFile extends BaseFile {
         transpose = false;
         transverse = false;
     }
+
     /**
      * Get target type to convert.
      *
@@ -219,12 +221,12 @@ public class ImageFile extends BaseFile {
      * @param field
      * @throws ParamsInvalidException
      */
-    public void validateStringField(String field, String nameField) throws ParamsInvalidException{
-        if(field == null){
+    public void validateStringField(String field, String nameField) throws ParamsInvalidException {
+        if (field == null) {
             throw new ParamsInvalidException(10, String.format("{%s}: Field required, needs to be different to null.", nameField));
         }
         if (field.isEmpty()) {
-                throw new ParamsInvalidException(11, String.format("{%s}: Field required needs to be not empty", nameField));
+            throw new ParamsInvalidException(11, String.format("{%s}: Field required needs to be not empty", nameField));
         }
 
 
@@ -235,8 +237,8 @@ public class ImageFile extends BaseFile {
      * @param field
      * @throws ParamsInvalidException
      */
-    public void validateDoubleField(double field, String nameField) throws ParamsInvalidException{
-        if(field < 0){
+    public void validateDoubleField(double field, String nameField) throws ParamsInvalidException {
+        if (field < 0) {
             throw new ParamsInvalidException(12, String.format("{%s}: Field required, needs to be higher than 0.", nameField));
         }
     }
@@ -246,8 +248,8 @@ public class ImageFile extends BaseFile {
      * @param field
      * @throws ParamsInvalidException
      */
-    public void validateIntegerField(int field, String nameField) throws ParamsInvalidException{
-        if(field < 0){
+    public void validateIntegerField(int field, String nameField) throws ParamsInvalidException {
+        if (field < 0) {
             throw new ParamsInvalidException(12, String.format("{%s}: Field required, needs to be higher than 0.", nameField));
         }
     }
@@ -257,8 +259,8 @@ public class ImageFile extends BaseFile {
      * @param field
      * @throws ParamsInvalidException
      */
-    public void validateColor(String field, String nameField) throws ParamsInvalidException{
-        if(!IsColor(field)){
+    public void validateColor(String field, String nameField) throws ParamsInvalidException {
+        if (!IsColor(field)) {
             throw new ParamsInvalidException(13, String.format("{%s}: Field required, its value is not color.", nameField));
         }
     }
@@ -268,9 +270,9 @@ public class ImageFile extends BaseFile {
      * @param color
      * @return
      */
-    public boolean IsColor(String color){
-        for (Color colorObj: Color.values()){
-            if(colorObj.toString().equals(color))
+    public boolean IsColor(String color) {
+        for (Color colorObj : Color.values()) {
+            if (colorObj.toString().equals(color))
                 return true;
         }
         return false;
