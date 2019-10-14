@@ -40,6 +40,12 @@ public class ParamsInvalidException extends Exception {
             case 11:
                 this.message = String.format("the param %s is empty", this.param);
                 break;
+            case 12:
+                this.message = String.format("the param %s needs to be higher than 0", this.param);
+                break;
+            case 13:
+                this.message = String.format("the param %s does not have a valid color value", this.param);
+                break;
         }
         return this.message;
     }

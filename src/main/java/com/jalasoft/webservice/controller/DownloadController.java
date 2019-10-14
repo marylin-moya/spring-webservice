@@ -69,4 +69,26 @@ public class DownloadController {
             LOGGER.info("File was not download..." + e.getMessage());
         }
     }
+
+    /***
+     *
+     * @param response
+     * @param fileName  File Name to download
+     */
+    @GetMapping("/filemetadatazip/{fileName:.+}")
+    public void getFileAndMetadataInfo(HttpServletResponse response,
+                                       @PathVariable("fileName") String fileName) {
+        String fullPathName = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(targetFileKey), fileName);
+        String commonContentType = "application/octet-stream";
+        try {
+            File file = new File(fullPathName);
+            if (file.exists()) {
+                response.setContentType(commonContentType);    // Download the file directly
+                InputStream is = new BufferedInputStream(new FileInputStream(fullPathName));
+                FileCopyUtils.copy(is, response.getOutputStream());
+            }
+        } catch (IOException ex) {
+            LOGGER.info("It is not possible download zip File..." + ex.getMessage());
+        }
+    }
 }

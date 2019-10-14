@@ -10,6 +10,7 @@
 
 package com.jalasoft.webservice.controller;
 
+import com.drew.imaging.ImageProcessingException;
 import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.ImageFile;
 import com.jalasoft.webservice.error_handler.ConvertException;
@@ -20,17 +21,11 @@ import com.jalasoft.webservice.model.ImageConvert;
 import com.jalasoft.webservice.responses.ErrorResponse;
 import com.jalasoft.webservice.responses.ImageResponse;
 import com.jalasoft.webservice.responses.Response;
-import com.jalasoft.webservice.utils.FileManager;
-import com.jalasoft.webservice.utils.PropertiesManager;
-import com.jalasoft.webservice.utils.ServerUtilities;
+import com.jalasoft.webservice.utils.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -51,6 +46,7 @@ public class ImgController {
     private static final Logger LOGGER = LogManager.getLogger();
     private String sourceFileKey = "file.source-dir";//class to read keys
     private static String PATH_DOWNLOAD_FILE = DOWNLOAD_PATH + "/file/";
+    private static String PATH_DOWNLOAD_ZIP_FILE = DOWNLOAD_PATH + "/filemetadatazip/";
     private static String PORT = ":8080";
 
     /**
@@ -88,6 +84,7 @@ public class ImgController {
             imgFile.setGrayscale(grayscale);
             imgFile.setTransverse(transverse);
             imgFile.setTranspose(transpose);
+            imgFile.setPath(PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey));
             imgFile.validate();
             String hostname = ServerUtilities.GetServerHostname();
             //verify if file is saved in database
@@ -107,8 +104,14 @@ public class ImgController {
             IConvert iConvert = new ImageConvert();
             ImageResponse imageResponse = (ImageResponse) iConvert.Convert(imgFile);
             BaseFile metadata = imageResponse.getMetadata();
+            //generate metadata file and zip image and metadata
+            String metadataFileName = MetadataExtractor.generateMetadataFile(String.format("%s%s", metadata.getPath(), metadata.getFileName()));
+            String zipFile = ZipManager.zipFiles(String.format("%s%s", metadata.getPath(), metadata.getFileName()), metadataFileName);
+
+
             String urlDownload = String.format("%s%s%s%s", hostname, PORT, PATH_DOWNLOAD_FILE, metadata.getFileName());
-            imageResponse.setUrl(urlDownload);
+            String urlMetadataDownload = String.format("%s%s%s%s", hostname, PORT, PATH_DOWNLOAD_ZIP_FILE, FileManager.getFileName(zipFile));
+            imageResponse.setUrl(String.format("%s Or %s", urlDownload, urlMetadataDownload));
             LOGGER.info("New file is available in following link {}", urlDownload);
             return imageResponse;
 
@@ -126,6 +129,10 @@ public class ImgController {
             LOGGER.error("Image Controller: Error in conversion operation '{}' ", convertion.getMessage());
             return new ImageResponse(HttpStatus.NOT_FOUND.name(), HttpStatus.NOT_FOUND.value(),
                     convertion.getMessage());
+        } catch (ImageProcessingException ie) {
+            return new ErrorResponse(HttpStatus.NOT_FOUND.name(), HttpStatus.NOT_FOUND.value(),
+                    String.format("Error with Get Metadata information: %s", ie.getMessage()));
         }
+
     }
 }

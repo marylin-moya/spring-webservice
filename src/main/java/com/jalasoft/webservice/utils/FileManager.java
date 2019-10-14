@@ -144,4 +144,14 @@ public class FileManager {
         return type.equals("image");
     }
 
+    /***
+     * Gets the file name with extension given a full file name eg. Tes1.csv
+     * @param fullFileName
+     * @return
+     */
+    static public String getFileName(String fullFileName) {
+        File file = new File(fullFileName);
+        return file.getName();
+    }
+
 }

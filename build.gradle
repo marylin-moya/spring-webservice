@@ -31,5 +31,8 @@ dependencies {
     implementation 'net.sourceforge.tess4j:tess4j:3.4.8'
     implementation 'org.xerial:sqlite-jdbc:3.7.2'
     implementation 'org.im4java:im4java:1.4.0'
-    implementation 'io.jsonwebtoken:jjwt:0.2'
+	implementation 'io.jsonwebtoken:jjwt:0.2'    
+    // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
+    compile group: 'com.drewnoakes', name: 'metadata-extractor', version: '2.12.0'
+    
 }
