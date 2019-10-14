@@ -9,12 +9,12 @@
  *  with Jalasoft.
  *
  */
-package com.jalasoft.webservice.entitities;
+package com.jalasoft.webservice.responses;
 
 /**
  * OcrResponse class to store the result of extractor Model
  */
-public class OcrResponse extends Response {
+public class OcrResponse extends SuccessResponse {
     private String content;
 
     /**

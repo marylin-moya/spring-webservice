@@ -8,7 +8,7 @@
  * with Jalasoft.
  */
 
-package com.jalasoft.webservice.entitities;
+package com.jalasoft.webservice.responses;
 
 /**
  * Error Response Class

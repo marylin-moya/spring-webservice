@@ -12,9 +12,9 @@ package com.jalasoft.webservice.model;
 
 import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.ImageFile;
-import com.jalasoft.webservice.entitities.ImageResponse;
-import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.responses.ImageResponse;
+import com.jalasoft.webservice.responses.Response;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesManager;
 import org.apache.logging.log4j.LogManager;

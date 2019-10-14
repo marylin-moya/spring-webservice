@@ -12,9 +12,9 @@ package com.jalasoft.webservice.model;
 
 import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.OcrFile;
-import com.jalasoft.webservice.entitities.OcrResponse;
-import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.responses.OcrResponse;
+import com.jalasoft.webservice.responses.Response;
 import com.jalasoft.webservice.utils.CheckSum;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesManager;

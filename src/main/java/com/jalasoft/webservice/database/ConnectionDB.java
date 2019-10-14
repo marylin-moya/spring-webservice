@@ -45,7 +45,7 @@ public class ConnectionDB {
     }
 
     /**
-     * Method to create the webservice database if does not exist with a fileST table
+     * Method to create the webservice database if does not exist with a fileST and user tables
      * fileST table has an id, checksum and path.
      */
     private void init() {
@@ -54,6 +54,7 @@ public class ConnectionDB {
             conn = DriverManager.getConnection("jdbc:sqlite:webservice.db");
             Statement state = conn.createStatement();
             state.execute("create table if not exists fileST (id integer primary key, checksum varchar(32), path varchar(250));");
+            state.execute("create table if not exists user (id integer primary key, user varchar(32), password varchar(32), role varchar(250), email varchar(250));");
         } catch (SQLException | ClassNotFoundException e) {
             LOGGER.error("Exception while initializing the database: {}", e.getMessage());
         }

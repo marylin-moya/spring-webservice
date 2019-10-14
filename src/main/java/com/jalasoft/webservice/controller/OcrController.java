@@ -11,14 +11,14 @@
  */
 package com.jalasoft.webservice.controller;
 
-import com.jalasoft.webservice.entitities.ErrorResponse;
 import com.jalasoft.webservice.entitities.OcrFile;
-import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.error_handler.ParamsInvalidException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
 import com.jalasoft.webservice.model.OcrConvert;
+import com.jalasoft.webservice.responses.ErrorResponse;
+import com.jalasoft.webservice.responses.Response;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesManager;
 import org.apache.logging.log4j.LogManager;
