@@ -88,7 +88,7 @@ public class DownloadController {
                 FileCopyUtils.copy(is, response.getOutputStream());
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.info("It is not possible download zip File..." + ex.getMessage());
         }
     }
 }
