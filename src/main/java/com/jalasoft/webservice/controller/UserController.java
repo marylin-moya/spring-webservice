@@ -10,10 +10,11 @@
 
 package com.jalasoft.webservice.controller;
 
-import com.jalasoft.webservice.entitities.ErrorResponse;
-import com.jalasoft.webservice.entitities.Response;
 import com.jalasoft.webservice.entitities.User;
+import com.jalasoft.webservice.error_handler.DatabaseException;
 import com.jalasoft.webservice.model.DBManager;
+import com.jalasoft.webservice.responses.ErrorResponse;
+import com.jalasoft.webservice.responses.Response;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ import static com.jalasoft.webservice.utils.Constants.USER_PATH;
 public class UserController {
     @PostMapping(value = "/login", consumes = {"multipart/form-data"})
     public Response validate(@Valid @NotNull @NotBlank @RequestParam("userName") String userName,
-                                         @Valid @NotNull @NotBlank @RequestParam("password") String password){
+                             @Valid @NotNull @NotBlank @RequestParam("password") String password) throws DatabaseException {
         User user = DBManager.getUser(userName, password);
         if(user == null){
             return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
