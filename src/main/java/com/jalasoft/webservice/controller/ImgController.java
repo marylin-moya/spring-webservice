@@ -10,19 +10,27 @@
 
 package com.jalasoft.webservice.controller;
 
-import com.jalasoft.webservice.entitities.*;
+import com.jalasoft.webservice.entitities.BaseFile;
+import com.jalasoft.webservice.entitities.ImageFile;
 import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.error_handler.ParamsInvalidException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
 import com.jalasoft.webservice.model.ImageConvert;
+import com.jalasoft.webservice.responses.ErrorResponse;
+import com.jalasoft.webservice.responses.ImageResponse;
+import com.jalasoft.webservice.responses.Response;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesManager;
 import com.jalasoft.webservice.utils.ServerUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -64,7 +72,7 @@ public class ImgController {
                                  @Valid @RequestParam(value = "grayscale", defaultValue = "false") boolean grayscale,
                                  @Valid @RequestParam(value = "transpose", defaultValue = "false") boolean transpose,
                                  @Valid @RequestParam(value = "transverse", defaultValue = "false") boolean transverse,
-                                 @Valid @NotNull @NotBlank @RequestParam(value = "borderColor", defaultValue = "black") String borderColor){
+                                 @Valid @NotNull @NotBlank @RequestParam(value = "borderColor", defaultValue = "black") String borderColor) {
         LOGGER.info("/img endpoint to convert '{}' image to new format '{}'", file.getOriginalFilename(), targetType);
 
         try {

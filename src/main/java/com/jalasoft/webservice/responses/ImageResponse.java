@@ -8,13 +8,21 @@
  * with Jalasoft.
  */
 
-package com.jalasoft.webservice.entitities;
+package com.jalasoft.webservice.responses;
 
 /**
  * Image Response class.
  */
-public class ImageResponse extends Response {
+public class ImageResponse extends SuccessResponse {
     private String url;
+    
+     /**
+     * Image Response Constructor
+     *
+     * @param name
+     * @param status
+     * @param detail
+     */
     public ImageResponse(String name, Integer status, String detail){
         super(name, status, detail);
     }
