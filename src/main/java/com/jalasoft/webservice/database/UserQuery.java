@@ -40,13 +40,6 @@ public class UserQuery {
     }
 
     /**
-     * Insert method to add a file in fileST table
-     *
-     * @param checksum file
-     * @param path     file
-     * @return true if the query was successfully executed, false otherwise.
-     */
-    /**
      * Insert method to add a user in user table
      *
      * @param user
@@ -79,7 +72,7 @@ public class UserQuery {
      * @return file path
      */
     public User getUser(String userName, String password) {
-        //LOGGER.info("Get file path of {} checksum", checksum);
+        LOGGER.info("Get {} user", userName);
         User user1 = new User();
         String sql = "select user, password, role, email from user where user = ? and password = ?";
         System.out.println(sql);
