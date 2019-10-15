@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
@@ -51,13 +52,13 @@ public class DownloadController {
             File file = new File(fullPathName);
             if (file.exists()) {
                 try {
-                    String contentType = FileManager.getFileNameExtension(fullPathName).toLowerCase();
+                    String extension = FileManager.getFileNameExtension(fullPathName).toLowerCase();
                     String imageFormat = "image";
-                    contentType = String.format("%s/%s", imageFormat, contentType); //getContentType
+                    String contentType = String.format("%s/%s", imageFormat, extension); //getContentType
                     BufferedImage image = ImageIO.read(file);
                     response.setContentType(contentType);
                     OutputStream out = response.getOutputStream();
-                    ImageIO.write(image, contentType, out);
+                    ImageIO.write(image, extension, out);
                     out.close();
                 } catch (IOException e) {
                     response.setContentType(commonContentType);    // Download the file directly

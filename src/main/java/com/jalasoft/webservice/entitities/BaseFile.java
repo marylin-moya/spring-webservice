@@ -97,5 +97,14 @@ public class BaseFile {
      * Validate fields method.
      */
     public void validate() throws ParamsInvalidException {
+        if (this.path.isEmpty()) {
+            throw new ParamsInvalidException(11, "path");
+        }
+        if (this.checkSum == null) {
+            throw new ParamsInvalidException(10, "checksum");
+        }
+        if (this.checkSum.isEmpty()) {
+            throw new ParamsInvalidException(11, "checksum");
+        }
     }
 }

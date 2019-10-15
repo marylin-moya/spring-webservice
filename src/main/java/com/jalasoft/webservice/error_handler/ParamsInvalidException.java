@@ -20,6 +20,7 @@ public class ParamsInvalidException extends Exception {
 
     /**
      * ParamsInvalidException Constructor.
+     *
      * @param code
      * @param param
      */
@@ -30,6 +31,7 @@ public class ParamsInvalidException extends Exception {
 
     /**
      * Get Message
+     *
      * @return
      */
     public String getMessage() {
@@ -45,6 +47,9 @@ public class ParamsInvalidException extends Exception {
                 break;
             case 13:
                 this.message = String.format("the param %s does not have a valid color value", this.param);
+                break;
+            case 15:
+                this.message = String.format("The param %s is no supported to convert.", this.param);
                 break;
         }
         return this.message;

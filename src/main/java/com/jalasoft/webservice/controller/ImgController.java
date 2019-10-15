@@ -75,6 +75,7 @@ public class ImgController {
             ///Instance Img model
             ImageFile imgFile = new ImageFile();
             imgFile.setFileName(file.getOriginalFilename());
+            imgFile.setCheckSum(checksum);
             imgFile.setTargetType(targetType);
             imgFile.setRotate(rotate);
             imgFile.setBlur(blur);
@@ -111,7 +112,8 @@ public class ImgController {
 
             String urlDownload = String.format("%s%s%s%s", hostname, PORT, PATH_DOWNLOAD_FILE, metadata.getFileName());
             String urlMetadataDownload = String.format("%s%s%s%s", hostname, PORT, PATH_DOWNLOAD_ZIP_FILE, FileManager.getFileName(zipFile));
-            imageResponse.setUrl(String.format("%s Or %s", urlDownload, urlMetadataDownload));
+            imageResponse.setUrlPreview(urlDownload);
+            imageResponse.setUrlDownload(urlMetadataDownload);
             LOGGER.info("New file is available in following link {}", urlDownload);
             return imageResponse;
 
