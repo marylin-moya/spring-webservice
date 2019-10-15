@@ -14,9 +14,10 @@ package com.jalasoft.webservice.responses;
  * Image Response class.
  */
 public class ImageResponse extends SuccessResponse {
-    private String url;
-    
-     /**
+    private String urlPreview;
+    private String urlDownload;
+
+    /**
      * Image Response Constructor
      *
      * @param name
@@ -31,15 +32,31 @@ public class ImageResponse extends SuccessResponse {
      * Get url
      * @return
      */
-    public String getUrl() {
-        return url;
+    public String getUrlPreview() {
+        return urlPreview;
     }
 
     /**
      * Set url value
      * @param url
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrlPreview(String url) {
+        this.urlPreview = url;
+    }
+
+    /***
+     * Get urlDownload value
+     * @return
+     */
+    public String getUrlDownload() {
+        return urlDownload;
+    }
+
+    /***
+     * Set urlDownload value
+     * @param urlDownload
+     */
+    public void setUrlDownload(String urlDownload) {
+        this.urlDownload = urlDownload;
     }
 }

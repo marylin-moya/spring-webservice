@@ -30,6 +30,10 @@ public class ImageFile extends BaseFile {
         red, yellow, blue, green, black;
     }
 
+    private enum TypeSupported{
+        PNG, JPG, BMP
+    }
+
     public ImageFile() {
         borderColor = Color.black.toString();
         rotate = 0.0;
@@ -205,6 +209,7 @@ public class ImageFile extends BaseFile {
 
     @Override
     public void validate() throws ParamsInvalidException {
+        super.validate();
         validateDoubleField(this.rotate, "rotate");
         validateDoubleField(this.blur, "blur");
         validateIntegerField(this.resize, "resize");
@@ -213,7 +218,7 @@ public class ImageFile extends BaseFile {
         validateColor(this.borderColor, "borderColor");
         validateStringField(this.path, "path");
         validateStringField(this.targetType, "targetType");
-
+        validateTargetType(this.targetType, "targetType");
     }
 
     /***
@@ -223,13 +228,11 @@ public class ImageFile extends BaseFile {
      */
     public void validateStringField(String field, String nameField) throws ParamsInvalidException {
         if (field == null) {
-            throw new ParamsInvalidException(10, String.format("{%s}: Field required, needs to be different to null.", nameField));
+            throw new ParamsInvalidException(10, nameField);
         }
         if (field.isEmpty()) {
-            throw new ParamsInvalidException(11, String.format("{%s}: Field required needs to be not empty", nameField));
+            throw new ParamsInvalidException(11, nameField);
         }
-
-
     }
 
     /***
@@ -239,7 +242,7 @@ public class ImageFile extends BaseFile {
      */
     public void validateDoubleField(double field, String nameField) throws ParamsInvalidException {
         if (field < 0) {
-            throw new ParamsInvalidException(12, String.format("{%s}: Field required, needs to be higher than 0.", nameField));
+            throw new ParamsInvalidException(12, nameField);
         }
     }
 
@@ -250,7 +253,7 @@ public class ImageFile extends BaseFile {
      */
     public void validateIntegerField(int field, String nameField) throws ParamsInvalidException {
         if (field < 0) {
-            throw new ParamsInvalidException(12, String.format("{%s}: Field required, needs to be higher than 0.", nameField));
+            throw new ParamsInvalidException(12, nameField);
         }
     }
 
@@ -261,7 +264,13 @@ public class ImageFile extends BaseFile {
      */
     public void validateColor(String field, String nameField) throws ParamsInvalidException {
         if (!IsColor(field)) {
-            throw new ParamsInvalidException(13, String.format("{%s}: Field required, its value is not color.", nameField));
+            throw new ParamsInvalidException(13, nameField);
+        }
+    }
+
+    public void validateTargetType(String field, String nameField) throws ParamsInvalidException {
+        if (!isTargetTypeSupported(field)) {
+            throw new ParamsInvalidException(15, nameField);
         }
     }
 
@@ -274,6 +283,20 @@ public class ImageFile extends BaseFile {
         for (Color colorObj : Color.values()) {
             if (colorObj.toString().equals(color))
                 return true;
+        }
+        return false;
+    }
+
+    /***
+     * Verify if targetType is support by tool
+     * @param targetType
+     * @return
+     */
+    public boolean isTargetTypeSupported(String targetType){
+        for(TypeSupported typeObj: TypeSupported.values()){
+            if(typeObj.toString().equals(targetType.toUpperCase())){
+                return true;
+            }
         }
         return false;
     }

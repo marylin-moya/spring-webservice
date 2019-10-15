@@ -37,23 +37,12 @@ public class OcrFile extends BaseFile {
      */
     @Override
     public void validate() throws ParamsInvalidException {
-        if (this.path.isEmpty()) {
-            throw new ParamsInvalidException(11, "path");
-        }
+        super.validate();
         if (this.lang.isEmpty()) {
             throw new ParamsInvalidException(11, "lang");
         }
         if (this.lang == null) {
             throw new ParamsInvalidException(10, "lang");
-        }
-        if (this.path == null) {
-            throw new ParamsInvalidException(10, "path");
-        }
-        if (this.checkSum == null) {
-            throw new ParamsInvalidException(10, "checksum");
-        }
-        if (this.checkSum.isEmpty()) {
-            throw new ParamsInvalidException(11, "checksum");
         }
     }
 }
