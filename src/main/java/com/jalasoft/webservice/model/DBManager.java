@@ -73,4 +73,19 @@ public class DBManager {
         return user;
     }
 
+    /**
+     * Method to verify if user is in the database
+     *
+     * @param userName
+     * @param password
+     * @return
+     * @throws DatabaseException
+     */
+    public static boolean exist(String userName, String password) throws DatabaseException {
+        try {
+            return new UserQuery().exists(userName, password);
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
 }

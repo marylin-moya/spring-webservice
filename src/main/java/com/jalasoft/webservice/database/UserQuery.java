@@ -75,7 +75,6 @@ public class UserQuery {
         LOGGER.info("Get {} user", userName);
         User user1 = new User();
         String sql = "select user, password, role, email from user where user = ? and password = ?";
-        System.out.println(sql);
         try {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, userName);
@@ -91,5 +90,28 @@ public class UserQuery {
             LOGGER.error("Exception getting the user: {}", e.getMessage());
         }
         return user1;
+    }
+
+    /**
+     * Review if the user exist
+     *
+     * @param userName
+     * @param password
+     * @return
+     */
+    public boolean exists(String userName, String password) {
+        LOGGER.info("Reviwing if the {} user exists", userName);
+        boolean exist = false;
+        String sql = "select user, password, role, email from user where user = ? and password = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, userName);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            exist = resultSet.next();
+        } catch (SQLException e) {
+            LOGGER.error("Exception checking if the user exist: {}", e.getMessage());
+        }
+        return exist;
     }
 }

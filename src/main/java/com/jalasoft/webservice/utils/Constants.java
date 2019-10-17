@@ -16,9 +16,9 @@ public class Constants {
     public static final String BASE_PATH = "/api/v1.0";
     public static final String IMG_PATH = BASE_PATH + "/img";
     public static final String DOWNLOAD_PATH = "/download";
-    public static final String USER_PATH = BASE_PATH + "/user";
     public static final String ORC_PATH = BASE_PATH + "/doc";
     public static final String METADATA_EXT = ".csv";
+    public static final String CACHE = "Authorization";
 
 
     public static enum LANGUAGES {

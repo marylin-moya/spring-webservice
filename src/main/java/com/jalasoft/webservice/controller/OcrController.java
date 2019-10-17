@@ -11,6 +11,7 @@
  */
 package com.jalasoft.webservice.controller;
 
+import com.jalasoft.webservice.entitities.Cache;
 import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.error_handler.ParamsInvalidException;
@@ -30,11 +31,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
+import static com.jalasoft.webservice.utils.Constants.CACHE;
 import static com.jalasoft.webservice.utils.Constants.ORC_PATH;
 
 /**
@@ -57,10 +60,18 @@ public class OcrController {
     @PostMapping(value = "/orc", consumes = {"multipart/form-data"})
     public Response getOrcFromUploadFile(@Valid @NotNull @NotBlank @RequestParam("fileName") MultipartFile file,
                                          @Valid @NotNull @NotBlank @RequestParam(value = "lang", defaultValue = "english") String lang,
-                                         @Valid @NotNull @NotBlank @RequestParam("checksum") String checksum) {
+                                         @Valid @NotNull @NotBlank @RequestParam("checksum") String checksum, HttpServletRequest req) {
         LOGGER.info("/orc endpoint to extract '{}' text from '{}'", lang, file.getOriginalFilename());
 
         try {
+            //verify if token is cache
+            String auth = req.getHeader(CACHE);
+            String token = auth.split(" ")[1];
+            if (!Cache.getInstance().isValid(token)) {
+                return new ErrorResponse(HttpStatus.UNAUTHORIZED.name(),
+                        HttpStatus.UNAUTHORIZED.value(), "The user is not authorized");
+            }
+
             //Instance Orc Model with fileName and lang
             OcrFile ocrFile = new OcrFile();
             ocrFile.setLang(lang);
