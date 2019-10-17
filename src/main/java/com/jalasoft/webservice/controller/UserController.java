@@ -15,43 +15,30 @@ import com.jalasoft.webservice.error_handler.DatabaseException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.responses.ErrorResponse;
 import com.jalasoft.webservice.responses.Response;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import static com.jalasoft.webservice.utils.Constants.USER_PATH;
+import static com.jalasoft.webservice.utils.Constants.BASE_PATH;
 
 @RestController
-@RequestMapping(USER_PATH)
+@RequestMapping(BASE_PATH)
 public class UserController {
-    @PostMapping(value = "/login", consumes = {"multipart/form-data"})
-    public Response validate(@Valid @NotNull @NotBlank @RequestParam("userName") String userName,
-                             @Valid @NotNull @NotBlank @RequestParam("password") String password) throws DatabaseException {
-        User user = DBManager.getUser(userName, password);
-        if(user == null){
+    @PostMapping(value = "/user")
+    public Response createUser(@RequestBody User user) {
+        try {
+            if (!DBManager.exist(user.getUserName(), user.getPassword())) {
+                DBManager.insertUser(user);
+            }
+        } catch (DatabaseException e) {
             return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
-                    HttpStatus.BAD_REQUEST.value(), "no user");
+                    HttpStatus.BAD_REQUEST.value(),
+                    e.getMessage());
         }
-
-        String key = "dev-fund2";
-        String token = Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256, key.getBytes())
-                .setSubject("admin")
-                .claim("role", "administrator")
-                .claim("email", "user@gmail.com")
-                .compact();
-
-
-        return new Response(HttpStatus.ACCEPTED.name(),
-                HttpStatus.ACCEPTED.value(), String.format("token: %s", token));
+        return new Response(HttpStatus.OK.name(),
+                HttpStatus.OK.value(),
+                String.format("User %s successfully created", user.getUserName()));
     }
 }

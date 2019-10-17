@@ -11,6 +11,7 @@
  */
 package com.jalasoft.webservice.controller;
 
+import com.jalasoft.webservice.entitities.Cache;
 import com.jalasoft.webservice.entitities.User;
 import com.jalasoft.webservice.error_handler.DatabaseException;
 import com.jalasoft.webservice.model.DBManager;
@@ -21,24 +22,25 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.jalasoft.webservice.utils.Constants.BASE_PATH;
 
 /**
  * Login Controller class to implement Rest EndPoint to generate a token
  */
 @RestController
+@RequestMapping(BASE_PATH)
 public class LoginController {
     private static final String ROLE = "role";
     private static final String EMAIL = "email";
 
     @PostMapping(value = "/login")
-    public Response validate(@RequestParam("user") String userName,
-                             @RequestParam("password") String password) {
-
-        User user = null;
+    public Response loginController(@RequestBody User user) {
         try {
-            user = DBManager.getUser(userName, password);
+            user = DBManager.getUser(user.getUserName(), user.getPassword());
         } catch (DatabaseException e) {
             return new ErrorResponse(HttpStatus.UNAUTHORIZED.name(),
                     HttpStatus.UNAUTHORIZED.value(),
@@ -52,32 +54,12 @@ public class LoginController {
                 .claim(ROLE, user.getRole())
                 .claim(EMAIL, user.getEmail())
                 .compact();
-        return new LoginResponse(HttpStatus.OK.name(),
-                HttpStatus.OK.value(),
-                String.format("Token for %s user successfully generated", userName),
+
+        //Add token to cache.
+        Cache.getInstance().add(token);
+        return new LoginResponse(HttpStatus.ACCEPTED.name(),
+                HttpStatus.ACCEPTED.value(),
+                String.format("Token for %s user successfully generated", user.getUserName()),
                 token);
-    }
-
-    @PostMapping(value = "/user")
-    public Response createUser(@RequestParam("userName") String userName,
-                               @RequestParam("password") String password,
-                               @RequestParam("role") String role,
-                               @RequestParam("email") String email) {
-
-        User user = new User();
-        user.setRole(role);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setUserName(userName);
-        try {
-            DBManager.insertUser(user);
-        } catch (DatabaseException e) {
-            return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
-                    HttpStatus.BAD_REQUEST.value(),
-                    e.getMessage());
-        }
-        return new Response(HttpStatus.OK.name(),
-                HttpStatus.OK.value(),
-                String.format("User %s successfully created", user.getUserName()));
     }
 }
