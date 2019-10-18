@@ -44,6 +44,7 @@ import static com.jalasoft.webservice.utils.Constants.ORC_PATH;
  * Orc Controller class to implement Rest EndPoint to extract text from a file.
  */
 @RestController
+//interceptores y filtros, se ejecuta antes de /*
 @RequestMapping(ORC_PATH)
 public class OcrController {
     private static final Logger LOGGER = LogManager.getLogger();

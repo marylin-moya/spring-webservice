@@ -14,7 +14,9 @@ package com.jalasoft.webservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
+@ServletComponentScan //para manejar filtros
 @SpringBootApplication
 public class Application {
 

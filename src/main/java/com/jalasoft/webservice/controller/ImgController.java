@@ -12,6 +12,7 @@ package com.jalasoft.webservice.controller;
 
 import com.drew.imaging.ImageProcessingException;
 import com.jalasoft.webservice.entitities.BaseFile;
+import com.jalasoft.webservice.entitities.Cache;
 import com.jalasoft.webservice.entitities.ImageFile;
 import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.error_handler.ParamsInvalidException;
@@ -28,13 +29,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
-import static com.jalasoft.webservice.utils.Constants.DOWNLOAD_PATH;
-import static com.jalasoft.webservice.utils.Constants.IMG_PATH;
+import static com.jalasoft.webservice.utils.Constants.*;
 
 /**
  * Img Controller class to implement Rest endpoint related to convert a image
@@ -68,9 +69,18 @@ public class ImgController {
                                  @Valid @RequestParam(value = "grayscale", defaultValue = "false") boolean grayscale,
                                  @Valid @RequestParam(value = "transpose", defaultValue = "false") boolean transpose,
                                  @Valid @RequestParam(value = "transverse", defaultValue = "false") boolean transverse,
-                                 @Valid @NotNull @NotBlank @RequestParam(value = "borderColor", defaultValue = "black") String borderColor) {
+                                 @Valid @NotNull @NotBlank @RequestParam(value = "borderColor", defaultValue = "black") String borderColor,
+                                 HttpServletRequest req) {
         LOGGER.info("/img endpoint to convert '{}' image to new format '{}'", file.getOriginalFilename(), targetType);
 
+        //verify if token is cache
+        String auth = req.getHeader(CACHE);
+        String token = auth.split(" ")[1];
+        if (!Cache.getInstance().isValid(token)) {
+            return new ErrorResponse(HttpStatus.UNAUTHORIZED.name(),
+                    HttpStatus.UNAUTHORIZED.value(), "The user is not authorized");
+        }
+        
         try {
             ///Instance Img model
             ImageFile imgFile = new ImageFile();
