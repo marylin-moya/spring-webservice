@@ -11,7 +11,6 @@
  */
 package com.jalasoft.webservice.controller;
 
-import com.jalasoft.webservice.entitities.Cache;
 import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.error_handler.ParamsInvalidException;
@@ -37,7 +36,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
-import static com.jalasoft.webservice.utils.Constants.CACHE;
 import static com.jalasoft.webservice.utils.Constants.ORC_PATH;
 
 /**
@@ -66,14 +64,6 @@ public class OcrController {
         try {
             String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
             String fileName = file.getOriginalFilename();
-
-            //verify if token is cache
-            String auth = req.getHeader(CACHE);
-            String token = auth.split(" ")[1];
-            if (!Cache.getInstance().isValid(token)) {
-                return new ErrorResponse(HttpStatus.UNAUTHORIZED.name(),
-                        HttpStatus.UNAUTHORIZED.value(), "The user is not authorized");
-            }
 
             //Instance Orc Model with fileName and lang
             OcrFile ocrFile = new OcrFile();
