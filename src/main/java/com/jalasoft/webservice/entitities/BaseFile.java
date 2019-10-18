@@ -23,6 +23,7 @@ public class BaseFile {
     protected String path;
     protected long size;
     protected String checkSum;
+    protected String fullFilePath;
 
     /***
      * Get File Name
@@ -91,6 +92,24 @@ public class BaseFile {
      */
     public void setCheckSum(String checkSum) {
         this.checkSum = checkSum;
+    }
+
+    /**
+     * Get the full file path
+     *
+     * @return
+     */
+    public String getFullFilePath() {
+        return fullFilePath;
+    }
+
+    /**
+     * Set the full file path
+     *
+     * @param fullFilePath
+     */
+    public void setFullFilePath(String fullFilePath) {
+        this.fullFilePath = fullFilePath;
     }
 
     /**

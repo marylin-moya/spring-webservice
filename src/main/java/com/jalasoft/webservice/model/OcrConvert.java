@@ -25,7 +25,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 
 import java.io.File;
-import java.io.IOException;
 
 import static com.jalasoft.webservice.utils.Constants.LANGUAGES;
 
@@ -63,14 +62,17 @@ public class OcrConvert implements IConvert {
         }
 
         try {
+            String targetPath = PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory);
             tesseract.setDatapath(PropertiesManager.getInstance().getPropertiesReader().getValue(tesseractPath));
             tesseract.setLanguage(language);
-            String content = tesseract.doOCR(new File(String.format("%s%s", ocrFile.getPath(), ocrFile.getFileName()))).trim();
+            String content = tesseract.doOCR(new File(String.format("%s%s", ocrFile.getPath(), FileManager.getFileName(ocrFile.getFullFilePath())))).trim();
             BaseFile metadata = new BaseFile();
-            metadata.setPath(PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory));
+            metadata.setPath(targetPath);
             String fileName = String.format("%s%s", ocrFile.getFileName(), EXTENSION_FORMAT);
+            String fullFilePath = String.format("%s%s", targetPath, fileName);
             metadata.setFileName(fileName);
-            metadata.setCheckSum(CheckSum.getCheckSum(String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory), fileName)));
+            metadata.setCheckSum(CheckSum.getCheckSum(fullFilePath));
+            metadata.setFullFilePath(fullFilePath);
             FileManager.saveTextIntoFile(String.format("%s%s", metadata.getPath(), metadata.getFileName()), content);
             OcrResponse ocrResponse = new OcrResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Text Successfully Extracted.", content);
             ocrResponse.setMetadata(metadata);
