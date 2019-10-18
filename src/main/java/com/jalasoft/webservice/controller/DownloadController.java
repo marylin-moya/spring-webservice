@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
@@ -48,6 +47,7 @@ public class DownloadController {
                         @PathVariable("fileName") String fileName) {
         String fullPathName = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(targetFileKey), fileName);
         String commonContentType = "application/octet-stream";
+        LOGGER.info("Download {} file", fileName);
         try {
             File file = new File(fullPathName);
             if (file.exists()) {
@@ -61,13 +61,14 @@ public class DownloadController {
                     ImageIO.write(image, extension, out);
                     out.close();
                 } catch (IOException e) {
+                    LOGGER.error("Exception to download the file: {}", e.getMessage());
                     response.setContentType(commonContentType);    // Download the file directly
                     InputStream is = new BufferedInputStream(new FileInputStream(file));
                     FileCopyUtils.copy(is, response.getOutputStream());
                 }
             }
         } catch (IOException e) {
-            LOGGER.info("File was not download..." + e.getMessage());
+            LOGGER.info("File was not download: {}", e.getMessage());
         }
     }
 

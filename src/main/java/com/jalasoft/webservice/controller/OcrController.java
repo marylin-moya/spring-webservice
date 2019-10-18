@@ -64,6 +64,9 @@ public class OcrController {
         LOGGER.info("/orc endpoint to extract '{}' text from '{}'", lang, file.getOriginalFilename());
 
         try {
+            String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
+            String fileName = file.getOriginalFilename();
+
             //verify if token is cache
             String auth = req.getHeader(CACHE);
             String token = auth.split(" ")[1];
@@ -75,9 +78,10 @@ public class OcrController {
             //Instance Orc Model with fileName and lang
             OcrFile ocrFile = new OcrFile();
             ocrFile.setLang(lang);
-            ocrFile.setPath(PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey));
-            ocrFile.setFileName(file.getOriginalFilename());
+            ocrFile.setPath(sourcePath);
+            ocrFile.setFileName(fileName);
             ocrFile.setCheckSum(checksum);
+            ocrFile.setFullFilePath(String.format("%s%s", sourcePath, fileName));
             ocrFile.validate();
 
             String filePath = DBManager.getPath(checksum);
@@ -85,9 +89,10 @@ public class OcrController {
             //If file is not uploaded, upload the file
             if (filePath == null) {
                 LOGGER.info("File is not stored, Uploading...");
-                filePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
-                DBManager.addFile(checksum, filePath);
-                FileManager.saveUploadFile(filePath, file);
+                DBManager.addFile(checksum, ocrFile.getFullFilePath());
+                FileManager.saveUploadFile(sourcePath, file);
+            } else {
+                ocrFile.setFullFilePath(filePath);
             }
 
             IConvert iConvert = new OcrConvert();

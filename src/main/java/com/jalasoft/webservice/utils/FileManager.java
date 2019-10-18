@@ -112,8 +112,8 @@ public class FileManager {
     /**
      * Gets the file name without extension.
      *
-     * @param fullFileName String full file name.
-     * @return String file name without extension.
+     * @param fullFileName String full file name. e.g.: test.ext
+     * @return String file name without extension. e.g.: test
      */
     static public String getFileNameNoExtension(String fullFileName) {
         int lastIndex = fullFileName.lastIndexOf(".");
@@ -121,28 +121,16 @@ public class FileManager {
     }
 
     /**
-     * Gets the file name extension given a full file name e.g.: file.ext
+     * Gets the file extension given a full file name
      *
-     * @param fullFileName String full file name.
-     * @return String the name without extension.
+     * @param fullFileName String full file name. e.g.: file.ext
+     * @return String the extension. e.g.: ext
      */
     static public String getFileNameExtension(String fullFileName) {
         int lastIndex = fullFileName.lastIndexOf(".");
         return fullFileName.substring(lastIndex + 1);
     }
 
-    /***
-     * Verify if a file is image or not
-     * @param fullPathFile
-     * @return
-     */
-    static public boolean isImageFile(String fullPathFile){
-        File file = new File(fullPathFile);
-        String mimeType = new MimetypesFileTypeMap().getContentType(file);
-        LOGGER.info("MimeType {} refers to File {}.", mimeType, file.getName());
-        String type = mimeType.split("/")[0].toLowerCase();
-        return type.equals("image");
-    }
 
     /***
      * Gets the file name with extension given a full file name eg. Tes1.csv
@@ -154,4 +142,16 @@ public class FileManager {
         return file.getName();
     }
 
+    /***
+     * Verify if a file is image or not
+     * @param fullPathFile
+     * @return
+     */
+    static public boolean isImageFile(String fullPathFile) {
+        File file = new File(fullPathFile);
+        String mimeType = new MimetypesFileTypeMap().getContentType(file);
+        LOGGER.info("MimeType {} refers to File {}.", mimeType, file.getName());
+        String type = mimeType.split("/")[0].toLowerCase();
+        return type.equals("image");
+    }
 }
