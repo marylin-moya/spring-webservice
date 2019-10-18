@@ -36,7 +36,7 @@ public class TokenFilter implements Filter {
             token = auth.split(" ")[1];
         }
 
-        if (url.contains(LOGIN_PATH) || url.contains(IMGCONVERT_PATH) || url.contains(DOWNLOAD_PATH) || Cache.getInstance().isValid(token)) {
+        if (url.contains(LOGIN_PATH) || url.contains(DOWNLOAD_PATH) || Cache.getInstance().isValid(token)) {
             chain.doFilter(request, response);
         } else {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Token");
