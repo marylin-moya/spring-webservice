@@ -28,13 +28,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.File;
 import java.io.IOException;
 
-import static com.jalasoft.webservice.utils.Constants.DOWNLOAD_PATH;
-import static com.jalasoft.webservice.utils.Constants.IMG_PATH;
+import static com.jalasoft.webservice.utils.Constants.*;
 
 /**
  * Img Controller class to implement Rest endpoint related to convert a image
@@ -50,60 +51,36 @@ public class ImgController {
     private static String PORT = ":8080";
 
     /**
-     * @param file     MultipartFile file to upload.
-     * @param checksum Checksum String to verify if the file was already uploaded.
-     * @param blur     blur
-     * @param rotate   Rotate new image
+     * @param imageFile     MultipartFile file to upload.*
      * @return
      */
-    @PostMapping(value = "/convert", consumes = {"multipart/form-data"})
+    @PostMapping(value = IMGCONVERT_PATH)
     @ResponseBody
-    public Response convertImage(@Valid @NotNull @NotBlank @RequestParam("fileName") MultipartFile file,
-                                 @Valid @NotNull @NotBlank @RequestParam("checksum") String checksum,
-                                 @Valid @NotNull @NotBlank @RequestParam("targetType") String targetType,
-                                 @Valid @NotNull @NotBlank @RequestParam(value = "resize", defaultValue = "0") int resize,
-                                 @Valid @RequestParam(value = "blur", defaultValue = "0.0") double blur,
-                                 @Valid @RequestParam(value = "rotate", defaultValue = "0.0") double rotate,
-                                 @Valid @RequestParam(value = "border", defaultValue = "0.0") int border,
-                                 @Valid @RequestParam(value = "grayscale", defaultValue = "false") boolean grayscale,
-                                 @Valid @RequestParam(value = "transpose", defaultValue = "false") boolean transpose,
-                                 @Valid @RequestParam(value = "transverse", defaultValue = "false") boolean transverse,
-                                 @Valid @NotNull @NotBlank @RequestParam(value = "borderColor", defaultValue = "black") String borderColor) {
-        LOGGER.info("/img endpoint to convert '{}' image to new format '{}'", file.getOriginalFilename(), targetType);
-
+    public Response convertImage(@RequestBody ImageFile imageFile) {
+        LOGGER.info("/img endpoint to convert '{}' image to new format '{}'", imageFile.getFileName(), imageFile.getTargetType());
+        String originFile =  String.format("%s/%s", imageFile.getPath(), imageFile.getFileName());
+        File file = new File(originFile);
         try {
-            ///Instance Img model
-            ImageFile imgFile = new ImageFile();
-            imgFile.setFileName(file.getOriginalFilename());
-            imgFile.setCheckSum(checksum);
-            imgFile.setTargetType(targetType);
-            imgFile.setRotate(rotate);
-            imgFile.setBlur(blur);
-            imgFile.setResize(resize);
-            imgFile.setBorderColor(borderColor);
-            imgFile.setBorder(border);
-            imgFile.setGrayscale(grayscale);
-            imgFile.setTransverse(transverse);
-            imgFile.setTranspose(transpose);
-            imgFile.setPath(PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey));
-            imgFile.validate();
+
+            imageFile.setPath(PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey));
+            imageFile.validate();
             String hostname = ServerUtilities.GetServerHostname();
             //verify if file is saved in database
-            String filePathStorage = DBManager.getPath(checksum);
+            String filePathStorage = DBManager.getPath(imageFile.getCheckSum());
             if (filePathStorage == null) {
-                LOGGER.info("Image Controller: File '{}' is not storage in database, Uploading ...", file.getOriginalFilename());
+                LOGGER.info("Image Controller: File '{}' is not storage in database, Uploading ...", imageFile.getFileName());
                 filePathStorage = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
-                DBManager.addFile(checksum, filePathStorage);
+                DBManager.addFile(imageFile.getCheckSum(), filePathStorage);
                 FileManager.saveUploadFile(filePathStorage, file);
             }
-            imgFile.setPath(filePathStorage);
-            if (!FileManager.isImageFile(String.format("%s%s", filePathStorage, file.getOriginalFilename()))) {
-                FileManager.removeFile(String.format("%s%s", filePathStorage, file.getOriginalFilename()));
+            imageFile.setPath(filePathStorage);
+            if (!FileManager.isImageFile(String.format("%s%s", filePathStorage, imageFile.getFileName()))) {
+                FileManager.removeFile(String.format("%s%s", filePathStorage, file.getName()));
                 return new ImageResponse(HttpStatus.BAD_REQUEST.name(),
                         HttpStatus.BAD_REQUEST.value(), "The file to convert is not an image file");
             }
             IConvert iConvert = new ImageConvert();
-            ImageResponse imageResponse = (ImageResponse) iConvert.Convert(imgFile);
+            ImageResponse imageResponse = (ImageResponse) iConvert.Convert(imageFile);
             BaseFile metadata = imageResponse.getMetadata();
             //generate metadata file and zip image and metadata
             String metadataFileName = MetadataExtractor.generateMetadataFile(String.format("%s%s", metadata.getPath(), metadata.getFileName()));
