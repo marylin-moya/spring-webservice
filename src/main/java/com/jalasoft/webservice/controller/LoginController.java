@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.jalasoft.webservice.utils.Constants.BASE_PATH;
+import static com.jalasoft.webservice.utils.Constants.LOGIN_PATH;
 
 /**
  * Login Controller class to implement Rest EndPoint to generate a token
@@ -37,7 +38,7 @@ public class LoginController {
     private static final String ROLE = "role";
     private static final String EMAIL = "email";
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = LOGIN_PATH)
     public Response loginController(@RequestBody User user) {
         try {
             user = DBManager.getUser(user.getUserName(), user.getPassword());

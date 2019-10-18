@@ -12,8 +12,10 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-import static com.jalasoft.webservice.utils.Constants.AUTHORIZATION;
+import static com.jalasoft.webservice.utils.Constants.*;
 
 @WebFilter(urlPatterns = {"/*"})
 public class TokenFilter implements Filter {
@@ -34,7 +36,7 @@ public class TokenFilter implements Filter {
             token = auth.split(" ")[1];
         }
 
-        if (url.contains("/login") || Cache.getInstance().isValid(token)) {
+        if (url.contains(LOGIN_PATH) || url.contains(IMGCONVERT_PATH) || url.contains(DOWNLOAD_PATH) || Cache.getInstance().isValid(token)) {
             chain.doFilter(request, response);
         } else {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Token");
