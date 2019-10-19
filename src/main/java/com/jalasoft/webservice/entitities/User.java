@@ -23,6 +23,7 @@ public class User {
 
     /**
      * Get User Name.
+     *
      * @return
      */
     public String getUserName() {
@@ -31,6 +32,7 @@ public class User {
 
     /**
      * Set User Name.
+     *
      * @param userName
      */
     public void setUserName(String userName) {
@@ -39,6 +41,7 @@ public class User {
 
     /**
      * Get Password.
+     *
      * @return
      */
     public String getPassword() {
@@ -47,6 +50,7 @@ public class User {
 
     /**
      * Set Password.
+     *
      * @param password
      */
     public void setPassword(String password) {
@@ -55,6 +59,7 @@ public class User {
 
     /**
      * Get Role.
+     *
      * @return
      */
     public String getRole() {
@@ -63,6 +68,7 @@ public class User {
 
     /**
      * Set Role.
+     *
      * @param role
      */
     public void setRole(String role) {
@@ -71,6 +77,7 @@ public class User {
 
     /**
      * Get email.
+     *
      * @return
      */
     public String getEmail() {
@@ -79,6 +86,7 @@ public class User {
 
     /**
      * Set email.
+     *
      * @param email
      */
     public void setEmail(String email) {

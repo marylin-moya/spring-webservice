@@ -12,17 +12,15 @@
 package com.jalasoft.webservice.utils;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.activation.MimetypesFileTypeMap;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,7 +52,6 @@ public class FileManager {
         File destinationDir = new File(filePath);
         FileUtils.copyFileToDirectory(file, destinationDir);
     }
-
 
 
     /**

@@ -11,8 +11,6 @@
  */
 package com.jalasoft.webservice.responses;
 
-import com.jalasoft.webservice.entitities.BaseFile;
-
 /**
  * Response class to store the rest api result.
  */
@@ -24,9 +22,9 @@ public class Response {
     /**
      * Response Constructor
      *
-     * @param name    Status in String Format.
-     * @param status  Status in Numeric Format.
-     * @param detail  Message String.
+     * @param name   Status in String Format.
+     * @param status Status in Numeric Format.
+     * @param detail Message String.
      */
     public Response(String name, Integer status, String detail) {
         this.name = name;

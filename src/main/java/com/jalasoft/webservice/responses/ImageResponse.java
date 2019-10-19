@@ -24,12 +24,13 @@ public class ImageResponse extends SuccessResponse {
      * @param status
      * @param detail
      */
-    public ImageResponse(String name, Integer status, String detail){
+    public ImageResponse(String name, Integer status, String detail) {
         super(name, status, detail);
     }
 
     /**
      * Get url
+     *
      * @return
      */
     public String getUrlPreview() {
@@ -38,6 +39,7 @@ public class ImageResponse extends SuccessResponse {
 
     /**
      * Set url value
+     *
      * @param url
      */
     public void setUrlPreview(String url) {

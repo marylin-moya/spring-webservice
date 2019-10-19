@@ -30,7 +30,7 @@ public class ImageFile extends BaseFile {
         red, yellow, blue, green, black;
     }
 
-    private enum TypeSupported{
+    private enum TypeSupported {
         PNG, JPG, BMP
     }
 
@@ -292,9 +292,9 @@ public class ImageFile extends BaseFile {
      * @param targetType
      * @return
      */
-    public boolean isTargetTypeSupported(String targetType){
-        for(TypeSupported typeObj: TypeSupported.values()){
-            if(typeObj.toString().equals(targetType.toUpperCase())){
+    public boolean isTargetTypeSupported(String targetType) {
+        for (TypeSupported typeObj : TypeSupported.values()) {
+            if (typeObj.toString().equals(targetType.toUpperCase())) {
                 return true;
             }
         }
