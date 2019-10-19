@@ -11,8 +11,8 @@
 package com.jalasoft.webservice.model;
 
 import com.jalasoft.webservice.entitities.BaseFile;
-import com.jalasoft.webservice.responses.Response;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.responses.Response;
 
 /**
  * Convert operations

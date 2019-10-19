@@ -26,7 +26,7 @@ public class ServerUtilities {
      * Get Hostname of server
      * @return
      */
-    public static String GetServerHostname(){
+    public static String GetServerHostname() {
         InetAddress ip;
         String hostname;
         try {

@@ -1,7 +1,8 @@
 package com.jalasoft.webservice.responses;
 
-public class LoginResponse extends Response{
+public class LoginResponse extends Response {
     private String token;
+
     /**
      * Response Constructor
      *

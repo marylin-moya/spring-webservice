@@ -18,7 +18,11 @@ import com.drew.metadata.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import static com.jalasoft.webservice.utils.Constants.METADATA_EXT;
 
@@ -34,7 +38,7 @@ public class MetadataExtractor {
     public static String generateMetadataFile(String imageFullPath) throws ImageProcessingException, IOException {
         String fileNameMetadata = null;
         File file = new File(imageFullPath);
-        Metadata metadata =  ImageMetadataReader.readMetadata(file);
+        Metadata metadata = ImageMetadataReader.readMetadata(file);
 
         //generate in target-dir directory the metadata file
         fileNameMetadata = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(targetFileKey), file.getName()).concat(METADATA_EXT);
@@ -52,6 +56,6 @@ public class MetadataExtractor {
         }
         bw.close();
         pw.close();
-        return fileNameMetadata ;
+        return fileNameMetadata;
     }
 }

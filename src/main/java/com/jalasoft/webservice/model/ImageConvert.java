@@ -15,6 +15,7 @@ import com.jalasoft.webservice.entitities.ImageFile;
 import com.jalasoft.webservice.error_handler.ConvertException;
 import com.jalasoft.webservice.responses.ImageResponse;
 import com.jalasoft.webservice.responses.Response;
+import com.jalasoft.webservice.utils.CheckSum;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesManager;
 import org.apache.logging.log4j.LogManager;
@@ -25,6 +26,7 @@ import org.im4java.core.IMOperation;
 import org.im4java.process.ProcessStarter;
 import org.springframework.http.HttpStatus;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -49,7 +51,7 @@ public class ImageConvert implements IConvert {
 
         //Create the operation, add images and operators/options
         IMOperation op = new IMOperation();
-        op.addImage(String.format("%s%s", imageFile.getPath(), imageFile.getFileName()));
+        op.addImage(imageFile.getFullFilePath());
         op.rotate(imageFile.getRotate());
         op.blur(imageFile.getBlur());
         op.bordercolor(imageFile.getBorderColor());
@@ -66,25 +68,27 @@ public class ImageConvert implements IConvert {
         if (imageFile.isGrayscale()) {
             op.type(grayScale);
         }
-
+        String targetPath = PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory);
         String convertedFileName = String.format("%s.%s",
                 FileManager.getFileNameNoExtension(imageFile.getFileName()), imageFile.getTargetType());
-        String convertedImage = String.format("%s%s",
-                PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory), convertedFileName);
+        String convertedImage = String.format("%s%s", targetPath, convertedFileName);
         op.addImage(convertedImage);
 
         try {
             ConvertCmd cmd = new ConvertCmd();
             cmd.run(op);
             BaseFile metadata = new BaseFile();
-            metadata.setPath(PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory));
+            metadata.setPath(targetPath);
             metadata.setFileName(convertedFileName);
+            metadata.setFullFilePath(convertedImage);
+            metadata.setSize(new File(convertedImage).length());
+            metadata.setCheckSum(CheckSum.getCheckSum(convertedImage));
             ImageResponse imageResponse =
                     new ImageResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Image Successfully Converted.");
             imageResponse.setMetadata(metadata);
             return imageResponse;
         } catch (IOException | InterruptedException | IM4JavaException e) {
-            LOGGER.error("ImageConvert Exception.{}", e.getMessage());
+            LOGGER.error("ImageConvert Exception: {}", e.getMessage());
             throw new ConvertException(e.getMessage(), e);
         }
     }

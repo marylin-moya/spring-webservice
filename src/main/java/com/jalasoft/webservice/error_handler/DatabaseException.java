@@ -15,6 +15,7 @@ package com.jalasoft.webservice.error_handler;
  */
 public class DatabaseException extends Exception {
     String message;
+
     public DatabaseException(String message) {
         this.message = message;
     }

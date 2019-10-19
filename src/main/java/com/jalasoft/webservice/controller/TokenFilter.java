@@ -12,10 +12,10 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
-import static com.jalasoft.webservice.utils.Constants.*;
+import static com.jalasoft.webservice.utils.Constants.AUTHORIZATION;
+import static com.jalasoft.webservice.utils.Constants.DOWNLOAD_PATH;
+import static com.jalasoft.webservice.utils.Constants.LOGIN_PATH;
 
 @WebFilter(urlPatterns = {"/*"})
 public class TokenFilter implements Filter {

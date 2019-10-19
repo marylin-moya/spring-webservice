@@ -2,7 +2,7 @@ package com.jalasoft.webservice.responses;
 
 import com.jalasoft.webservice.entitities.BaseFile;
 
-public class SuccessResponse extends Response{
+public class SuccessResponse extends Response {
 
     private BaseFile metadata;
 

@@ -21,21 +21,26 @@ import com.jalasoft.webservice.model.ImageConvert;
 import com.jalasoft.webservice.responses.ErrorResponse;
 import com.jalasoft.webservice.responses.ImageResponse;
 import com.jalasoft.webservice.responses.Response;
-import com.jalasoft.webservice.utils.*;
+import com.jalasoft.webservice.utils.FileManager;
+import com.jalasoft.webservice.utils.MetadataExtractor;
+import com.jalasoft.webservice.utils.PropertiesManager;
+import com.jalasoft.webservice.utils.ServerUtilities;
+import com.jalasoft.webservice.utils.ZipManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 
-import static com.jalasoft.webservice.utils.Constants.*;
+import static com.jalasoft.webservice.utils.Constants.DOWNLOAD_PATH;
+import static com.jalasoft.webservice.utils.Constants.IMGCONVERT_PATH;
+import static com.jalasoft.webservice.utils.Constants.IMG_PATH;
 
 /**
  * Img Controller class to implement Rest endpoint related to convert a image
@@ -51,38 +56,47 @@ public class ImgController {
     private static String PORT = ":8080";
 
     /**
-     * @param imageFile     MultipartFile file to upload.*
+     * @param imageFile MultipartFile file to upload.*
      * @return
      */
     @PostMapping(value = IMGCONVERT_PATH)
     @ResponseBody
     public Response convertImage(@RequestBody ImageFile imageFile) {
         LOGGER.info("/img endpoint to convert '{}' image to new format '{}'", imageFile.getFileName(), imageFile.getTargetType());
-        String originFile =  String.format("%s/%s", imageFile.getPath(), imageFile.getFileName());
-        File file = new File(originFile);
+        String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
+        String originFilePath = String.format("%s\\%s", imageFile.getPath(), imageFile.getFileName());
+        File file = new File(originFilePath);
         try {
-
-            imageFile.setPath(PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey));
-            imageFile.validate();
+            //Get Server hostname
             String hostname = ServerUtilities.GetServerHostname();
+
+            //Verify if file to be converted is an image
+            if (!FileManager.isImageFile(originFilePath)) {
+                return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
+                        HttpStatus.BAD_REQUEST.value(), "The file to convert is not an image file");
+            }
+
+            //Add additional imageFile attributes
+            imageFile.setPath(sourcePath);
+            imageFile.setFullFilePath(String.format("%s%s", sourcePath, imageFile.getFileName()));
+            imageFile.validate();
+
             //verify if file is saved in database
             String filePathStorage = DBManager.getPath(imageFile.getCheckSum());
             if (filePathStorage == null) {
                 LOGGER.info("Image Controller: File '{}' is not storage in database, Uploading ...", imageFile.getFileName());
-                filePathStorage = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
-                DBManager.addFile(imageFile.getCheckSum(), filePathStorage);
-                FileManager.saveUploadFile(filePathStorage, file);
+                DBManager.addFile(imageFile.getCheckSum(), imageFile.getFullFilePath());
+                FileManager.saveUploadFile(sourcePath, file);
+            } else {
+                imageFile.setFullFilePath(filePathStorage);
             }
-            imageFile.setPath(filePathStorage);
-            if (!FileManager.isImageFile(String.format("%s%s", filePathStorage, imageFile.getFileName()))) {
-                FileManager.removeFile(String.format("%s%s", filePathStorage, file.getName()));
-                return new ImageResponse(HttpStatus.BAD_REQUEST.name(),
-                        HttpStatus.BAD_REQUEST.value(), "The file to convert is not an image file");
-            }
+
+            //Convert an image to another format
             IConvert iConvert = new ImageConvert();
             ImageResponse imageResponse = (ImageResponse) iConvert.Convert(imageFile);
             BaseFile metadata = imageResponse.getMetadata();
-            //generate metadata file and zip image and metadata
+
+            //generate metadata file and zip image
             String metadataFileName = MetadataExtractor.generateMetadataFile(String.format("%s%s", metadata.getPath(), metadata.getFileName()));
             String zipFile = ZipManager.zipFiles(String.format("%s%s", metadata.getPath(), metadata.getFileName()), metadataFileName);
 
@@ -106,7 +120,7 @@ public class ImgController {
                     HttpStatus.BAD_REQUEST.value(), "The Image File does not exist");
         } catch (ConvertException convertion) {
             LOGGER.error("Image Controller: Error in conversion operation '{}' ", convertion.getMessage());
-            return new ImageResponse(HttpStatus.NOT_FOUND.name(), HttpStatus.NOT_FOUND.value(),
+            return new ErrorResponse(HttpStatus.NOT_FOUND.name(), HttpStatus.NOT_FOUND.value(),
                     convertion.getMessage());
         } catch (ImageProcessingException ie) {
             return new ErrorResponse(HttpStatus.NOT_FOUND.name(), HttpStatus.NOT_FOUND.value(),
