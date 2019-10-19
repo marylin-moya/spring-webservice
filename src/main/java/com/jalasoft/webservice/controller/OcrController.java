@@ -25,13 +25,11 @@ import com.jalasoft.webservice.utils.PropertiesManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 
@@ -49,31 +47,31 @@ public class OcrController {
     /**
      * /orc endpoint to extract text from a file.
      *
-     * @param ocrFile     OCR object.
+     * @param ocrFile OCR object.
      * @return ResponseEntity with the Error or Success result.
      */
     @PostMapping(value = "/orc")
     public Response getOrcFromUploadFile(@RequestBody OcrFile ocrFile) {
         LOGGER.info("/orc endpoint to extract '{}' text from '{}'", ocrFile.getLang(), ocrFile.getFileName());
-        String originFile =  String.format("%s/%s", ocrFile.getPath(), ocrFile.getFileName());
+        String originFile = String.format("%s/%s", ocrFile.getPath(), ocrFile.getFileName());
+        String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
         File file = new File(originFile);
         try {
-            String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
+            //Add additional ocrFile attributes
             String checksum = CheckSum.getCheckSum(originFile);
             ocrFile.setCheckSum(checksum);
             ocrFile.setPath(sourcePath);
             ocrFile.setFullFilePath(String.format("%s%s", sourcePath, ocrFile.getFileName()));
             ocrFile.validate();
-            String filePath = DBManager.getPath(ocrFile.getCheckSum());
 
-            //If file is not uploaded, upload the file
+            //verify if file is saved in database
+            String filePath = DBManager.getPath(ocrFile.getCheckSum());
             if (filePath == null) {
                 LOGGER.info("File is not stored, Uploading...");
                 DBManager.addFile(checksum, ocrFile.getFullFilePath());
                 FileManager.saveUploadFile(sourcePath, file);
             } else {
                 ocrFile.setFullFilePath(filePath);
-
             }
 
             IConvert iConvert = new OcrConvert();

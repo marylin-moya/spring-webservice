@@ -21,6 +21,7 @@ import com.jalasoft.webservice.model.ImageConvert;
 import com.jalasoft.webservice.responses.ErrorResponse;
 import com.jalasoft.webservice.responses.ImageResponse;
 import com.jalasoft.webservice.responses.Response;
+import com.jalasoft.webservice.utils.CheckSum;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.MetadataExtractor;
 import com.jalasoft.webservice.utils.PropertiesManager;
@@ -78,6 +79,7 @@ public class ImgController {
 
             //Add additional imageFile attributes
             imageFile.setPath(sourcePath);
+            imageFile.setCheckSum(CheckSum.getCheckSum(originFilePath));
             imageFile.setFullFilePath(String.format("%s%s", sourcePath, imageFile.getFileName()));
             imageFile.validate();
 
