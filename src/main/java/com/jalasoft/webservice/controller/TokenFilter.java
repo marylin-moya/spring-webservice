@@ -29,13 +29,7 @@ public class TokenFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String url = req.getRequestURL().toString();
-        String auth = req.getHeader(AUTHORIZATION);
-
-        String token = null;
-        token = auth;
-        /*if (auth != null) {
-            token = auth.split(" ")[1];
-        }*/
+        String token = req.getHeader(AUTHORIZATION);
 
         if (url.contains(LOGIN_PATH) || url.contains(DOWNLOAD_PATH) || Cache.getInstance().isValid(token)) {
             chain.doFilter(request, response);

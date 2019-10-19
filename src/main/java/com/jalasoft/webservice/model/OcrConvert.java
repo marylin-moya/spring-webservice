@@ -71,10 +71,10 @@ public class OcrConvert implements IConvert {
             String fileName = String.format("%s%s", ocrFile.getFileName(), EXTENSION_FORMAT);
             String fullFilePath = String.format("%s%s", targetPath, fileName);
             metadata.setFileName(fileName);
-            metadata.setCheckSum(CheckSum.getCheckSum(fullFilePath));
             metadata.setFullFilePath(fullFilePath);
             FileManager.saveTextIntoFile(String.format("%s%s", metadata.getPath(), metadata.getFileName()), content);
             OcrResponse ocrResponse = new OcrResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Text Successfully Extracted.", content);
+            metadata.setCheckSum(CheckSum.getCheckSum(fullFilePath));
             ocrResponse.setMetadata(metadata);
             return ocrResponse;
         } catch (TesseractException e) {

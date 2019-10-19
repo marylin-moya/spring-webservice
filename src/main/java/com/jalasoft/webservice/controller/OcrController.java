@@ -61,18 +61,19 @@ public class OcrController {
             String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
             String checksum = CheckSum.getCheckSum(originFile);
             ocrFile.setCheckSum(checksum);
+            ocrFile.setPath(sourcePath);
+            ocrFile.setFullFilePath(String.format("%s%s", sourcePath, ocrFile.getFileName()));
             ocrFile.validate();
             String filePath = DBManager.getPath(ocrFile.getCheckSum());
 
             //If file is not uploaded, upload the file
             if (filePath == null) {
                 LOGGER.info("File is not stored, Uploading...");
-                filePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
-                ocrFile.setPath(filePath);
                 DBManager.addFile(checksum, ocrFile.getFullFilePath());
-                FileManager.saveUploadFile(filePath, file);
+                FileManager.saveUploadFile(sourcePath, file);
             } else {
                 ocrFile.setFullFilePath(filePath);
+
             }
 
             IConvert iConvert = new OcrConvert();
