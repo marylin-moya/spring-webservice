@@ -19,21 +19,20 @@ import com.jalasoft.webservice.model.IConvert;
 import com.jalasoft.webservice.model.OcrConvert;
 import com.jalasoft.webservice.responses.ErrorResponse;
 import com.jalasoft.webservice.responses.Response;
+import com.jalasoft.webservice.utils.CheckSum;
 import com.jalasoft.webservice.utils.FileManager;
 import com.jalasoft.webservice.utils.PropertiesManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.File;
 import java.io.IOException;
 
 import static com.jalasoft.webservice.utils.Constants.ORC_PATH;
@@ -50,37 +49,28 @@ public class OcrController {
     /**
      * /orc endpoint to extract text from a file.
      *
-     * @param file     MultipartFile file to upload.
-     * @param lang     language String to extract the text.
-     * @param checksum checksum String to verify if the file was already uploaded.
+     * @param ocrFile     OCR object.
      * @return ResponseEntity with the Error or Success result.
      */
-    @PostMapping(value = "/orc", consumes = {"multipart/form-data"})
-    public Response getOrcFromUploadFile(@Valid @NotNull @NotBlank @RequestParam("fileName") MultipartFile file,
-                                         @Valid @NotNull @NotBlank @RequestParam(value = "lang", defaultValue = "english") String lang,
-                                         @Valid @NotNull @NotBlank @RequestParam("checksum") String checksum, HttpServletRequest req) {
-        LOGGER.info("/orc endpoint to extract '{}' text from '{}'", lang, file.getOriginalFilename());
-
+    @PostMapping(value = "/orc")
+    public Response getOrcFromUploadFile(@RequestBody OcrFile ocrFile) {
+        LOGGER.info("/orc endpoint to extract '{}' text from '{}'", ocrFile.getLang(), ocrFile.getFileName());
+        String originFile =  String.format("%s/%s", ocrFile.getPath(), ocrFile.getFileName());
+        File file = new File(originFile);
         try {
             String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
-            String fileName = file.getOriginalFilename();
-
-            //Instance Orc Model with fileName and lang
-            OcrFile ocrFile = new OcrFile();
-            ocrFile.setLang(lang);
-            ocrFile.setPath(sourcePath);
-            ocrFile.setFileName(fileName);
+            String checksum = CheckSum.getCheckSum(originFile);
             ocrFile.setCheckSum(checksum);
-            ocrFile.setFullFilePath(String.format("%s%s", sourcePath, fileName));
             ocrFile.validate();
-
-            String filePath = DBManager.getPath(checksum);
+            String filePath = DBManager.getPath(ocrFile.getCheckSum());
 
             //If file is not uploaded, upload the file
             if (filePath == null) {
                 LOGGER.info("File is not stored, Uploading...");
+                filePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
+                ocrFile.setPath(filePath);
                 DBManager.addFile(checksum, ocrFile.getFullFilePath());
-                FileManager.saveUploadFile(sourcePath, file);
+                FileManager.saveUploadFile(filePath, file);
             } else {
                 ocrFile.setFullFilePath(filePath);
             }
