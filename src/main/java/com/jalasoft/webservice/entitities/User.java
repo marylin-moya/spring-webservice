@@ -12,6 +12,8 @@
 
 package com.jalasoft.webservice.entitities;
 
+import com.jalasoft.webservice.error_handler.ParamsInvalidException;
+
 /**
  * User class.
  */
@@ -91,5 +93,44 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * Validate fields method.
+     */
+    public void validate() throws ParamsInvalidException {
+        if (this.userName == null) {
+            throw new ParamsInvalidException(10, "userName");
+        }
+        if (this.userName.isEmpty()) {
+            throw new ParamsInvalidException(11, "userName");
+        }
+        if (this.password == null) {
+            throw new ParamsInvalidException(10, "password");
+        }
+        if (this.password.isEmpty()) {
+            throw new ParamsInvalidException(11, "password");
+        }
+        if (this.role == null) {
+            throw new ParamsInvalidException(10, "role");
+        }
+        if (this.role.isEmpty()) {
+            throw new ParamsInvalidException(11, "role");
+        }
+        if (this.email == null) {
+            throw new ParamsInvalidException(10, "email");
+        }
+        if (this.email.isEmpty()) {
+            throw new ParamsInvalidException(11, "email");
+        }
+    }
+
+    /**
+     * Validate fields method.
+     */
+    public void validateLogin() throws ParamsInvalidException {
+        if (this.userName == null || this.userName.isEmpty() || this.password == null || this.password.isEmpty()) {
+            throw new ParamsInvalidException(16, "userName and Password");
+        }
     }
 }

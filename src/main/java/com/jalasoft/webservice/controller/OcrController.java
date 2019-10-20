@@ -13,6 +13,7 @@ package com.jalasoft.webservice.controller;
 
 import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.error_handler.FileException;
 import com.jalasoft.webservice.error_handler.ParamsInvalidException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
@@ -55,8 +56,9 @@ public class OcrController {
         LOGGER.info("/orc endpoint to extract '{}' text from '{}'", ocrFile.getLang(), ocrFile.getFileName());
         String originFile = String.format("%s/%s", ocrFile.getPath(), ocrFile.getFileName());
         String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
-        File file = new File(originFile);
         try {
+            ocrFile.validate();
+            File file = new File(originFile);
             //Add additional ocrFile attributes
             String checksum = CheckSum.getCheckSum(originFile);
             ocrFile.setCheckSum(checksum);
@@ -76,12 +78,15 @@ public class OcrController {
 
             IConvert iConvert = new OcrConvert();
             return iConvert.Convert(ocrFile);
+        } catch (FileException e) {
+            return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(), e.getMessage());
         } catch (ParamsInvalidException | ConvertException e) {
             return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
                     HttpStatus.BAD_REQUEST.value(), e.getMessage());
         } catch (IOException e) {
             return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
-                    HttpStatus.BAD_REQUEST.value(), "IOException");
+                    HttpStatus.BAD_REQUEST.value(), e.getMessage());
         } catch (NullPointerException | IllegalStateException e) {
             return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
                     HttpStatus.BAD_REQUEST.value(), "The file does not exist");

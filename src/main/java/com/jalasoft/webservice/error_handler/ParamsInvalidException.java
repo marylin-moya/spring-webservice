@@ -51,6 +51,9 @@ public class ParamsInvalidException extends Exception {
             case 15:
                 this.message = String.format("The param %s is no supported to convert.", this.param);
                 break;
+            case 16:
+                this.message = String.format("The %s params are wrong.", this.param);
+                break;
         }
         return this.message;
     }

@@ -38,11 +38,11 @@ public class OcrFile extends BaseFile {
     @Override
     public void validate() throws ParamsInvalidException {
         super.validate();
-        if (this.lang.isEmpty()) {
-            throw new ParamsInvalidException(11, "lang");
-        }
         if (this.lang == null) {
             throw new ParamsInvalidException(10, "lang");
+        }
+        if (this.lang.isEmpty()) {
+            throw new ParamsInvalidException(11, "lang");
         }
     }
 }

@@ -37,14 +37,6 @@ public class Constants {
             this.suffix = suffix;
         }
 
-        public String toName() {
-            return name;
-        }
-
-        public String toSuffix() {
-            return suffix;
-        }
-
         /**
          * Method to get the LANGUAGES object given the Language name
          *
@@ -58,6 +50,14 @@ public class Constants {
                 }
             }
             return null;
+        }
+
+        public String toName() {
+            return name;
+        }
+
+        public String toSuffix() {
+            return suffix;
         }
     }
 

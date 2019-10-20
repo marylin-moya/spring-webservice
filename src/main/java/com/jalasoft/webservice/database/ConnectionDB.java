@@ -29,6 +29,13 @@ public class ConnectionDB {
     private static Connection conn;
 
     /**
+     * ConnectionDB Constructor.
+     */
+    private ConnectionDB() {
+        this.init();
+    }
+
+    /**
      * Gets the database connection.
      *
      * @return Connection with the database.
@@ -38,10 +45,15 @@ public class ConnectionDB {
     }
 
     /**
-     * ConnectionDB Constructor.
+     * Gets the ConnectionDB instance if this exist or creates a new one if doesn't.
+     *
+     * @return ConnectionDB instance
      */
-    private ConnectionDB() {
-        this.init();
+    public static ConnectionDB getInstance() {
+        if (instance == null) {
+            instance = new ConnectionDB();
+        }
+        return instance;
     }
 
     /**
@@ -59,17 +71,5 @@ public class ConnectionDB {
         } catch (SQLException | ClassNotFoundException e) {
             LOGGER.error("Exception while initializing the database: {}", e.getMessage());
         }
-    }
-
-    /**
-     * Gets the ConnectionDB instance if this exist or creates a new one if doesn't.
-     *
-     * @return ConnectionDB instance
-     */
-    public static ConnectionDB getInstance() {
-        if (instance == null) {
-            instance = new ConnectionDB();
-        }
-        return instance;
     }
 }

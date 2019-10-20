@@ -13,6 +13,7 @@ package com.jalasoft.webservice.model;
 import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.ImageFile;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.error_handler.FileException;
 import com.jalasoft.webservice.responses.ImageResponse;
 import com.jalasoft.webservice.responses.Response;
 import com.jalasoft.webservice.utils.CheckSum;
@@ -87,7 +88,7 @@ public class ImageConvert implements IConvert {
                     new ImageResponse(HttpStatus.OK.name(), HttpStatus.OK.value(), "Image Successfully Converted.");
             imageResponse.setMetadata(metadata);
             return imageResponse;
-        } catch (IOException | InterruptedException | IM4JavaException e) {
+        } catch (IOException | InterruptedException | IM4JavaException | FileException e) {
             LOGGER.error("ImageConvert Exception: {}", e.getMessage());
             throw new ConvertException(e.getMessage(), e);
         }
