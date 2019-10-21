@@ -71,6 +71,7 @@ public class ImgController {
         try {
             //Get Server hostname
             String hostname = ServerUtilities.GetServerHostname();
+            imageFile.validate();
 
             //Verify if file to be converted is an image
             if (!FileManager.isImageFile(originFilePath)) {
@@ -82,7 +83,7 @@ public class ImgController {
             imageFile.setPath(sourcePath);
             imageFile.setCheckSum(CheckSum.getCheckSum(originFilePath));
             imageFile.setFullFilePath(String.format("%s%s", sourcePath, imageFile.getFileName()));
-            imageFile.validate();
+
 
             //verify if file is saved in database
             String filePathStorage = DBManager.getPath(imageFile.getCheckSum());

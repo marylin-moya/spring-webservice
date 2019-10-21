@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.IOException;
 
+import static com.jalasoft.webservice.utils.Constants.OCRCONVERT_PATH;
 import static com.jalasoft.webservice.utils.Constants.ORC_PATH;
 
 /**
@@ -51,7 +52,7 @@ public class OcrController {
      * @param ocrFile OCR object.
      * @return ResponseEntity with the Error or Success result.
      */
-    @PostMapping(value = "/orc")
+    @PostMapping(value = OCRCONVERT_PATH)
     public Response getOrcFromUploadFile(@RequestBody OcrFile ocrFile) {
         LOGGER.info("/orc endpoint to extract '{}' text from '{}'", ocrFile.getLang(), ocrFile.getFileName());
         String originFile = String.format("%s/%s", ocrFile.getPath(), ocrFile.getFileName());
