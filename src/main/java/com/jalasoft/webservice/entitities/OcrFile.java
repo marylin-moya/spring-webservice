@@ -12,6 +12,8 @@ package com.jalasoft.webservice.entitities;
 
 import com.jalasoft.webservice.error_handler.ParamsInvalidException;
 
+import static com.jalasoft.webservice.utils.Constants.LANGUAGES;
+
 /****
  * OcrFile : Class to convert image to text
  *  Version : 1.0
@@ -43,6 +45,9 @@ public class OcrFile extends BaseFile {
         }
         if (this.lang.isEmpty()) {
             throw new ParamsInvalidException(11, "lang");
+        }
+        if (LANGUAGES.toLanguages(this.lang) == null) {
+            throw new ParamsInvalidException(15, "lang");
         }
     }
 }

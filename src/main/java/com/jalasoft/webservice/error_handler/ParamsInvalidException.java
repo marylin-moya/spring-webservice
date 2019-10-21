@@ -49,7 +49,7 @@ public class ParamsInvalidException extends Exception {
                 this.message = String.format("the param %s does not have a valid color value", this.param);
                 break;
             case 15:
-                this.message = String.format("The param %s is no supported to convert.", this.param);
+                this.message = String.format("The param %s is not supported to convert.", this.param);
                 break;
             case 16:
                 this.message = String.format("The %s params are wrong.", this.param);

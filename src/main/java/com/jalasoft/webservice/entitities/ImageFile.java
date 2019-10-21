@@ -35,6 +35,7 @@ public class ImageFile extends BaseFile {
         grayscale = false;
         transpose = false;
         transverse = false;
+        targetType = "png";
     }
 
     /**
