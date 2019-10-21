@@ -26,14 +26,6 @@ public class ImageFile extends BaseFile {
     private boolean transpose;
     private boolean transverse;
 
-    private enum Color {
-        red, yellow, blue, green, black;
-    }
-
-    private enum TypeSupported {
-        PNG, JPG, BMP
-    }
-
     public ImageFile() {
         borderColor = Color.black.toString();
         rotate = 0.0;
@@ -299,5 +291,13 @@ public class ImageFile extends BaseFile {
             }
         }
         return false;
+    }
+
+    private enum Color {
+        red, yellow, blue, green, black;
+    }
+
+    private enum TypeSupported {
+        PNG, JPG, BMP
     }
 }

@@ -14,6 +14,7 @@ import com.drew.imaging.ImageProcessingException;
 import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.ImageFile;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.error_handler.FileException;
 import com.jalasoft.webservice.error_handler.ParamsInvalidException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.model.IConvert;
@@ -51,10 +52,10 @@ import static com.jalasoft.webservice.utils.Constants.IMG_PATH;
 @RequestMapping(IMG_PATH)
 public class ImgController {
     private static final Logger LOGGER = LogManager.getLogger();
-    private String sourceFileKey = "file.source-dir";//class to read keys
     private static String PATH_DOWNLOAD_FILE = DOWNLOAD_PATH + "/file/";
     private static String PATH_DOWNLOAD_ZIP_FILE = DOWNLOAD_PATH + "/filemetadatazip/";
     private static String PORT = ":8080";
+    private String sourceFileKey = "file.source-dir";//class to read keys
 
     /**
      * @param imageFile MultipartFile file to upload.*
@@ -110,6 +111,9 @@ public class ImgController {
             LOGGER.info("New file is available in following link {}", urlDownload);
             return imageResponse;
 
+        } catch (FileException e) {
+            return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(), e.getMessage());
         } catch (ParamsInvalidException e) {
             return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
                     HttpStatus.BAD_REQUEST.value(), e.getMessage());

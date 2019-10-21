@@ -41,15 +41,6 @@ public class PropertiesManager {
     }
 
     /**
-     * Initialize the PropertiesReader with "application.properties" file
-     */
-    private void init() {
-        LOGGER.info("Initializing PropertiesManager Instance...");
-        String propertyFilePath = getClass().getClassLoader().getResource(fileName).getPath();
-        propertiesReader = new PropertiesReader(propertyFilePath);
-    }
-
-    /**
      * Get the PropertiesManager Instance.
      *
      * @return
@@ -59,5 +50,14 @@ public class PropertiesManager {
             instance = new PropertiesManager();
         }
         return instance;
+    }
+
+    /**
+     * Initialize the PropertiesReader with "application.properties" file
+     */
+    private void init() {
+        LOGGER.info("Initializing PropertiesManager Instance...");
+        String propertyFilePath = getClass().getClassLoader().getResource(fileName).getPath();
+        propertiesReader = new PropertiesReader(propertyFilePath);
     }
 }

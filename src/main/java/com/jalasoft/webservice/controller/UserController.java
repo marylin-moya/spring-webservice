@@ -12,6 +12,7 @@ package com.jalasoft.webservice.controller;
 
 import com.jalasoft.webservice.entitities.User;
 import com.jalasoft.webservice.error_handler.DatabaseException;
+import com.jalasoft.webservice.error_handler.ParamsInvalidException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.responses.ErrorResponse;
 import com.jalasoft.webservice.responses.Response;
@@ -29,16 +30,21 @@ public class UserController {
     @PostMapping(value = "/user")
     public Response createUser(@RequestBody User user) {
         try {
+            user.validate();
             if (!DBManager.exist(user.getUserName(), user.getPassword())) {
                 DBManager.insertUser(user);
             }
+            return new Response(HttpStatus.OK.name(),
+                    HttpStatus.OK.value(),
+                    String.format("User %s successfully created", user.getUserName()));
         } catch (DatabaseException e) {
             return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
                     HttpStatus.BAD_REQUEST.value(),
                     e.getMessage());
+        } catch (ParamsInvalidException e) {
+            return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(),
+                    e.getMessage());
         }
-        return new Response(HttpStatus.OK.name(),
-                HttpStatus.OK.value(),
-                String.format("User %s successfully created", user.getUserName()));
     }
 }

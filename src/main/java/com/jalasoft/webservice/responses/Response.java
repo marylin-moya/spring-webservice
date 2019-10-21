@@ -37,20 +37,20 @@ public class Response {
         return name;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getDetail() {
+        return detail;
     }
 
     public void setDetail(String detail) {

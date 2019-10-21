@@ -13,6 +13,7 @@ package com.jalasoft.webservice.model;
 import com.jalasoft.webservice.entitities.BaseFile;
 import com.jalasoft.webservice.entitities.OcrFile;
 import com.jalasoft.webservice.error_handler.ConvertException;
+import com.jalasoft.webservice.error_handler.FileException;
 import com.jalasoft.webservice.responses.OcrResponse;
 import com.jalasoft.webservice.responses.Response;
 import com.jalasoft.webservice.utils.CheckSum;
@@ -35,8 +36,8 @@ import static com.jalasoft.webservice.utils.Constants.LANGUAGES;
  */
 public class OcrConvert implements IConvert {
     private static final Logger LOGGER = LogManager.getLogger();
-    private String defaultLanguageProperty = "file.default-language";
     private static final String EXTENSION_FORMAT = ".csv";
+    private String defaultLanguageProperty = "file.default-language";
 
     /**
      * Convert method to extract text from a image
@@ -77,8 +78,8 @@ public class OcrConvert implements IConvert {
             metadata.setCheckSum(CheckSum.getCheckSum(fullFilePath));
             ocrResponse.setMetadata(metadata);
             return ocrResponse;
-        } catch (TesseractException e) {
-            LOGGER.info("OcrConvert Exception");
+        } catch (TesseractException | FileException e) {
+            LOGGER.info("OcrConvert Exception: {}", e.getMessage());
             throw new ConvertException(e.getMessage(), e);
         }
     }

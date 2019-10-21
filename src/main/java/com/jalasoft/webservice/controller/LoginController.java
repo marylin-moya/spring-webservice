@@ -14,6 +14,7 @@ package com.jalasoft.webservice.controller;
 import com.jalasoft.webservice.entitities.Cache;
 import com.jalasoft.webservice.entitities.User;
 import com.jalasoft.webservice.error_handler.DatabaseException;
+import com.jalasoft.webservice.error_handler.ParamsInvalidException;
 import com.jalasoft.webservice.model.DBManager;
 import com.jalasoft.webservice.responses.ErrorResponse;
 import com.jalasoft.webservice.responses.LoginResponse;
@@ -41,26 +42,30 @@ public class LoginController {
     @PostMapping(value = LOGIN_PATH)
     public Response loginController(@RequestBody User user) {
         try {
+            user.validateLogin();
             user = DBManager.getUser(user.getUserName(), user.getPassword());
+            String key = "dev-fun2";
+            String token = Jwts.builder()
+                    .signWith(SignatureAlgorithm.HS256, key.getBytes())
+                    .setSubject(user.getUserName())
+                    .claim(ROLE, user.getRole())
+                    .claim(EMAIL, user.getEmail())
+                    .compact();
+
+            //Add token to cache.
+            Cache.getInstance().add(token);
+            return new LoginResponse(HttpStatus.ACCEPTED.name(),
+                    HttpStatus.ACCEPTED.value(),
+                    String.format("Token for %s user successfully generated", user.getUserName()),
+                    token);
         } catch (DatabaseException e) {
             return new ErrorResponse(HttpStatus.UNAUTHORIZED.name(),
                     HttpStatus.UNAUTHORIZED.value(),
                     e.getMessage());
+        } catch (ParamsInvalidException e) {
+            return new ErrorResponse(HttpStatus.BAD_REQUEST.name(),
+                    HttpStatus.BAD_REQUEST.value(),
+                    e.getMessage());
         }
-
-        String key = "dev-fun2";
-        String token = Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256, key.getBytes())
-                .setSubject(user.getUserName())
-                .claim(ROLE, user.getRole())
-                .claim(EMAIL, user.getEmail())
-                .compact();
-
-        //Add token to cache.
-        Cache.getInstance().add(token);
-        return new LoginResponse(HttpStatus.ACCEPTED.name(),
-                HttpStatus.ACCEPTED.value(),
-                String.format("Token for %s user successfully generated", user.getUserName()),
-                token);
     }
 }

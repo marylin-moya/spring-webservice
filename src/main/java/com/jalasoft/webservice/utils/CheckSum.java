@@ -10,6 +10,7 @@
 
 package com.jalasoft.webservice.utils;
 
+import com.jalasoft.webservice.error_handler.FileException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +29,7 @@ import java.security.NoSuchAlgorithmException;
 public class CheckSum {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static String getCheckSum(String filePath) {
+    public static String getCheckSum(String filePath) throws FileException {
         try {
             MessageDigest md = MessageDigest.getInstance(
                     PropertiesManager.getInstance().getPropertiesReader().getValue("file.type-checksum")); //SHA, MD2, MD5, SHA-256, SHA-384...
@@ -41,15 +42,13 @@ public class CheckSum {
                 result.append(String.format("%02x", b));
             }
             return result.toString();
-
-        } catch (FileNotFoundException e) {
-            LOGGER.info("CheckSum File Not Found Exception. {}", e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            LOGGER.info("CheckSum Algorithm Exception. {}", e.getMessage());
+        } catch (NoSuchAlgorithmException | FileNotFoundException e) {
+            LOGGER.info("CheckSum Exception: {}", e.getMessage());
+            throw new FileException(e.getMessage(), e);
         } catch (IOException e) {
-            LOGGER.info("CheckSum IOException. {}", e.getMessage());
+            LOGGER.info("CheckSum Exception: {}", e.getMessage());
+            throw new FileException(e.getMessage(), e);
         }
-        return null;
     }
 
     /**
