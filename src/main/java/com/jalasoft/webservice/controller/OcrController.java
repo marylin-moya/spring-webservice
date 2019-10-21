@@ -34,17 +34,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.IOException;
 
-import static com.jalasoft.webservice.utils.Constants.OCRCONVERT_PATH;
 import static com.jalasoft.webservice.utils.Constants.ORC_PATH;
+import static com.jalasoft.webservice.utils.Constants.BASE_PATH;
+import static com.jalasoft.webservice.utils.Constants.SOURCE_DIR;
 
 /**
  * Orc Controller class to implement Rest EndPoint to extract text from a file.
  */
 @RestController
-@RequestMapping(ORC_PATH)
+@RequestMapping(BASE_PATH)
 public class OcrController {
     private static final Logger LOGGER = LogManager.getLogger();
-    private String sourceFileKey = "file.source-dir";
 
     /**
      * /orc endpoint to extract text from a file.
@@ -52,11 +52,11 @@ public class OcrController {
      * @param ocrFile OCR object.
      * @return ResponseEntity with the Error or Success result.
      */
-    @PostMapping(value = OCRCONVERT_PATH)
+    @PostMapping(value = ORC_PATH)
     public Response getOrcFromUploadFile(@RequestBody OcrFile ocrFile) {
         LOGGER.info("/orc endpoint to extract '{}' text from '{}'", ocrFile.getLang(), ocrFile.getFileName());
         String originFile = String.format("%s/%s", ocrFile.getPath(), ocrFile.getFileName());
-        String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
+        String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(SOURCE_DIR);
         try {
             ocrFile.validate();
             File file = new File(originFile);

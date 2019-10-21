@@ -30,6 +30,8 @@ import org.springframework.http.HttpStatus;
 import java.io.File;
 import java.io.IOException;
 
+import static com.jalasoft.webservice.utils.Constants.TARGET_DIR;
+
 /**
  * Image Convert class.
  */
@@ -45,7 +47,6 @@ public class ImageConvert implements IConvert {
     @Override
     public Response Convert(BaseFile baseFile) throws ConvertException {
         String imageMagicPath = "file.imagemagic-path";
-        String targetDirectory = "file.target-dir";
         String grayScale = "Grayscale";
         ImageFile imageFile = (ImageFile) baseFile;
         ProcessStarter.setGlobalSearchPath(PropertiesManager.getInstance().getPropertiesReader().getValue(imageMagicPath));
@@ -69,7 +70,7 @@ public class ImageConvert implements IConvert {
         if (imageFile.isGrayscale()) {
             op.type(grayScale);
         }
-        String targetPath = PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory);
+        String targetPath = PropertiesManager.getInstance().getPropertiesReader().getValue(TARGET_DIR);
         String convertedFileName = String.format("%s.%s",
                 FileManager.getFileNameNoExtension(imageFile.getFileName()), imageFile.getTargetType());
         String convertedImage = String.format("%s%s", targetPath, convertedFileName);

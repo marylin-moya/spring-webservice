@@ -25,10 +25,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import static com.jalasoft.webservice.utils.Constants.METADATA_EXT;
+import static com.jalasoft.webservice.utils.Constants.TARGET_DIR;
 
 public class MetadataExtractor {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static String targetFileKey = "file.target-dir";
 
     /***
      * Generate CSV file with all information related to an image file
@@ -41,7 +41,7 @@ public class MetadataExtractor {
         Metadata metadata = ImageMetadataReader.readMetadata(file);
 
         //generate in target-dir directory the metadata file
-        fileNameMetadata = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(targetFileKey), file.getName()).concat(METADATA_EXT);
+        fileNameMetadata = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(TARGET_DIR), file.getName()).concat(METADATA_EXT);
         File metadataFile = new File(fileNameMetadata);
         FileOutputStream pw = new FileOutputStream(metadataFile);
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(pw));
