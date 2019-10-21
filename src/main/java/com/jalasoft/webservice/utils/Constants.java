@@ -21,6 +21,7 @@ public class Constants {
     public static final String AUTHORIZATION = "Authorization";
     public static final String LOGIN_PATH = "/login";
     public static final String IMGCONVERT_PATH = "/convert";
+    public static final String OCRCONVERT_PATH = "/ocr";
 
 
     public static enum LANGUAGES {
