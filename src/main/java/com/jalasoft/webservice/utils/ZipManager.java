@@ -21,12 +21,13 @@ import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import static com.jalasoft.webservice.utils.Constants.TARGET_DIR;
+
 /***
  * Class to compress files
  */
 public class ZipManager {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static String targetFileKey = "file.target-dir";
 
     /***
      * Method to compress multiple files in ZIP format. Name of zip is first file + .zip
@@ -37,7 +38,7 @@ public class ZipManager {
     public static String zipFiles(String... filePaths) throws IOException {
         String zipFileName = null;
         File firstFile = new File(filePaths[0]);
-        zipFileName = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(targetFileKey), firstFile.getName()).concat(".zip");
+        zipFileName = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(TARGET_DIR), firstFile.getName()).concat(".zip");
         FileOutputStream fos = new FileOutputStream(zipFileName);
         ZipOutputStream zos = new ZipOutputStream(fos);
         for (String aFile : filePaths) {

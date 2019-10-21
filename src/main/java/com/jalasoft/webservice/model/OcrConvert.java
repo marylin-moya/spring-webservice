@@ -28,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import java.io.File;
 
 import static com.jalasoft.webservice.utils.Constants.LANGUAGES;
+import static com.jalasoft.webservice.utils.Constants.TARGET_DIR;
 
 /**
  * Orc convert class
@@ -49,7 +50,6 @@ public class OcrConvert implements IConvert {
     @Override
     public Response Convert(BaseFile baseFile) throws ConvertException {
         String tesseractPath = "file.tesseract-path";
-        String targetDirectory = "file.target-dir";
         String defaultLanguage = PropertiesManager.getInstance().getPropertiesReader().getValue(defaultLanguageProperty);
         String language = null;
         OcrFile ocrFile = (OcrFile) baseFile;
@@ -63,7 +63,7 @@ public class OcrConvert implements IConvert {
         }
 
         try {
-            String targetPath = PropertiesManager.getInstance().getPropertiesReader().getValue(targetDirectory);
+            String targetPath = PropertiesManager.getInstance().getPropertiesReader().getValue(TARGET_DIR);
             tesseract.setDatapath(PropertiesManager.getInstance().getPropertiesReader().getValue(tesseractPath));
             tesseract.setLanguage(language);
             String content = tesseract.doOCR(new File(ocrFile.getFullFilePath())).trim();

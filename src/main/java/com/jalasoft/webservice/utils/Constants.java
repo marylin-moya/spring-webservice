@@ -14,14 +14,14 @@ package com.jalasoft.webservice.utils;
 public class Constants {
     public final static String APPLICATION_PROPERTIES = "application.properties";
     public static final String BASE_PATH = "/api/v1.0";
-    public static final String IMG_PATH = BASE_PATH + "/img";
+    public static final String IMG_PATH = "/img";
     public static final String DOWNLOAD_PATH = "/download";
-    public static final String ORC_PATH = BASE_PATH + "/doc";
+    public static final String ORC_PATH = "/ocr";
     public static final String METADATA_EXT = ".csv";
     public static final String AUTHORIZATION = "Authorization";
     public static final String LOGIN_PATH = "/login";
-    public static final String IMGCONVERT_PATH = "/convert";
-    public static final String OCRCONVERT_PATH = "/ocr";
+    public static final String TARGET_DIR = "file.target-dir";
+    public static final String SOURCE_DIR = "file.source-dir";
 
 
     public static enum LANGUAGES {

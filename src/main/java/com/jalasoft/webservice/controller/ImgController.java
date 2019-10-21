@@ -41,31 +41,31 @@ import java.io.File;
 import java.io.IOException;
 
 import static com.jalasoft.webservice.utils.Constants.DOWNLOAD_PATH;
-import static com.jalasoft.webservice.utils.Constants.IMGCONVERT_PATH;
+import static com.jalasoft.webservice.utils.Constants.BASE_PATH;
 import static com.jalasoft.webservice.utils.Constants.IMG_PATH;
+import static com.jalasoft.webservice.utils.Constants.SOURCE_DIR;
 
 /**
  * Img Controller class to implement Rest endpoint related to convert a image
  */
 
 @RestController
-@RequestMapping(IMG_PATH)
+@RequestMapping(BASE_PATH)
 public class ImgController {
     private static final Logger LOGGER = LogManager.getLogger();
     private static String PATH_DOWNLOAD_FILE = DOWNLOAD_PATH + "/file/";
     private static String PATH_DOWNLOAD_ZIP_FILE = DOWNLOAD_PATH + "/filemetadatazip/";
     private static String PORT = ":8080";
-    private String sourceFileKey = "file.source-dir";//class to read keys
 
     /**
      * @param imageFile MultipartFile file to upload.*
      * @return
      */
-    @PostMapping(value = IMGCONVERT_PATH)
+    @PostMapping(value = IMG_PATH)
     @ResponseBody
     public Response convertImage(@RequestBody ImageFile imageFile) {
         LOGGER.info("/img endpoint to convert '{}' image to new format '{}'", imageFile.getFileName(), imageFile.getTargetType());
-        String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(sourceFileKey);
+        String sourcePath = PropertiesManager.getInstance().getPropertiesReader().getValue(SOURCE_DIR);
         String originFilePath = String.format("%s\\%s", imageFile.getPath(), imageFile.getFileName());
         File file = new File(originFilePath);
         try {

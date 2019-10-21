@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import static com.jalasoft.webservice.utils.Constants.DOWNLOAD_PATH;
+import static com.jalasoft.webservice.utils.Constants.TARGET_DIR;
 
 /***
  * Download Controller class to download a file
@@ -40,7 +41,6 @@ import static com.jalasoft.webservice.utils.Constants.DOWNLOAD_PATH;
 @RequestMapping(DOWNLOAD_PATH)
 public class DownloadController {
     private static final Logger LOGGER = LogManager.getLogger();
-    private String targetFileKey = "file.target-dir";
 
     /***
      *
@@ -50,7 +50,7 @@ public class DownloadController {
     @GetMapping("/file/{fileName:.+}")
     public void getFile(HttpServletResponse response,
                         @PathVariable("fileName") String fileName) {
-        String fullPathName = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(targetFileKey), fileName);
+        String fullPathName = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(TARGET_DIR), fileName);
         String commonContentType = "application/octet-stream";
         LOGGER.info("Download {} file", fileName);
         try {
@@ -85,7 +85,7 @@ public class DownloadController {
     @GetMapping("/filemetadatazip/{fileName:.+}")
     public void getFileAndMetadataInfo(HttpServletResponse response,
                                        @PathVariable("fileName") String fileName) {
-        String fullPathName = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(targetFileKey), fileName);
+        String fullPathName = String.format("%s%s", PropertiesManager.getInstance().getPropertiesReader().getValue(TARGET_DIR), fileName);
         String commonContentType = "application/octet-stream";
         try {
             File file = new File(fullPathName);
