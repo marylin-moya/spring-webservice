@@ -11,6 +11,13 @@
 package com.jalasoft.webservice.entitities;
 
 import com.jalasoft.webservice.error_handler.ParamsInvalidException;
+import com.jalasoft.webservice.model.Context;
+import com.jalasoft.webservice.model.validate.IValidateStrategy;
+import com.jalasoft.webservice.model.validate.LangValidation;
+import com.jalasoft.webservice.model.validate.NullOrEmptyValidation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /****
  * OcrFile : Class to convert image to text
@@ -44,5 +51,30 @@ public class OcrFile extends BaseFile {
         if (this.lang.isEmpty()) {
             throw new ParamsInvalidException(11, "lang");
         }
+    }
+
+
+    public void validateOCr() throws ParamsInvalidException {
+        List<IValidateStrategy> vals = new ArrayList<>();
+        vals.add(new NullOrEmptyValidation(this.lang));
+        vals.add(new LangValidation(this.lang));
+        vals.add(new NullOrEmptyValidation(this.fullFilePath));
+        vals.add(new NullOrEmptyValidation(this.checkSum));
+        for (IValidateStrategy validation : vals) {
+            validation.validate();
+        }
+
+    }
+    public void validateContextOcr() throws ParamsInvalidException {
+        List<IValidateStrategy> vals = new ArrayList<>();
+        vals.add(new NullOrEmptyValidation(this.lang));
+        vals.add(new LangValidation(this.lang));
+        vals.add(new NullOrEmptyValidation(this.path));
+        vals.add(new NullOrEmptyValidation(this.checkSum));
+        vals.add(new NullOrEmptyValidation(this.fileName));
+        vals.add(new NullOrEmptyValidation(this.fullFilePath));
+        Context context = new Context(vals);
+        context.validate();
+
     }
 }

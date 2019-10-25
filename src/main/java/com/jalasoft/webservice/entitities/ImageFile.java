@@ -11,6 +11,14 @@
 package com.jalasoft.webservice.entitities;
 
 import com.jalasoft.webservice.error_handler.ParamsInvalidException;
+import com.jalasoft.webservice.model.Context;
+import com.jalasoft.webservice.model.validate.FileNameValidation;
+import com.jalasoft.webservice.model.validate.IValidateStrategy;
+import com.jalasoft.webservice.model.validate.NullOrEmptyValidation;
+import com.jalasoft.webservice.model.validate.TargetTypeValidation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ImageFile class.
@@ -291,6 +299,18 @@ public class ImageFile extends BaseFile {
             }
         }
         return false;
+    }
+
+    public void validateContextImg()throws ParamsInvalidException{
+        List<IValidateStrategy> vals = new ArrayList<>();
+        vals.add(new NullOrEmptyValidation(this.fileName));
+        vals.add(new NullOrEmptyValidation(this.borderColor));
+        vals.add(new NullOrEmptyValidation(this.targetType));
+        vals.add(new NullOrEmptyValidation(this.fullFilePath));
+        vals.add(new FileNameValidation(this.fileName));
+        vals.add(new TargetTypeValidation(this.targetType));
+        Context context = new Context(vals);
+        context.validate();
     }
 
     private enum Color {
